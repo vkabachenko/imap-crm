@@ -13,7 +13,7 @@ $thisPagelmit=10;
 $this->title = 'Реквизиты почты';
 $thisRule = explode(",",Yii::$app->user->identity->rule);
 
-$this->titleBut = '<a href="'.Url::toRoute([$thisPageId, 'add' => 'true']).'" class="btn btn-xs green">Добавить <i class="fa fa-plus"></i></a>';
+$this->params['titleBut'] = '<a href="'.Url::toRoute([$thisPageId, 'add' => 'true']).'" class="btn btn-xs green">Добавить <i class="fa fa-plus"></i></a>';
 //echo Url::toRoute(['index', 'add' => 'yes']);
 
 //print_r($this);

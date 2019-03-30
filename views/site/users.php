@@ -13,7 +13,7 @@ $thisPagelmit=20;
 $this->title = 'Клиенты';
 $thisRule = explode(",",Yii::$app->user->identity->rule);
 if(Yii::$app->user->id==1 or in_array(3.1,$thisRule)){
-$this->titleBut = '<a href="'.Url::toRoute([$thisPageId, 'add' => 'true']).'" class="btn btn-xs green">Добавить <i class="fa fa-plus"></i></a>';
+$this->params['titleBut'] = '<a href="'.Url::toRoute([$thisPageId, 'add' => 'true']).'" class="btn btn-xs green">Добавить <i class="fa fa-plus"></i></a>';
 }
 
 

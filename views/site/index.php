@@ -26,7 +26,7 @@ $h = ' <a href="'.url::toRoute(['index', 'call_status' => '0']).'" class="btn bt
 
 <a href="'.url::toRoute(['index', 'excel' => '2']).'" class="btn btn-xs red submit">Экспорт <i class="fa fa-file-excel-o"></i></a>
 ';
-$this->titleBut=$h;
+$this->params['titleBut']=$h;
 
 $thisRule = explode(",",Yii::$app->user->identity->rule);
 

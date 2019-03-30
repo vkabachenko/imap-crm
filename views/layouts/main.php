@@ -342,7 +342,8 @@ if($this->params['breadcrumbs'][0]!='Login'){
 			<div class="page-head">
 				<!-- BEGIN PAGE TITLE -->
 				<div class="page-title">
-					<h1><?php  echo $this->title; ?> <?php  echo $this->titleBut; ?> </h1>
+					<h1><?php  echo $this->title; ?>
+                        <?php  echo isset($this->params['titleBut']) ? $this->params['titleBut'] : ''; ?> </h1>
 				</div>
 				<!-- END PAGE TITLE -->
 				<!-- BEGIN PAGE TOOLBAR -->
