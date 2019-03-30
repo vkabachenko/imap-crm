@@ -1,0 +1,6 @@
+*
+!.gitignore
+!/*.js
+!admin
+!global
+!pages

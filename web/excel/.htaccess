@@ -1,0 +1,6 @@
+AddHandler x-httpd-php5 .html .htm
+AddDefaultCharset UTF-8
+ErrorDocument 404 /error404.php
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^www.rem.ru$ [NC]
+RewriteRule ^(.*)$ http://rem.ru/$1 [R=301,L]
