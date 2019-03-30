@@ -62,7 +62,7 @@ $thisRule = explode(",",Yii::$app->user->identity->rule);
                                          <p id="thistelinc"></p>
 </div>
 </div>
-<form method="post" action="<?php echo Url::Toroute(['users', 'add'=>'true']); ?>" id="NewClientForm">
+<form method="post" action="<?php echo Url::toRoute(['site/users', 'add'=>'true']); ?>" id="NewClientForm">
 
 <div class="post-comment col-md-6">
 <h2 class="modal-title" id="NewClientTitle">Новый клиент</h2>
@@ -177,7 +177,7 @@ echo Html::dropDownList('order_brand',0,$arr, ['class' => 'form-control']) ;
 						</a>
 						<ul class="dropdown-menu dropdown-menu-default">
 							<li>
-								<a href="<?php echo Url::Toroute(['logout']); ?>">
+								<a href="<?php echo Url::toRoute(['site/logout']); ?>">
 								<i class="icon-key"></i> Выйти </a>
 							</li>
 						</ul>
@@ -194,8 +194,8 @@ echo Html::dropDownList('order_brand',0,$arr, ['class' => 'form-control']) ;
 <div class="page-container">
 <?php $this->beginBody() ?>
 <!--
-<a href="<?php echo Url::Toroute(['us']); ?>"><?php echo Url::Toroute(['us']); ?></a>  <br />
-<a href="<?php echo Url::Toroute(['users']); ?>"><?php echo Url::Toroute(['users']); ?></a>
+<a href="<?php echo Url::toRoute(['site/us']); ?>"><?php echo Url::toRoute(['site/us']); ?></a>  <br />
+<a href="<?php echo Url::toRoute(['site/users']); ?>"><?php echo Url::toRoute(['site/users']); ?></a>
 !-->
 <div class="wrap">
 	<div class="page-sidebar-wrapper">
@@ -204,8 +204,8 @@ echo Html::dropDownList('order_brand',0,$arr, ['class' => 'form-control']) ;
 
 			<ul class="page-sidebar-menu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
 <?php  if(Yii::$app->user->id==1 or in_array(1,$thisRule)){  ?>
-				<li class="<?php if(Url::to()==Url::Toroute(['index'])){echo 'active';} ?>">
-					<a href="<?php echo Url::Toroute(['index']); ?>">
+				<li class="<?php if(Url::to()==Url::toRoute(['site/index'])){echo 'active';} ?>">
+					<a href="<?php echo Url::toRoute(['site/index']); ?>">
 					<i class="icon-home"></i>
 					<span class="title">Рабочий стол</span>
 					</a>
@@ -213,8 +213,8 @@ echo Html::dropDownList('order_brand',0,$arr, ['class' => 'form-control']) ;
 <?php } ?>
 
 <?php  if(Yii::$app->user->id==1 or in_array(4,$thisRule)){  ?>
-				<li class="<?php if(Url::to()==Url::Toroute(['mail'])){echo 'active';} ?>">
-					<a href="<?php echo Url::Toroute(['mail']); ?>">
+				<li class="<?php if(Url::to()==Url::toRoute(['mail/index'])){echo 'active';} ?>">
+					<a href="<?php echo Url::toRoute(['mail/index']); ?>">
 					<i class="icon-list"></i>
 					<span class="title">Почта</span>
 					</a>
@@ -222,63 +222,63 @@ echo Html::dropDownList('order_brand',0,$arr, ['class' => 'form-control']) ;
 <?php } ?>
 
 <?php  if(Yii::$app->user->id==1 or in_array(2,$thisRule)){  ?>
-				<li class="<?php if(Url::to()==Url::Toroute(['orders'])){echo 'active';} ?>">
-					<a href="<?php echo Url::Toroute(['orders']); ?>">
+				<li class="<?php if(Url::to()==Url::toRoute(['site/orders'])){echo 'active';} ?>">
+					<a href="<?php echo Url::toRoute(['site/orders']); ?>">
 					<i class="icon-notebook"></i>
 					<span class="title">Заказы</span>
 					</a>
 				</li>
 <?php } ?>
 <?php  if(Yii::$app->user->id==1 or in_array(3,$thisRule)){  ?>
-				<li class="<?php if(Url::to()==Url::Toroute(['users'])){echo 'active';} ?>">
-					<a href="<?php echo Url::Toroute(['users']); ?>">
+				<li class="<?php if(Url::to()==Url::toRoute(['site/users'])){echo 'active';} ?>">
+					<a href="<?php echo Url::toRoute(['site/users']); ?>">
 					<i class="icon-users"></i>
 					<span class="title">Клиенты</span>
 					</a>
 				</li>
 <?php } ?>
 <?php  if(Yii::$app->user->id==1){  ?>
-				<li class="<?php if(Url::to()==Url::Toroute(['employees'])){echo 'active';} ?>">
-					<a href="<?php echo Url::Toroute(['employees']); ?>">
+				<li class="<?php if(Url::to()==Url::toRoute(['site/employees'])){echo 'active';} ?>">
+					<a href="<?php echo Url::toRoute(['site/employees']); ?>">
 					<i class="icon-user"></i>
 					<span class="title">Сотрудники</span>
 					</a>
 				</li>
 
-				<li class="<?php if(Url::to()==Url::Toroute(['sip']) or Url::to()==Url::Toroute(['source']) or Url::to()==Url::Toroute(['order_status']) or Url::to()==Url::Toroute(['users_status']) or Url::to()==Url::Toroute(['brand']) or Url::to()==Url::Toroute(['mails'])){echo 'active';} ?>">
-					<a href="<?php echo Url::Toroute(['order_status']); ?>">
+				<li class="<?php if(Url::to()==Url::toRoute(['site/sip']) or Url::to()==Url::toRoute(['site/source']) or Url::to()==Url::toRoute(['site/order_status']) or Url::to()==Url::toRoute(['site/users_status']) or Url::to()==Url::toRoute(['site/brand']) or Url::to()==Url::toRoute(['site/mails'])){echo 'active';} ?>">
+					<a href="<?php echo Url::toRoute(['site/order_status']); ?>">
 					<i class="icon-list"></i>
 					<span class="title">Справочники</span>
 					<span class="arrow "></span>
 					</a>
 					<ul class="sub-menu">
-						<li<?php if(Url::to()==Url::Toroute(['order_status'])){echo ' class="active"';} ?>>
-							<a href="<?php echo Url::Toroute(['order_status']); ?>">
+						<li<?php if(Url::to()==Url::toRoute(['site/order_status'])){echo ' class="active"';} ?>>
+							<a href="<?php echo Url::toRoute(['site/order_status']); ?>">
 							<i class="icon-list"></i>
 							Статусы заказа</a>
 						</li>
-						<li<?php if(Url::to()==Url::Toroute(['users_status'])){echo ' class="active"';} ?>>
-							<a href="<?php echo Url::Toroute(['users_status']); ?>">
+						<li<?php if(Url::to()==Url::toRoute(['site/users_status'])){echo ' class="active"';} ?>>
+							<a href="<?php echo Url::toRoute(['site/users_status']); ?>">
 							<i class="icon-list"></i>
 							Статусы клиента</a>
 						</li>
-						<li<?php if(Url::to()==Url::Toroute(['brand'])){echo ' class="active"';} ?>>
-							<a href="<?php echo Url::Toroute(['brand']); ?>">
+						<li<?php if(Url::to()==Url::toRoute(['site/brand'])){echo ' class="active"';} ?>>
+							<a href="<?php echo Url::toRoute(['site/brand']); ?>">
 							<i class="icon-list"></i>
 							Бренды</a>
 						</li>
-						<li<?php if(Url::to()==Url::Toroute(['mails'])){echo ' class="active"';} ?>>
-							<a href="<?php echo Url::Toroute(['mails']); ?>">
+						<li<?php if(Url::to()==Url::toRoute(['site/mails'])){echo ' class="active"';} ?>>
+							<a href="<?php echo Url::toRoute(['site/mails']); ?>">
 							<i class="icon-list"></i>
 							Реквизиты почты</a>
 						</li>
-						<li<?php if(Url::to()==Url::Toroute(['source'])){echo ' class="active"';} ?>>
-							<a href="<?php echo Url::Toroute(['source']); ?>">
+						<li<?php if(Url::to()==Url::toRoute(['site/source'])){echo ' class="active"';} ?>>
+							<a href="<?php echo Url::toRoute(['site/source']); ?>">
 							<i class="icon-list"></i>
 							Источники</a>
 						</li>
-						<li<?php if(Url::to()==Url::Toroute(['sip'])){echo ' class="active"';} ?>>
-							<a href="<?php echo Url::Toroute(['sip']); ?>">
+						<li<?php if(Url::to()==Url::toRoute(['site/sip'])){echo ' class="active"';} ?>>
+							<a href="<?php echo Url::toRoute(['site/sip']); ?>">
 							<i class="icon-list"></i>
 							Сипы</a>
 						</li>
@@ -380,11 +380,11 @@ if($this->params['breadcrumbs'][0]!='Login'){
 <script>
 var phoneid=[];
 function chekcalls(){
-$.get( "<?php echo Url::Toroute(['getlastcalls']); ?>", function( data ) {
+$.get( "<?php echo Url::toRoute(['site/getlastcalls']); ?>", function( data ) {
 	$.each( data, function( k ) {
 	//alert(jQuery.inArray( data[k].tel_from, phoneid));
 		if(data[k].type==0 && jQuery.inArray( data[k].tel_from, phoneid )=='-1'){
-		toastr.info('<a href="<?php echo Url::Toroute(['users','add'=>'true','from'=>'']); ?>'+data[k].tel_from+'">Звонок от - '+data[k].tel_from+'</a>');
+		toastr.info('<a href="<?php echo Url::toRoute(['site/users','add'=>'true','from'=>'']); ?>'+data[k].tel_from+'">Звонок от - '+data[k].tel_from+'</a>');
 		phoneid.push(data[k].tel_from);
 		}
 	});
@@ -395,7 +395,7 @@ jQuery(document).ready(function() {
 
 $( ".NewClientBtn" ).click(function() {
 
-$.get( "<?php echo Url::Toroute(['getlastcalls']); ?>", function( data ) {
+$.get( "<?php echo Url::toRoute(['site/getlastcalls']); ?>", function( data ) {
 var thisStr='';
 	$.each( data, function( k ) {
 		if(data[k].type==0){
@@ -415,9 +415,9 @@ $( ".btnAddNewTotel" ).click(function() {
 	$('#NewClientTel').val(thisTel);
   $( ".NewClientBtn" ).trigger( "click" );
 
-$.get( "<?php echo Url::Toroute(['userinfo', 'tel'=>'']); ?>"+thisTel, function( data ) {
+$.get( "<?php echo Url::toRoute(['site/userinfo', 'tel'=>'']); ?>"+thisTel, function( data ) {
 if(data.id){
-	$("#NewClientForm").attr('action','<?php echo Url::Toroute(['users', 'eid'=>'']); ?>'+data.id);
+	$("#NewClientForm").attr('action','<?php echo Url::toRoute(['site/users', 'eid'=>'']); ?>'+data.id);
     $('#NewClientName').val(data.name);
     $('#NewClientEmail').val(data.email);
     $('#NewClientText').val(data.text);
