@@ -9,7 +9,7 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use yii\helpers\Url;
-use yii\helpers\Array2xml;
+use app\helpers\Array2xml;
 use yii\web\UploadedFile;
 
 // Модельки
