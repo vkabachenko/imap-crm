@@ -3,107 +3,50 @@
 namespace app\models;
 
 use Yii;
-use yii\base\Model;
-use yii\helpers\Url;
-use yii\db\ActiveRecord;
-use yii\db\Command;
-use yii\data\Pagination;
 
-
-class Mails extends Model
+/**
+ * This is the model class for table "mails".
+ *
+ * @property integer $id
+ * @property string $name
+ * @property string $server
+ * @property string $login
+ * @property string $pwd
+ * @property string $comment
+ */
+class Mails extends \yii\db\ActiveRecord
 {
-
-    // Название таблицы
-	public static function tableName()
-	{
-	    return 'mails';
-	}
-
-    // Название страницы
-	public static function pageName()
-	{
-	    return 'mails';
-	}
-
-	// Записей на странице
-	public static function PL()
-	{
-	    return 10;
-	}
-
-    // Удаление записей
-    public function Del()
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
     {
-
-		$connection = Yii::$app->db;
-		$connection->createCommand()->delete($this->tableName(), [
-		    'id' => Yii::$app->request->get('did')
-		])->execute();
-		Yii::$app->response->redirect(Url::to([$this->pageName()]), 301)->send();
-
+        return 'mails';
     }
 
-	// Обновление записей
-    public function Up()
+    /**
+     * @inheritdoc
+     */
+    public function rules()
     {
-
-		$connection = Yii::$app->db;
-		$connection->createCommand()->update($this->tableName(), [
-		    'name' => Yii::$app->request->post('name'),
-		    'server' => Yii::$app->request->post('server'),
-		    'login' => Yii::$app->request->post('login'),
-		    'pwd' => Yii::$app->request->post('pwd')
-		], 'id='.Yii::$app->request->get('eid'))->execute();
-
-		Yii::$app->response->redirect(Url::to([$this->pageName()]), 301)->send();
-
-    }
-    // Добавление записей
-    public function Add()
-    {
-
-		$connection = Yii::$app->db;
-		$connection->createCommand()->insert($this->tableName(), [
-		    'name' => Yii::$app->request->post('name'),
-		    'server' => Yii::$app->request->post('server'),
-		    'login' => Yii::$app->request->post('login'),
-		    'pwd' => Yii::$app->request->post('pwd')
-		])->execute();
-
-		Yii::$app->response->redirect(Url::to([$this->pageName()]), 301)->send();
-
-
-    }
-    // Получение записей
-    public function GetRows()
-    {
-		$count = (new \yii\db\Query())
-		    ->select(['id'])
-		    ->from($this->tableName())
-		    ->all();
-
-		$pages = new Pagination(['totalCount' => sizeof($count), 'pageSize' => $this->PL()]);
-
-		$rows = (new \yii\db\Query())
-		    ->select(['*'])
-		    ->from($this->tableName())
-		    ->offset($pages->offset)
-		    ->limit($pages->limit)
-		    ->all();
-        return array('rows'=>$rows,'p'=>$pages);
+        return [
+            [['name', 'server', 'login', 'pwd'], 'required'],
+            [['name', 'server', 'login', 'pwd', 'comment'], 'string', 'max' => 255],
+        ];
     }
 
-    // Получение записи
-    public function GetRow()
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
     {
-		$rows = (new \yii\db\Query())
-		    ->select(['*'])
-		    ->from($this->tableName())
-		    ->where('id='.Yii::$app->request->get('eid'))
-		    ->limit(1)
-		    ->all();
-
-        return $rows[0];
+        return [
+            'id' => 'ID',
+            'name' => 'Название',
+            'server' => 'Server',
+            'login' => 'Login',
+            'pwd' => 'Pwd',
+            'comment' => 'Комментарий',
+        ];
     }
-
 }
