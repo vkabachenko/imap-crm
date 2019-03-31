@@ -49,4 +49,12 @@ class Mails extends \yii\db\ActiveRecord
             'comment' => 'Комментарий',
         ];
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMailboxUser()
+    {
+        return $this->hasMany(MailboxUser::className(), ['mailbox_id' => 'id']);
+    }
 }

@@ -27,7 +27,11 @@ class MailController extends Controller
 
     public function actionIndex()
     {
-        $query = Mails::find()->orderBy('name');
+        $query = Mails::find()
+            ->joinWith('mailboxUser', false, 'INNER JOIN')
+            ->where(['mailbox_user.user_id' => \Yii::$app->user->id])
+            ->orderBy('name');
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => false
