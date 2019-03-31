@@ -57,4 +57,12 @@ class Mails extends \yii\db\ActiveRecord
     {
         return $this->hasMany(MailboxUser::className(), ['mailbox_id' => 'id']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEMails()
+    {
+        return $this->hasMany(EMails::className(), ['mailbox_id' => 'id']);
+    }
 }
