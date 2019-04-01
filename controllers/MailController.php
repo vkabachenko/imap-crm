@@ -11,6 +11,15 @@ use yii\filters\AccessControl;
 
 class MailController extends Controller
 {
+    /* @var LastEmailsService */
+    private $lastEmailsService;
+
+    public function __construct($id, $module, LastEmailsService $lastEmailsService, $config = [])
+    {
+        $this->lastEmailsService = $lastEmailsService;
+        parent::__construct($id, $module, $config = []);
+    }
+
     public function behaviors()
     {
         return [
@@ -39,8 +48,7 @@ class MailController extends Controller
             'pagination' => false
         ]);
 
-        $service = new LastEmailsService();
-        $counts = $service->getCountLastEmails();
+        $counts = $this->lastEmailsService->getCountLastEmails();
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
@@ -48,12 +56,18 @@ class MailController extends Controller
         ]);
     }
 
-    /* @todo */
     public function actionMailbox($mailboxId)
     {
+        $mailbox = Mails::findOne($mailboxId);
+
+        $query = $this->lastEmailsService->getLastEmailsQuery($mailboxId);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
 
         return $this->render('mailbox', [
-            'mailboxId' => $mailboxId
+            'mailbox' => $mailbox,
+            'dataProvider' => $dataProvider,
         ]);
     }
 

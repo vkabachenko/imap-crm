@@ -17,7 +17,7 @@ class LastEmailsService
         $this->from = date('Y-m-d H:i:s', strtotime('today'));
     }
 
-    public function getLastEmails($mailBoxId = null)
+    public function getLastEmailsQuery($mailBoxId = null)
     {
         $query = Emails::find()
             ->where(['>', 'created_at', $this->from])
@@ -25,7 +25,7 @@ class LastEmailsService
         if(!is_null($mailBoxId)) {
             $query->andWhere(['mailbox_id' => $mailBoxId]);
         }
-        return $query->all();
+        return $query;
     }
 
     public function getCountLastEmails($mailBoxId = null)

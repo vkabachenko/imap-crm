@@ -1,6 +1,21 @@
 <?php
 
-$this->title = 'Mailbox content';
+/**
+ * @var $dataProvider \yii\data\ActiveDataProvider
+ * @var $mailbox \app\models\Mails
+ */
+
+$this->title = 'Почтовый ящик ' . $mailbox->name;
+
+use yii\grid\GridView;
 ?>
 
-<h1>Under construction</h1>
+<?= GridView::widget([
+    'dataProvider' => $dataProvider,
+    'summary' => '',
+    'columns' => [
+        'created_at',
+        'comment'
+    ],
+]); ?>
+
