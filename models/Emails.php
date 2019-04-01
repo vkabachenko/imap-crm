@@ -14,6 +14,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string $created_at
  * @property string $updated_at
  * @property string $comment
+ * @property integer $status_id
  *
  * @property Mails $mailbox
  */
@@ -47,7 +48,7 @@ class Emails extends \yii\db\ActiveRecord
     {
         return [
             [['mailbox_id'], 'required'],
-            [['mailbox_id'], 'integer'],
+            [['mailbox_id', 'status_id'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['comment'], 'string', 'max' => 255],
             [['mailbox_id'], 'exist', 'skipOnError' => true, 'targetClass' => Mails::className(), 'targetAttribute' => ['mailbox_id' => 'id']],
@@ -65,6 +66,7 @@ class Emails extends \yii\db\ActiveRecord
             'created_at' => 'В системе',
             'updated_at' => 'Updated At',
             'comment' => 'Комментарий',
+            'status_id' => 'Статус'
         ];
     }
 
@@ -74,5 +76,13 @@ class Emails extends \yii\db\ActiveRecord
     public function getMailbox()
     {
         return $this->hasOne(Mails::className(), ['id' => 'mailbox_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEmailStatus()
+    {
+        return $this->hasOne(EmailStatus::className(), ['id' => 'status_id']);
     }
 }

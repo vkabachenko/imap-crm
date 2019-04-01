@@ -20,6 +20,7 @@ class LastEmailsService
     public function getLastEmailsQuery($mailBoxId = null)
     {
         $query = Emails::find()
+            ->with(['emailStatus'])
             ->where(['>', 'created_at', $this->from])
             ->orderBy(['mailbox_id' => SORT_ASC, 'created_at' => SORT_DESC]);
         if(!is_null($mailBoxId)) {

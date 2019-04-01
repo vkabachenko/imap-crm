@@ -8,6 +8,8 @@
 $this->title = 'Почтовый ящик ' . $mailbox->name;
 
 use yii\grid\GridView;
+use yii\helpers\Html;
+
 ?>
 
 <?= GridView::widget([
@@ -15,6 +17,14 @@ use yii\grid\GridView;
     'summary' => '',
     'columns' => [
         'created_at',
+        [
+            'attribute' => 'status_id',
+            'value' => function ($model) {
+                /* @var $model \app\models\EMails */
+                $status = $model->status_id ? $model->emailStatus->status : null;
+                return $status;
+            }
+        ],
         'comment'
     ],
 ]); ?>
