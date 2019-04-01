@@ -6,6 +6,7 @@ use yii\helpers\Html;
 
 /**
  * @var $dataProvider \yii\data\ActiveDataProvider
+ * @var $counts array
  */
 
 $this->title = 'Почтовые ящики';
@@ -27,8 +28,9 @@ $this->title = 'Почтовые ящики';
             [
                 'header' => 'Новых писем',
                 'format' => 'raw',
-                'value' => function ($model) {
-                    $html = Html::a('10 <i class="fa fa-refresh"></i>',
+                'value' => function ($model) use ($counts) {
+                    $count = isset($counts[$model->id]) ? $counts[$model->id] : 0;
+                    $html = Html::a($count . ' <i class="fa fa-refresh"></i>',
                         '#',
                         ['class' => 'btn btn-primary mailbox-new-letters',
                          'data-mailboxId' => $model->id
