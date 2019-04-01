@@ -25,6 +25,24 @@ use yii\helpers\Html;
                 return $status;
             }
         ],
+        [
+            'attribute' => 'is_read',
+            'format' => 'raw',
+            'value' => function ($model) {
+                /* @var $model \app\models\EMails */
+                $check = $model->is_read
+                    ? '<i class="fa fa-check"></i>' : '';
+                return $check;
+            }
+        ],
+        [
+            'attribute' => 'manager_id',
+            'value' => function ($model) {
+                /* @var $model \app\models\EMails */
+                $manager = $model->manager_id ? $model->manager->name : null;
+                return $manager;
+            }
+        ],
         'comment'
     ],
 ]); ?>

@@ -15,6 +15,9 @@ use yii\behaviors\TimestampBehavior;
  * @property string $updated_at
  * @property string $comment
  * @property integer $status_id
+ * @property integer $is_read
+ * @property integer $is_in_work
+ * @property integer $manager_id
  *
  * @property Mails $mailbox
  */
@@ -48,7 +51,8 @@ class Emails extends \yii\db\ActiveRecord
     {
         return [
             [['mailbox_id'], 'required'],
-            [['mailbox_id', 'status_id'], 'integer'],
+            [['mailbox_id', 'status_id', 'manager_id'], 'integer'],
+            [['is_read', 'is_in_work'], 'boolean'],
             [['created_at', 'updated_at'], 'safe'],
             [['comment'], 'string', 'max' => 255],
             [['mailbox_id'], 'exist', 'skipOnError' => true, 'targetClass' => Mails::className(), 'targetAttribute' => ['mailbox_id' => 'id']],
@@ -66,7 +70,10 @@ class Emails extends \yii\db\ActiveRecord
             'created_at' => 'В системе',
             'updated_at' => 'Updated At',
             'comment' => 'Комментарий',
-            'status_id' => 'Статус'
+            'status_id' => 'Статус',
+            'manager_id' => 'Менеджер',
+            'is_read' => 'Прочтено',
+            'is_in_work' => 'В работе'
         ];
     }
 
@@ -84,5 +91,13 @@ class Emails extends \yii\db\ActiveRecord
     public function getEmailStatus()
     {
         return $this->hasOne(EmailStatus::className(), ['id' => 'status_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getManager()
+    {
+        return $this->hasOne(EmployeesAR::className(), ['id' => 'manager_id']);
     }
 }
