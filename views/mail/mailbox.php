@@ -17,6 +17,10 @@ use yii\helpers\Html;
     'summary' => '',
     'columns' => [
         'created_at',
+        'imap_date',
+        'imap_from',
+        'imap_to',
+        'imap_subject',
         [
             'attribute' => 'status_id',
             'value' => function ($model) {

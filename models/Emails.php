@@ -18,6 +18,12 @@ use yii\behaviors\TimestampBehavior;
  * @property integer $is_read
  * @property integer $is_in_work
  * @property integer $manager_id
+ * @property string imap_raw_content
+ * @property string imap_id
+ * @property string imap_date
+ * @property string imap_from
+ * @property string imap_to
+ * @property string imap_subject
  *
  * @property Mails $mailbox
  */
@@ -52,6 +58,7 @@ class Emails extends \yii\db\ActiveRecord
         return [
             [['mailbox_id'], 'required'],
             [['mailbox_id', 'status_id', 'manager_id'], 'integer'],
+            [['imap_raw_content', 'imap_id', 'imap_date', 'imap_from', 'imap_to', 'imap_subject'], 'string'],
             [['is_read', 'is_in_work'], 'boolean'],
             [['created_at', 'updated_at'], 'safe'],
             [['comment'], 'string', 'max' => 255],
@@ -73,7 +80,13 @@ class Emails extends \yii\db\ActiveRecord
             'status_id' => 'Статус',
             'manager_id' => 'Менеджер',
             'is_read' => 'Прочтено',
-            'is_in_work' => 'В работе'
+            'is_in_work' => 'В работе',
+            'imap_raw_content' => 'imap_raw_content',
+            'imap_id' => 'imap_id',
+            'imap_date' => 'Дата письма',
+            'imap_from' => 'Oт кого',
+            'imap_to' => 'Кому',
+            'imap_subject' => 'Тема',
         ];
     }
 

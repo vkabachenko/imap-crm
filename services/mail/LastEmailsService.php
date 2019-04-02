@@ -22,7 +22,7 @@ class LastEmailsService
         $query = Emails::find()
             ->with(['emailStatus', 'manager'])
             ->where(['>', 'created_at', $this->from])
-            ->orderBy(['mailbox_id' => SORT_ASC, 'created_at' => SORT_DESC]);
+            ->orderBy(['mailbox_id' => SORT_ASC, 'created_at' => SORT_DESC, 'imap_date' => SORT_DESC]);
         if(!is_null($mailBoxId)) {
             $query->andWhere(['mailbox_id' => $mailBoxId]);
         }

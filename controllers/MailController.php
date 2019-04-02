@@ -2,7 +2,9 @@
 
 namespace app\controllers;
 
+use app\models\Emails;
 use app\models\Mails;
+use app\services\mail\ImapService;
 use app\services\mail\LastEmailsService;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -58,6 +60,12 @@ class MailController extends Controller
 
     public function actionMailbox($mailboxId)
     {
+        $service = new ImapService($mailboxId);
+        $emails = $service->getEmails('01-May-2018');
+        foreach ($emails as $mail) {
+            $service->saveEmail($mail);
+        }
+
         $mailbox = Mails::findOne($mailboxId);
 
         $query = $this->lastEmailsService->getLastEmailsQuery($mailboxId);
