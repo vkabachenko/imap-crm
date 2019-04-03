@@ -16,7 +16,6 @@ use yii\helpers\Html;
     'dataProvider' => $dataProvider,
     'summary' => '',
     'columns' => [
-        'created_at',
         'imap_date',
         'imap_from',
         'imap_to',

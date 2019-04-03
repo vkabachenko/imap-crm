@@ -56,8 +56,8 @@ class ImapService
             'imap_id' => strval($mail->id),
             'imap_date' => strval($mail->date),
             'imap_from' => strval($mail->fromAddress),
-            'imap_to' => strval($mail->toString),
-            'imap_subject' => strval($mail->subject)
+            'imap_to' => mb_substr(strval($mail->toString), 0, 254, 'UTF-8'),
+            'imap_subject' => mb_substr(strval($mail->subject), 0, 254, 'UTF-8')
         ]);
 
         $model->save();

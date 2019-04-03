@@ -60,12 +60,6 @@ class MailController extends Controller
 
     public function actionMailbox($mailboxId)
     {
-        $service = new ImapService($mailboxId);
-        $emails = $service->getEmails('01-May-2018');
-        foreach ($emails as $mail) {
-            $service->saveEmail($mail);
-        }
-
         $mailbox = Mails::findOne($mailboxId);
 
         $query = $this->lastEmailsService->getLastEmailsQuery($mailboxId);
