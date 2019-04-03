@@ -39,7 +39,7 @@ class AppAsset extends AssetBundle
 ['http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css', 'type' => 'text/css'],
     ];
     public $js = [
-'assets/global/plugins/jquery.min.js',
+//'assets/global/plugins/jquery.min.js',
 'assets/global/plugins/jquery-migrate.min.js',
 'assets/global/plugins/jquery-ui/jquery-ui.min.js',
 'assets/global/plugins/bootstrap/js/bootstrap.min.js',

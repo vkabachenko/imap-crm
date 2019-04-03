@@ -2,9 +2,8 @@
 
 namespace app\controllers;
 
-use app\models\Emails;
+use app\models\EmailsSearch;
 use app\models\Mails;
-use app\services\mail\ImapService;
 use app\services\mail\LastEmailsService;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -62,14 +61,13 @@ class MailController extends Controller
     {
         $mailbox = Mails::findOne($mailboxId);
 
-        $query = $this->lastEmailsService->getLastEmailsQuery($mailboxId);
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
+        $searchModel = new EmailsSearch(['mailbox_id' => $mailboxId]);
+        $dataProvider = $searchModel->search(\Yii::$app->request->queryParams);
 
         return $this->render('mailbox', [
             'mailbox' => $mailbox,
             'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel
         ]);
     }
 

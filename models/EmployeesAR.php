@@ -73,4 +73,17 @@ class EmployeesAR extends \yii\db\ActiveRecord
     {
         return $this->hasMany(MailboxUser::className(), ['user_id' => 'id']);
     }
+
+    /**
+     * return array
+     */
+    public static function usersAsMap()
+    {
+        $list = self::find()
+            ->select(['name', 'id'])
+            ->orderBy('name')
+            ->indexBy('id')
+            ->column();
+        return $list;
+    }
 }
