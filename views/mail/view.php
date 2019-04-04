@@ -49,7 +49,7 @@ use yii\helpers\Url;
     </div>
     <div class="form-group col-md-4">
         <?= Html::a('Ответить',
-            Url::to(['mail/reply', 'mailboxId' => $mail->mailbox_id]),
+            Url::to(['mail/reply', 'id' => $mail->id]),
             ['class' => 'btn btn-primary']
         ) ?>
     </div>

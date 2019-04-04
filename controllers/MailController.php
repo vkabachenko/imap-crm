@@ -10,6 +10,7 @@ use yii\data\ActiveDataProvider;
 use yii\helpers\Json;
 use yii\web\Controller;
 use yii\filters\AccessControl;
+use app\services\mail\ImapService;
 
 
 class MailController extends Controller
@@ -95,5 +96,20 @@ class MailController extends Controller
                 'content' => $content
             ]);
         }
+    }
+
+    public function actionReply($id)
+    {
+        return $this->render('reply');
+    }
+
+    public function actionGetRecent($mailboxId)
+    {
+        $imapService = new ImapService($mailboxId);
+        $imapService->fetchRecentEmails();
+
+        $result = $this->lastEmailsService->getCountLastEmails($mailboxId);
+
+        return isset($result[$mailboxId]) ? strval($result[$mailboxId]) : '0';
     }
 }

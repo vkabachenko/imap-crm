@@ -31,7 +31,7 @@ class ImapService
     {
         $mailsIds = $this->mailEngine->searchMailbox('SINCE ' . $sinceDate);
         if(!$mailsIds) {
-            return null;
+            return [];
         }
         $mailsIds = array_filter($mailsIds, [$this, 'isNotSaved']);
 
@@ -61,5 +61,18 @@ class ImapService
         ]);
 
         $model->save();
+    }
+
+    public function fetchRecentEmails()
+    {
+        $maxReceiveDate = Emails::find()->where(['mailbox_id' => $this->mailBoxId])->max('created_at');
+        $unixDate = strtotime($maxReceiveDate);
+        $sinceDate = date('d-M-Y', $unixDate);
+
+        $emails = $this->getEmails($sinceDate);
+        foreach ($emails as $email) {
+            $this->saveEmail($email);
+        }
+
     }
 }

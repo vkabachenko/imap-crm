@@ -17,18 +17,6 @@ class LastEmailsService
         $this->from = date('Y-m-d H:i:s', strtotime('today'));
     }
 
-    public function getLastEmailsQuery($mailBoxId = null)
-    {
-        $query = Emails::find()
-            ->with(['emailStatus', 'manager'])
-            ->where(['>', 'created_at', $this->from])
-            ->orderBy(['mailbox_id' => SORT_ASC, 'imap_date' => SORT_DESC]);
-        if(!is_null($mailBoxId)) {
-            $query->andWhere(['mailbox_id' => $mailBoxId]);
-        }
-        return $query;
-    }
-
     public function getCountLastEmails($mailBoxId = null)
     {
         $query = Emails::find()
