@@ -11,6 +11,7 @@ $this->title = 'Почтовый ящик ' . $mailbox->name;
 use yii\grid\GridView;
 use app\models\EmailStatus;
 use app\models\EmployeesAR;
+use yii\helpers\Html;
 
 ?>
 
@@ -19,6 +20,21 @@ use app\models\EmployeesAR;
     'filterModel' => $searchModel,
     'summary' => '',
     'columns' => [
+        [
+            'class' => 'yii\grid\ActionColumn',
+            'template' => '{view}',
+            'buttons' => [
+                'view' => function ($url, $model, $key) {
+                    return Html::a('<span class="fa
+                        fa-envelope-o"></span>',
+                        ['view', 'id' => $model->id],
+                        [
+                            'data-toggle' => 'tooltip',
+                            'title' => 'Чтение почты',
+                        ]);
+                },
+            ],
+        ],
         'imap_date',
         'imap_from',
         'imap_to',
