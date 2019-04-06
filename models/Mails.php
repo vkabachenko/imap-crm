@@ -16,6 +16,9 @@ use Yii;
  */
 class Mails extends \yii\db\ActiveRecord
 {
+    /* @var array */
+    public $users = [];
+
     /**
      * @inheritdoc
      */
@@ -32,6 +35,7 @@ class Mails extends \yii\db\ActiveRecord
         return [
             [['name', 'server', 'login', 'pwd'], 'required'],
             [['name', 'server', 'login', 'pwd', 'comment'], 'string', 'max' => 255],
+            [['users'], 'safe'],
         ];
     }
 
@@ -43,10 +47,11 @@ class Mails extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Название',
-            'server' => 'Server',
-            'login' => 'Login',
-            'pwd' => 'Pwd',
+            'server' => 'Imap сервер',
+            'login' => 'E-mail',
+            'pwd' => 'Пароль',
             'comment' => 'Комментарий',
+            'users' => 'Доступ сотрудникам'
         ];
     }
 
@@ -64,5 +69,35 @@ class Mails extends \yii\db\ActiveRecord
     public function getEMails()
     {
         return $this->hasMany(EMails::className(), ['mailbox_id' => 'id']);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterFind()
+    {
+        parent::afterFind();
+        $this->users = EmployeesAR::find()
+            ->select(['employees.id'])
+            ->joinWith('mailboxUsers', false)
+            ->where(['mailbox_user.mailbox_id' => $this->id])
+            ->andWhere(['is_admin' => false])
+            ->column();
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        $this->users = empty($this->users) ? [] : $this->users;
+        $users = array_merge($this->users, EmployeesAR::adminIds());
+        MailboxUser::deleteAll(['mailbox_id' => $this->id]);
+        foreach ($users as $userId) {
+            $model = new MailboxUser([
+                'user_id' => $userId,
+                'mailbox_id' => $this->id
+            ]);
+            $model->save();
+        }
     }
 }

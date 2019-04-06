@@ -15,6 +15,7 @@ use Yii;
  * @property integer $date
  * @property string $pwd
  * @property string $guid
+ * @property boolean $is_admin
  *
  * @property Emails[] $emails
  * @property MailboxUser[] $mailboxUsers
@@ -38,6 +39,7 @@ class EmployeesAR extends \yii\db\ActiveRecord
             [['name', 'tel', 'email', 'rule', 'date', 'pwd', 'guid'], 'required'],
             [['date'], 'integer'],
             [['name', 'tel', 'email', 'rule', 'pwd', 'guid'], 'string', 'max' => 255],
+            [['is_admin'], 'boolean']
         ];
     }
 
@@ -55,6 +57,7 @@ class EmployeesAR extends \yii\db\ActiveRecord
             'date' => 'Date',
             'pwd' => 'Pwd',
             'guid' => 'Guid',
+            'is_admin' => 'Администратор'
         ];
     }
 
@@ -85,5 +88,27 @@ class EmployeesAR extends \yii\db\ActiveRecord
             ->indexBy('id')
             ->column();
         return $list;
+    }
+
+    /**
+     * return array
+     */
+    public static function notAdminsAsMap()
+    {
+        $list = self::find()
+            ->select(['name', 'id'])
+            ->where(['is_admin' => false])
+            ->orderBy('name')
+            ->indexBy('id')
+            ->column();
+        return $list;
+    }
+
+    public static function adminIds()
+    {
+        return self::find()
+            ->select(['id'])
+            ->where(['is_admin' => true])
+            ->column();
     }
 }

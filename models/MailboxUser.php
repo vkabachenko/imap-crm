@@ -2,7 +2,6 @@
 
 namespace app\models;
 
-use common\models\Project;
 use Yii;
 
 /**
@@ -34,7 +33,7 @@ class MailboxUser extends \yii\db\ActiveRecord
             [['mailbox_id', 'user_id'], 'required'],
             [['mailbox_id', 'user_id'], 'integer'],
             [['mailbox_id'], 'exist', 'skipOnError' => true, 'targetClass' => Mails::className(), 'targetAttribute' => ['mailbox_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Employees::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => EmployeesAR::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -63,7 +62,7 @@ class MailboxUser extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(Employees::className(), ['id' => 'user_id']);
+        return $this->hasOne(EmployeesAR::className(), ['id' => 'user_id']);
     }
 
 }

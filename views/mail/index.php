@@ -13,6 +13,11 @@ use yii\helpers\Url;
 $this->title = 'Почтовые ящики';
 ?>
 <div>
+    <?php if(\Yii::$app->user->identity->is_admin): ?>
+        <div style="margin-bottom: 10px;">
+            <?= Html::a('Создать', ['mail/create'], ['class' => 'btn btn-success']); ?>
+        </div>
+    <?php endif; ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -41,7 +46,22 @@ $this->title = 'Почтовые ящики';
                     return $html;
                 },
             ],
-            'comment'
+            'comment',
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{update}',
+                'buttons' => [
+                    'update' => function ($url, $model, $key) {
+                        return Html::a('<span class="fa
+                        fa-edit"></span>',
+                            ['update', 'mailboxId' => $model->id],
+                            [
+                                'data-toggle' => 'tooltip',
+                                'title' => 'Редактировать',
+                            ]);
+                    },
+                ],
+            ],
         ],
     ]); ?>
 </div>
