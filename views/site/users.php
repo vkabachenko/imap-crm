@@ -12,7 +12,7 @@ $thisDbTable='users';
 $thisPagelmit=20;
 $this->title = 'Клиенты';
 $thisRule = explode(",",Yii::$app->user->identity->rule);
-if(Yii::$app->user->id==1 or in_array(3.1,$thisRule)){
+if(Yii::$app->user->identity->is_admin){
 $this->params['titleBut'] = '<a href="'.Url::toRoute([$thisPageId, 'add' => 'true']).'" class="btn btn-xs green">Добавить <i class="fa fa-plus"></i></a>';
 }
 
@@ -126,8 +126,8 @@ $rows=$GetRows['rows'];
   <table class="table table-bordered" id="sample_6">
 <thead>
 <tr>
-<th><a href="<?php $sort2='DESC';  if(Yii::$app->request->get('sort')=='id' and Yii::$app->request->get('sort2')=='DESC'){$sort2='ASC';} Echo Url::Toroute([$thisPageId, 'sort' => 'id', 'sort2' => $sort2]); ?>">#</a></th>
-<th><a href="<?php $sort2='DESC';  if(Yii::$app->request->get('sort')=='name' and Yii::$app->request->get('sort2')=='DESC'){$sort2='ASC';} Echo Url::Toroute([$thisPageId, 'sort' => 'name', 'sort2' => $sort2]); ?>">Имя</a></th>
+<th><a href="<?php $sort2='DESC';  if(Yii::$app->request->get('sort')=='id' and Yii::$app->request->get('sort2')=='DESC'){$sort2='ASC';} Echo Url::toRoute([$thisPageId, 'sort' => 'id', 'sort2' => $sort2]); ?>">#</a></th>
+<th><a href="<?php $sort2='DESC';  if(Yii::$app->request->get('sort')=='name' and Yii::$app->request->get('sort2')=='DESC'){$sort2='ASC';} Echo Url::toRoute([$thisPageId, 'sort' => 'name', 'sort2' => $sort2]); ?>">Имя</a></th>
 <th>Телефон</th>
 <th>Email</th>
 <th>Карточка клиента</th>
@@ -175,8 +175,8 @@ foreach ($rows as $value) {
 							</div>
 </td>
 <td>
-<?php  if(Yii::$app->user->id==1 or in_array(3.2,$thisRule)){  ?><a href="<?php Echo Url::Toroute([$thisPageId, 'eid' => $value['id']]); ?>" class="btn default btn-xs purple"><i class="fa fa-edit"></i> Редактировать</a><?php } ?>
-<?php  if(Yii::$app->user->id==1 or in_array(3.3,$thisRule)){  ?><a href="<?php Echo Url::Toroute([$thisPageId, 'did' => $value['id']]); ?>" class="btn default btn-xs black"><i class="fa fa-trash-o"></i> Удалить</a><?php } ?>
+<?php  if(Yii::$app->user->identity->is_admin){  ?><a href="<?php Echo Url::toRoute([$thisPageId, 'eid' => $value['id']]); ?>" class="btn default btn-xs purple"><i class="fa fa-edit"></i> Редактировать</a><?php } ?>
+<?php  if(Yii::$app->user->identity->is_admin){  ?><a href="<?php Echo Url::toRoute([$thisPageId, 'did' => $value['id']]); ?>" class="btn default btn-xs black"><i class="fa fa-trash-o"></i> Удалить</a><?php } ?>
 </td>
 </tr>
 
@@ -206,7 +206,7 @@ function timeConverter(UNIX_timestamp){
 }
 $( ".updateModal" ).click(function(  ) {
 var thisId = $(this).attr("v");
-$.get( "'.Url::Toroute(['gethistory']).'?uid="+thisId, function( data ) {
+$.get( "'.Url::toRoute(['gethistory']).'?uid="+thisId, function( data ) {
 
 var thisStr= " <table class=\"table table-bordered\"><thead><tr><th>#</th><th>Действие</th><th>Дата</th><th>Содержание</th></tr></thead><tbody>";
 var thisStatus="";var thisDate="";
@@ -228,7 +228,7 @@ $( ".FormsendPost" ).submit(function(  ) {
 var thisVal = $(this).find(".sendPost").val();
 var thisId = $(this).attr("v");
 $(this).find(".sendPost").val("");
-$.get( "'.Url::Toroute(['gethistory']).'?uid="+thisId+"&newpost="+thisVal, function( data ) {
+$.get( "'.Url::toRoute(['gethistory']).'?uid="+thisId+"&newpost="+thisVal, function( data ) {
 
 var thisStr= " <table class=\"table table-bordered\"><thead><tr><th>#</th><th>Действие</th><th>Дата</th><th>Содержание</th></tr></thead><tbody>";
 var thisStatus="";var thisDate="";

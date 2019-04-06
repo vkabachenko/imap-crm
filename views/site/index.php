@@ -35,7 +35,6 @@ $thisRule = explode(",",Yii::$app->user->identity->rule);
 
 ?>
 
-<?php  if(Yii::$app->user->id==1 or in_array(1.2,$thisRule)){  ?>
 			<div class="portlet light">
 				<div class="portlet-body">
 					<div class="row">
@@ -156,5 +155,4 @@ echo LinkPager::widget([
 ?>
 
 			</div></div></div></div>
-<?php } ?>
 

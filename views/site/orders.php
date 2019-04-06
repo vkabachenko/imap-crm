@@ -12,7 +12,7 @@ $thisDbTable='orders';
 $thisPagelmit=20;
 $this->title = 'Заказы';
 $thisRule = explode(",",Yii::$app->user->identity->rule);
-if(Yii::$app->user->id==1 or in_array(2.1,$thisRule)){
+if(Yii::$app->user->identity->is_admin){
 $this->params['titleBut'] = '<a href="'.Url::toRoute([$thisPageId, 'add' => 'true']).'" class="btn btn-xs green">Добавить <i class="fa fa-plus"></i></a>';
 }
 
@@ -213,7 +213,7 @@ $NextStatus = $model->NextStatus($value['status']);
 
 if($NextStatus[0]['name']){
 ?>
-<a href="<?php Echo Url::Toroute([$thisPageId, 'status' => $NextStatus[0]['id'], 'id' => $value['id'], 'page' => Yii::$app->request->get('page')]); ?>" class="btn default btn-xs red"><?php echo $NextStatus[0]['name']; ?></a>
+<a href="<?php Echo Url::toRoute([$thisPageId, 'status' => $NextStatus[0]['id'], 'id' => $value['id'], 'page' => Yii::$app->request->get('page')]); ?>" class="btn default btn-xs red"><?php echo $NextStatus[0]['name']; ?></a>
 <?php
    }
 ?>
@@ -252,8 +252,8 @@ if($NextStatus[0]['name']){
 
 </td>
 <td>
-<?php  if(Yii::$app->user->id==1 or in_array(2.2,$thisRule)){  ?><a href="<?php Echo Url::Toroute([$thisPageId, 'eid' => $value['id']]); ?>" class="btn default btn-xs purple"><i class="fa fa-edit"></i> </a><?php } ?>
-<?php  if(Yii::$app->user->id==1 or in_array(2.3,$thisRule)){  ?><a href="<?php Echo Url::Toroute([$thisPageId, 'did' => $value['id']]); ?>" class="btn default btn-xs black"><i class="fa fa-trash-o"></i> </a><?php } ?>
+<?php  if(Yii::$app->user->identity->is_admin){  ?><a href="<?php Echo Url::toRoute([$thisPageId, 'eid' => $value['id']]); ?>" class="btn default btn-xs purple"><i class="fa fa-edit"></i> </a><?php } ?>
+<?php  if(Yii::$app->user->identity->is_admin){  ?><a href="<?php Echo Url::toRoute([$thisPageId, 'did' => $value['id']]); ?>" class="btn default btn-xs black"><i class="fa fa-trash-o"></i> </a><?php } ?>
 </td>
 </tr>
 
@@ -272,7 +272,7 @@ echo LinkPager::widget([
 if(Yii::$app->request->get('eid')){
 $this->registerJs('
 var thisId = '.Yii::$app->request->get('eid').';
-$.get( "'.Url::Toroute(['gethistoryorder']).'?uid="+thisId, function( data ) {
+$.get( "'.Url::toRoute(['gethistoryorder']).'?uid="+thisId, function( data ) {
 
 var thisStr= " <table class=\"table table-bordered\"><thead><tr><th>Сотрудник</th><th>Действие</th><th>Дата</th><th>Содержание</th></tr></thead><tbody>";
 var thisStatus="";var thisDate="";
@@ -305,7 +305,7 @@ function timeConverter(UNIX_timestamp){
 }
 $( ".updateModal" ).click(function(  ) {
 var thisId = $(this).attr("v");
-$.get( "'.Url::Toroute(['gethistoryorder']).'?uid="+thisId, function( data ) {
+$.get( "'.Url::toRoute(['gethistoryorder']).'?uid="+thisId, function( data ) {
 
 var thisStr= " <table class=\"table table-bordered\"><thead><tr><th>Сотрудник</th><th>Действие</th><th>Дата</th><th>Содержание</th></tr></thead><tbody>";
 var thisStatus="";var thisDate="";
@@ -327,7 +327,7 @@ $( ".FormsendPost" ).submit(function(  ) {
 var thisVal = $(this).find(".sendPost").val();
 var thisId = $(this).attr("v");
 $(this).find(".sendPost").val("");
-$.get( "'.Url::Toroute(['gethistoryorder']).'?uid="+thisId+"&newpost="+thisVal, function( data ) {
+$.get( "'.Url::toRoute(['gethistoryorder']).'?uid="+thisId+"&newpost="+thisVal, function( data ) {
 
 var thisStr= " <table class=\"table table-bordered\"><thead><tr><th>Сотрудник</th><th>Действие</th><th>Дата</th><th>Содержание</th></tr></thead><tbody>";
 var thisStatus="";var thisDate="";

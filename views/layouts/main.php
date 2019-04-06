@@ -203,41 +203,35 @@ echo Html::dropDownList('order_brand',0,$arr, ['class' => 'form-control']) ;
 		<div class="page-sidebar navbar-collapse collapse">
 
 			<ul class="page-sidebar-menu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-<?php  if(Yii::$app->user->id==1 or in_array(1,$thisRule)){  ?>
 				<li class="<?php if(Url::to()==Url::toRoute(['site/index'])){echo 'active';} ?>">
 					<a href="<?php echo Url::toRoute(['site/index']); ?>">
 					<i class="icon-home"></i>
 					<span class="title">Рабочий стол</span>
 					</a>
 				</li>
-<?php } ?>
 
-<?php  if(Yii::$app->user->id==1 or in_array(4,$thisRule)){  ?>
 				<li class="<?php if(Url::to()==Url::toRoute(['mail/index'])){echo 'active';} ?>">
 					<a href="<?php echo Url::toRoute(['mail/index']); ?>">
 					<i class="icon-list"></i>
 					<span class="title">Почта</span>
 					</a>
 				</li>
-<?php } ?>
 
-<?php  if(Yii::$app->user->id==1 or in_array(2,$thisRule)){  ?>
 				<li class="<?php if(Url::to()==Url::toRoute(['site/orders'])){echo 'active';} ?>">
 					<a href="<?php echo Url::toRoute(['site/orders']); ?>">
 					<i class="icon-notebook"></i>
 					<span class="title">Заказы</span>
 					</a>
 				</li>
-<?php } ?>
-<?php  if(Yii::$app->user->id==1 or in_array(3,$thisRule)){  ?>
+
 				<li class="<?php if(Url::to()==Url::toRoute(['site/users'])){echo 'active';} ?>">
 					<a href="<?php echo Url::toRoute(['site/users']); ?>">
 					<i class="icon-users"></i>
 					<span class="title">Клиенты</span>
 					</a>
 				</li>
-<?php } ?>
-<?php  if(Yii::$app->user->id==1){  ?>
+
+<?php  if(Yii::$app->user->identity->is_admin){  ?>
 				<li class="<?php if(Url::to()==Url::toRoute(['site/employees'])){echo 'active';} ?>">
 					<a href="<?php echo Url::toRoute(['site/employees']); ?>">
 					<i class="icon-user"></i>
