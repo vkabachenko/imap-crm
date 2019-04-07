@@ -261,10 +261,10 @@ echo Html::dropDownList('order_brand',0,$arr, ['class' => 'form-control']) ;
 							<i class="icon-list"></i>
 							Бренды</a>
 						</li>
-						<li<?php if(Url::to()==Url::toRoute(['site/mails'])){echo ' class="active"';} ?>>
-							<a href="<?php echo Url::toRoute(['site/mails']); ?>">
+						<li<?php if(Url::to()==Url::toRoute(['mail-status/index'])){echo ' class="active"';} ?>>
+							<a href="<?php echo Url::toRoute(['mail-status/index']); ?>">
 							<i class="icon-list"></i>
-							Реквизиты почты</a>
+							Общие статусы писем</a>
 						</li>
 						<li<?php if(Url::to()==Url::toRoute(['site/source'])){echo ' class="active"';} ?>>
 							<a href="<?php echo Url::toRoute(['site/source']); ?>">
@@ -382,7 +382,7 @@ $.get( "<?php echo Url::toRoute(['site/getlastcalls']); ?>", function( data ) {
 		phoneid.push(data[k].tel_from);
 		}
 	});
-	setTimeout(chekcalls, 2000);
+	etTimeout(chekcalls, 2000);
 }, "json");
 	}
 jQuery(document).ready(function() {

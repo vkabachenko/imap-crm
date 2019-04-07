@@ -40,7 +40,7 @@ class EmailStatus extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'status' => 'Status',
+            'status' => 'Статус',
         ];
     }
 
