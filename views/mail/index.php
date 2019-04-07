@@ -19,16 +19,14 @@ $this->title = 'Почтовые ящики';
         </div>
     <?php endif; ?>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'summary' => '',
-        'columns' => [
+    <?php
+        $fieldColumns = [
             [
                 'attribute' => 'name',
                 'format' => 'raw',
                 'value' => function ($model) {
-                   /* @var $model \app\models\Mails */
-                   return Html::a($model->name, ['mail/mailbox', 'mailboxId' => $model->id]);
+                    /* @var $model \app\models\Mails */
+                    return Html::a($model->name, ['mail/mailbox', 'mailboxId' => $model->id]);
                 }
             ],
             [
@@ -47,22 +45,46 @@ $this->title = 'Почтовые ящики';
                 },
             ],
             'comment',
-            [
-                'class' => 'yii\grid\ActionColumn',
-                'template' => '{update}',
-                'buttons' => [
-                    'update' => function ($url, $model, $key) {
-                        return Html::a('<span class="fa
-                        fa-edit"></span>',
-                            ['update', 'mailboxId' => $model->id],
-                            [
-                                'data-toggle' => 'tooltip',
-                                'title' => 'Редактировать',
-                            ]);
-                    },
-                ],
-            ],
-        ],
+        ];
+        $actionColumn = [
+                [
+                    'class' => 'yii\grid\ActionColumn',
+                    'template' => '{update}{delete}',
+                    'buttons' => [
+                        'update' => function ($url, $model, $key) {
+                            return Html::a('<span class="fa
+                                fa-edit"></span>',
+                                ['update', 'mailboxId' => $model->id],
+                                [
+                                    'data-toggle' => 'tooltip',
+                                    'title' => 'Редактировать',
+                                    'style' => 'margin-right: 10px;'
+                                ]);
+                        },
+                        'delete' => function ($url, $model, $key) {
+                            return Html::a('<span class="fa
+                                fa-close"></span>',
+                                ['delete', 'mailboxId' => $model->id],
+                                [
+                                    'data-toggle' => 'tooltip',
+                                    'title' => 'Удалить',
+                                    'data' => [
+                                        'confirm' => 'Удалить безвозвратно почтовый ящик и все письма?'
+                                    ]
+                                ]);
+                        },
+                    ],
+                ]
+        ];
+
+        $columns = \Yii::$app->user->identity->is_admin ? array_merge($fieldColumns, $actionColumn) : $fieldColumns;
+    ?>
+
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'summary' => '',
+        'columns' => $columns
     ]); ?>
 </div>
 

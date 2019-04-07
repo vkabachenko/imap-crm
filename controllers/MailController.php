@@ -130,7 +130,7 @@ class MailController extends Controller
         $model = new Mails();
 
         if ($model->load(\Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index', 'mailboxId' => $model->id]);
+            return $this->redirect(['mail/index']);
         }
 
         return $this->render('create',
@@ -143,7 +143,7 @@ class MailController extends Controller
 
     public function actionUpdate($mailboxId)
     {
-        $this->checkAccessToMailbox($mailboxId);
+        $this->checkAdmin();
 
         $users = EmployeesAR::notAdminsAsMap();
         $model = Mails::findOne($mailboxId);
@@ -159,4 +159,13 @@ class MailController extends Controller
             ]
         );
     }
+
+    public function actionDelete($mailboxId)
+    {
+        $this->checkAdmin();
+        $model = Mails::findOne($mailboxId);
+        $model->delete();
+        $this->redirect(['mail/index']);
+    }
+
 }
