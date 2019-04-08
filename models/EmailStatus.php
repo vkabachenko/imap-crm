@@ -44,24 +44,5 @@ class EmailStatus extends \yii\db\ActiveRecord
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getEmails()
-    {
-        return $this->hasMany(Emails::className(), ['status_id' => 'id']);
-    }
 
-    /**
-     * return array
-     */
-    public static function emailStatusAsMap()
-    {
-        $list = self::find()
-            ->select(['status', 'id'])
-            ->orderBy('status')
-            ->indexBy('id')
-            ->column();
-        return $list;
-    }
 }

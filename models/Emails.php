@@ -103,7 +103,7 @@ class Emails extends \yii\db\ActiveRecord
      */
     public function getEmailStatus()
     {
-        return $this->hasOne(EmailStatus::className(), ['id' => 'status_id']);
+        return $this->hasOne(MailboxStatus::className(), ['id' => 'status_id']);
     }
 
     /**

@@ -9,7 +9,7 @@
 $this->title = 'Почтовый ящик ' . $mailbox->name;
 
 use yii\grid\GridView;
-use app\models\EmailStatus;
+use app\models\MailboxStatus;
 use app\models\EmployeesAR;
 use yii\helpers\Html;
 
@@ -46,7 +46,7 @@ use yii\helpers\Html;
                 $status = $model->status_id ? $model->emailStatus->status : null;
                 return $status;
             },
-            'filter' => EmailStatus::emailStatusAsMap()
+            'filter' => MailboxStatus::emailStatusAsMap($mailbox->id)
         ],
         [
             'attribute' => 'is_read',

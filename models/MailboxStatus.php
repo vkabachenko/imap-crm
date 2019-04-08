@@ -55,4 +55,19 @@ class MailboxStatus extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Mails::className(), ['id' => 'mailbox_id']);
     }
+
+    /**
+     * return array
+     */
+    public static function emailStatusAsMap($mailboxId)
+    {
+        $list = self::find()
+            ->select(['status', 'id'])
+            ->where(['mailbox_id' => $mailboxId])
+            ->orderBy('status')
+            ->indexBy('id')
+            ->column();
+        return $list;
+    }
+
 }

@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use app\models\EmailStatus;
+use \app\models\MailboxStatus;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
@@ -32,7 +32,7 @@ use yii\helpers\Url;
 <?php $form = ActiveForm::begin(); ?>
 
 <?= $form->field($mail, 'status_id')
-    ->dropDownList(EmailStatus::emailStatusAsMap(),['prompt' => 'Выбор']); ?>
+    ->dropDownList(MailboxStatus::emailStatusAsMap($mail->mailbox_id),['prompt' => 'Выбор']); ?>
 
 <?= $form->field($mail, 'comment')->textarea(); ?>
 
