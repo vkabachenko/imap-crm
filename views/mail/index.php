@@ -49,7 +49,7 @@ $this->title = 'Почтовые ящики';
         $actionColumn = [
                 [
                     'class' => 'yii\grid\ActionColumn',
-                    'template' => '{update}{delete}',
+                    'template' => '{update}{status}{delete}',
                     'buttons' => [
                         'update' => function ($url, $model, $key) {
                             return Html::a('<span class="fa
@@ -70,7 +70,17 @@ $this->title = 'Почтовые ящики';
                                     'title' => 'Удалить',
                                     'data' => [
                                         'confirm' => 'Удалить безвозвратно почтовый ящик и все письма?'
-                                    ]
+                                    ],
+                                ]);
+                        },
+                        'status' => function ($url, $model, $key) {
+                            return Html::a('<span class="fa
+                                fa-plus-square-o"></span>',
+                                ['mailbox-status/index', 'mailboxId' => $model->id],
+                                [
+                                    'data-toggle' => 'tooltip',
+                                    'title' => 'Статус',
+                                    'style' => 'margin-right: 10px;'
                                 ]);
                         },
                     ],

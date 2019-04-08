@@ -72,6 +72,14 @@ class Mails extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMailboxStatuses()
+    {
+        return $this->hasMany(MailboxStatus::className(), ['mailbox_id' => 'id']);
+    }
+
+    /**
      * @inheritdoc
      */
     public function afterFind()
