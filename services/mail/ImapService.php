@@ -16,21 +16,23 @@ class ImapService
 
     private $mailBoxId;
 
+    private $attachmentsPath;
+
 
     public function __construct($mailBoxId)
     {
         $this->mailBoxId = $mailBoxId;
         /* @var $mailBox Mails */
         $mailBox = Mails::findOne($mailBoxId);
-        $attacmentsPath = \Yii::getAlias('@runtime');
-        $this->mailEngine = new Mailbox($mailBox->server, $mailBox->login, $mailBox->pwd, $attacmentsPath);
+        $this->attachmentsPath = $this->getAttachmentPath($mailBoxId);
+        $this->mailEngine = new Mailbox($mailBox->server, $mailBox->login, $mailBox->pwd, $this->attachmentsPath);
     }
 
 
     public function getEmails($sinceDate)
     {
         $mailsIds = $this->mailEngine->searchMailbox('SINCE ' . $sinceDate);
-        if(!$mailsIds) {
+        if (!$mailsIds) {
             return [];
         }
         $mailsIds = array_filter($mailsIds, [$this, 'isNotSaved']);
@@ -60,6 +62,7 @@ class ImapService
             'imap_subject' => mb_substr(strval($mail->subject), 0, 254, 'UTF-8')
         ]);
 
+        $this->saveAttachments($mail);
         $model->save();
     }
 
@@ -74,5 +77,34 @@ class ImapService
             $this->saveEmail($email);
         }
 
+    }
+
+    private function getAttachmentPath($mailBoxId)
+    {
+        $basePath = \Yii::getAlias('@app/attachments');
+        $attachmentPath = $basePath . '/' . strval($mailBoxId) . '/';
+
+        if (!file_exists($attachmentPath)) {
+            mkdir($attachmentPath, 0777);
+        }
+
+        return $attachmentPath;
+    }
+
+    private function saveAttachments(IncomingMail $mail)
+    {
+        $attachments = $mail->getAttachments();
+
+        if (!empty($attachments)) {
+            $mailAttachmentPath = $this->attachmentsPath . '/' . strval($mail->id) . '/';
+            if (!file_exists($mailAttachmentPath)) {
+                mkdir($mailAttachmentPath, 0777);
+            }
+
+            foreach ($attachments as $attachment) {
+                /* @var $attachment \PhpImap\IncomingMailAttachment */
+                rename($attachment->filePath, $mailAttachmentPath . $attachment->name);
+            }
+        }
     }
 }

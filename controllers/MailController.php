@@ -6,6 +6,7 @@ use app\models\Emails;
 use app\models\EmailsSearch;
 use app\models\EmployeesAR;
 use app\models\Mails;
+use app\services\mail\DownloadService;
 use app\services\mail\LastEmailsService;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Json;
@@ -96,12 +97,23 @@ class MailController extends Controller
             $textHtml = $content['textHtml'];
             $textEmail = empty($textHtml) ? nl2br($textPlain) : $textHtml;
 
+            $downloadService = new DownloadService($mail);
+            $attachmentFileNames = $downloadService->getFileNames();
+
             return $this->render('view', [
                 'mail' => $mail,
                 'textEmail' => $textEmail,
-                'content' => $content
+                'content' => $content,
+                'attachmentFileNames' => $attachmentFileNames
             ]);
         }
+    }
+
+    public function actionDownload($mailId, $fileName)
+    {
+        $mail = Emails::findOne($mailId);
+        $downloadService = new DownloadService($mail);
+        return $downloadService->download($fileName);
     }
 
     public function actionReply($id)

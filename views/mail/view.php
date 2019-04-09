@@ -10,6 +10,7 @@ use yii\helpers\Url;
 /* @var $mail \app\models\Emails */
 /* @var $content array */
 /* @var $textEmail string */
+/* @var $attachmentFileNames array */
 
 ?>
 
@@ -28,6 +29,18 @@ use yii\helpers\Url;
 <div class="row" style="margin: 10px; font-family: 'Courier New', Courier, monospace">
     <?= $textEmail ?>
 </div>
+
+<?php if(!empty($attachmentFileNames)): ?>
+    <div>
+        <strong style="margin-right: 10px;">Приложения:</strong>
+        <?php foreach ($attachmentFileNames as $fileName): ?>
+            <?= Html::a($fileName,
+                ['mail/download', 'mailId' => $mail->id, 'fileName' => $fileName],
+                ['style' => 'margin-right: 10px;']);
+            ?>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>
 
 <?php $form = ActiveForm::begin(); ?>
 
