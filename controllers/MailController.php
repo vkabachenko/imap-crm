@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\EmailReply;
 use app\models\Emails;
 use app\models\EmailsSearch;
 use app\models\EmployeesAR;
@@ -100,17 +101,22 @@ class MailController extends Controller
             $downloadService = new DownloadService($mail);
             $attachmentFileNames = $downloadService->getFileNames();
 
+            $replyEmails = EmailReply::find()->orderBy('created_at DESC')->all();
+
             return $this->render('view', [
                 'mail' => $mail,
                 'textEmail' => $textEmail,
                 'content' => $content,
-                'attachmentFileNames' => $attachmentFileNames
+                'attachmentFileNames' => $attachmentFileNames,
+                'replyEmails' => $replyEmails
             ]);
         }
     }
 
     public function actionDownload($mailId, $fileName)
     {
+        $this->checkAccessToMail($mailId);
+
         $mail = Emails::findOne($mailId);
         $downloadService = new DownloadService($mail);
         return $downloadService->download($fileName);
@@ -119,7 +125,32 @@ class MailController extends Controller
     public function actionReply($id)
     {
         $this->checkAccessToMail($id);
-        return $this->render('reply');
+
+        $mail = Emails::findOne($id);
+        $mailbox = Mails::findOne($mail->mailbox_id);
+        $model = new EmailReply([
+            'mailbox_id' => $mail->mailbox_id,
+            'reply_to_id' => $mail->id,
+            'manager_id' => \Yii::$app->user->id,
+            'from' => $mailbox->login,
+            'to' => $mail->imap_from
+        ]);
+
+        if ($model->load(\Yii::$app->request->post())) {
+            $model->send();
+            $model->save();
+            return $this->redirect(['view', 'id' => $id]);
+        }
+
+        return $this->render('reply', ['model' => $model]);
+    }
+
+    public function actionReplyView($id)
+    {
+        $model = EmailReply::findOne($id);
+        $this->checkAccessToMail($model->reply_to_id);
+
+        return $this->render('reply-view', ['model' => $model]);
     }
 
     public function actionGetRecent($mailboxId)

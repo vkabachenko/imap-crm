@@ -1,3 +1,28 @@
 <?php
+
+/* @var $model \app\models\EmailReply */
+
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+
+$this->title = 'Ответ на письмо';
 ?>
-<h2>Under construction</h2>
+
+<div>
+    <?php $form = ActiveForm::begin(); ?>
+
+        <?= $form->field($model, 'from'); ?>
+        <?= $form->field($model, 'to'); ?>
+        <?= $form->field($model, 'subject'); ?>
+        <?= $form->field($model, 'content')->textarea(); ?>
+        <?= $form->field($model, 'comment')->textarea(); ?>
+
+        <div class="form-group">
+            <?= Html::submitButton('Отправить',
+                ['class' => 'btn btn-success']) ?>
+        </div>
+
+
+    <?php ActiveForm::end(); ?>
+</div>
+

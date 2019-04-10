@@ -113,4 +113,12 @@ class Emails extends \yii\db\ActiveRecord
     {
         return $this->hasOne(EmployeesAR::className(), ['id' => 'manager_id']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEmailsReply()
+    {
+        return $this->hasMany(EmailReply::className(), ['reply_to_id' => 'id']);
+    }
 }

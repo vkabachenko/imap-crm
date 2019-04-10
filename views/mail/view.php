@@ -11,6 +11,9 @@ use yii\helpers\Url;
 /* @var $content array */
 /* @var $textEmail string */
 /* @var $attachmentFileNames array */
+/* @var $replyEmails \app\models\EmailReply */
+
+$this->title = 'Полученное письмо';
 
 ?>
 
@@ -38,6 +41,21 @@ use yii\helpers\Url;
                 ['mail/download', 'mailId' => $mail->id, 'fileName' => $fileName],
                 ['style' => 'margin-right: 10px;']);
             ?>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>
+
+<?php if(!empty($replyEmails)): ?>
+    <div>
+        <div>
+            <strong>Отправленные письма:</strong>
+        </div>
+        <?php foreach ($replyEmails as $replyEmail): ?>
+            <div>
+                <?= Html::a('от ' . $replyEmail->created_at,
+                    ['mail/reply-view', 'id' => $replyEmail->id]);
+                ?>
+            </div>
         <?php endforeach; ?>
     </div>
 <?php endif; ?>
