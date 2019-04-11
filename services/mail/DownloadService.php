@@ -3,20 +3,14 @@
 
 namespace app\services\mail;
 
-use app\models\Emails;
+use app\models\EMailInterface;
 
 class DownloadService
 {
     private $mailAttachmentPath;
 
-    public function __construct(Emails $mail) {
-
-        $this->mailAttachmentPath = \Yii::getAlias('@app/attachments')
-            . '/'
-            . strval($mail->mailbox_id)
-            . '/'
-            . strval($mail->imap_id)
-            . '/';
+    public function __construct(EMailInterface $mail) {
+        $this->mailAttachmentPath = $mail->setAttachmentPath();
     }
 
     public function getFileNames()

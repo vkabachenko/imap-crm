@@ -1,9 +1,11 @@
 <?php
 
 /* @var $model \app\models\EmailReply */
+/* @var $attachmentFileNames array */
 
 $this->title = 'Ответ на письмо - просмотр';
-?>
+
+use yii\helpers\Html; ?>
 <div>
     <strong style="margin-right: 10px;">Дата:</strong>
     <?= $model->created_at ?>
@@ -34,3 +36,15 @@ $this->title = 'Ответ на письмо - просмотр';
     <strong style="margin-right: 10px;">Комментарий:</strong>
     <?= $model->comment ?>
 </div>
+
+<?php if(!empty($attachmentFileNames)): ?>
+    <div>
+        <strong style="margin-right: 10px;">Приложения:</strong>
+        <?php foreach ($attachmentFileNames as $fileName): ?>
+            <?= Html::a($fileName,
+                ['mail/download', 'mailId' => $model->id, 'fileName' => $fileName, 'reply' => true],
+                ['style' => 'margin-right: 10px;']);
+            ?>
+        <?php endforeach; ?>
+    </div>
+<?php endif; ?>

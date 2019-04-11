@@ -1,6 +1,7 @@
 <?php
 
 /* @var $model \app\models\EmailReply */
+/* @var $uploadForm \app\models\UploadForm */
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -17,7 +18,10 @@ $this->title = 'Ответ на письмо';
         <?= $form->field($model, 'content')->textarea(); ?>
         <?= $form->field($model, 'comment')->textarea(); ?>
 
-        <div class="form-group">
+        <?= $form->field($uploadForm, 'files[]')->fileInput(['multiple' => true]); ?>
+
+
+    <div class="form-group">
             <?= Html::submitButton('Отправить',
                 ['class' => 'btn btn-success']) ?>
         </div>

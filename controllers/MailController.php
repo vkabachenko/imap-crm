@@ -7,6 +7,7 @@ use app\models\Emails;
 use app\models\EmailsSearch;
 use app\models\EmployeesAR;
 use app\models\Mails;
+use app\models\UploadForm;
 use app\services\mail\DownloadService;
 use app\services\mail\LastEmailsService;
 use yii\data\ActiveDataProvider;
@@ -14,6 +15,7 @@ use yii\helpers\Json;
 use yii\web\Controller;
 use yii\filters\AccessControl;
 use app\services\mail\ImapService;
+use yii\web\UploadedFile;
 
 
 class MailController extends Controller
@@ -113,11 +115,17 @@ class MailController extends Controller
         }
     }
 
-    public function actionDownload($mailId, $fileName)
+    public function actionDownload($mailId, $fileName, $reply = false)
     {
+        if ($reply) {
+            $mail = EmailReply::findOne($mailId);
+            $mailId = $mail->reply_to_id;
+        } else {
+            $mail = Emails::findOne($mailId);
+        }
+
         $this->checkAccessToMail($mailId);
 
-        $mail = Emails::findOne($mailId);
         $downloadService = new DownloadService($mail);
         return $downloadService->download($fileName);
     }
@@ -128,6 +136,7 @@ class MailController extends Controller
 
         $mail = Emails::findOne($id);
         $mailbox = Mails::findOne($mail->mailbox_id);
+        $uploadForm = new UploadForm();
         $model = new EmailReply([
             'mailbox_id' => $mail->mailbox_id,
             'reply_to_id' => $mail->id,
@@ -137,20 +146,31 @@ class MailController extends Controller
         ]);
 
         if ($model->load(\Yii::$app->request->post())) {
+            $uploadForm->files = UploadedFile::getInstances($uploadForm, 'files');
+            $uploadForm->upload();
             $model->send();
             $model->save();
             return $this->redirect(['view', 'id' => $id]);
         }
 
-        return $this->render('reply', ['model' => $model]);
+        return $this->render('reply', [
+            'model' => $model,
+            'uploadForm' => $uploadForm
+        ]);
     }
 
     public function actionReplyView($id)
     {
-        $model = EmailReply::findOne($id);
-        $this->checkAccessToMail($model->reply_to_id);
+        $mail = EmailReply::findOne($id);
+        $this->checkAccessToMail($mail->reply_to_id);
 
-        return $this->render('reply-view', ['model' => $model]);
+        $downloadService = new DownloadService($mail);
+        $attachmentFileNames = $downloadService->getFileNames();
+
+        return $this->render('reply-view', [
+            'model' => $mail,
+            'attachmentFileNames' => $attachmentFileNames
+        ]);
     }
 
     public function actionGetRecent($mailboxId)

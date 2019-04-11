@@ -24,7 +24,7 @@ use yii\behaviors\TimestampBehavior;
  * @property Employees $manager
  * @property Emails $replyTo
  */
-class EmailReply extends \yii\db\ActiveRecord
+class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
 {
     /**
      * @inheritdoc
@@ -107,14 +107,53 @@ class EmailReply extends \yii\db\ActiveRecord
         return $this->hasOne(Emails::className(), ['id' => 'reply_to_id']);
     }
 
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        $uploadPath = \Yii::getAlias('@app/uploads/');
+        $uploadedFiles = array_diff(scandir($uploadPath), ['..', '.']);
+
+        if (!empty($uploadedFiles)) {
+            $mailAttachmentPath = $this->setAttachmentPath();
+
+            if (!file_exists($mailAttachmentPath)) {
+                mkdir($mailAttachmentPath, 0777);
+            }
+
+            foreach ($uploadedFiles as $uploadedFile) {
+                rename($uploadPath . $uploadedFile, $mailAttachmentPath . $uploadedFile);
+            }
+        }
+    }
 
     public function send()
     {
-        \Yii::$app->mailer->compose()
-            ->setFrom($this->from)
+        $message = \Yii::$app->mailer->compose();
+
+        $uploadPath = \Yii::getAlias('@app/uploads/');
+        $uploadedFiles = array_diff(scandir($uploadPath), ['..', '.']);
+
+        foreach ($uploadedFiles as $uploadedFile) {
+            $message->attach($uploadPath . $uploadedFile);
+        }
+
+        $message->setFrom($this->from)
             ->setTo($this->to)
             ->setSubject($this->subject)
             ->setTextBody($this->content)
             ->send();
+    }
+
+    public function setAttachmentPath()
+    {
+        return \Yii::getAlias('@app/attachments')
+            . '/'
+            . strval($this->mailbox_id)
+            . '/'
+            . strval($this->replyTo->imap_id)
+            . 'reply'
+            . strval($this->id)
+            . '/';
     }
 }

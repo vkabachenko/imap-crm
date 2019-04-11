@@ -27,7 +27,7 @@ use yii\behaviors\TimestampBehavior;
  *
  * @property Mails $mailbox
  */
-class Emails extends \yii\db\ActiveRecord
+class Emails extends \yii\db\ActiveRecord implements EMailInterface
 {
     /**
      * @inheritdoc
@@ -120,5 +120,15 @@ class Emails extends \yii\db\ActiveRecord
     public function getEmailsReply()
     {
         return $this->hasMany(EmailReply::className(), ['reply_to_id' => 'id']);
+    }
+
+    public function setAttachmentPath()
+    {
+        return \Yii::getAlias('@app/attachments')
+            . '/'
+            . strval($this->mailbox_id)
+            . '/'
+            . strval($this->imap_id)
+            . '/';
     }
 }
