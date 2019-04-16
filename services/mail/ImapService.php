@@ -69,7 +69,7 @@ class ImapService
     public function fetchRecentEmails()
     {
         $maxReceiveDate = Emails::find()->where(['mailbox_id' => $this->mailBoxId])->max('created_at');
-        
+
         if (is_null($maxReceiveDate)) {
             $mailbox = Mails::findOne($this->mailBoxId);
             $maxReceiveDate = $mailbox->start_date;
