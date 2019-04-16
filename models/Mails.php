@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 
+
 /**
  * This is the model class for table "mails".
  *
@@ -13,6 +14,7 @@ use Yii;
  * @property string $login
  * @property string $pwd
  * @property string $comment
+ * @property string $start_date
  */
 class Mails extends \yii\db\ActiveRecord
 {
@@ -34,7 +36,7 @@ class Mails extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'server', 'login', 'pwd'], 'required'],
-            [['name', 'server', 'login', 'pwd', 'comment'], 'string', 'max' => 255],
+            [['name', 'server', 'login', 'pwd', 'comment', 'start_date'], 'string', 'max' => 255],
             [['users'], 'safe'],
         ];
     }
@@ -51,7 +53,8 @@ class Mails extends \yii\db\ActiveRecord
             'login' => 'E-mail',
             'pwd' => 'Пароль',
             'comment' => 'Комментарий',
-            'users' => 'Доступ сотрудникам'
+            'users' => 'Доступ сотрудникам',
+            'start_date' => 'Дата начала скачивания'
         ];
     }
 
@@ -77,6 +80,17 @@ class Mails extends \yii\db\ActiveRecord
     public function getMailboxStatuses()
     {
         return $this->hasMany(MailboxStatus::className(), ['mailbox_id' => 'id']);
+    }
+
+
+    public function beforeValidate()
+    {
+        if (empty($this->start_date)) {
+            $this->start_date = date('Y-m-d');
+        } elseif (strpos($this->start_date, '/') !== false) {
+            $this->start_date = date('Y-m-d', strtotime($this->start_date));
+        }
+        return parent::beforeValidate();
     }
 
     /**

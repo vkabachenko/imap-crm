@@ -18,6 +18,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'login') ?>
     <?= $form->field($model, 'pwd') ?>
     <?= $form->field($model, 'comment') ?>
+    <?= $form->field($model, 'start_date')->widget(\yii\jui\DatePicker::className()) ?>
     <?= $form->field($model, 'users')->checkboxList($users) ?>
 
     <div class="form-group">
