@@ -16,7 +16,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string $comment
  * @property integer $status_id
  * @property integer $is_read
- * @property integer $is_in_work
+ * @property string $lock_time
  * @property integer $manager_id
  * @property string imap_raw_content
  * @property string imap_id
@@ -58,8 +58,8 @@ class Emails extends \yii\db\ActiveRecord implements EMailInterface
         return [
             [['mailbox_id'], 'required'],
             [['mailbox_id', 'status_id', 'manager_id'], 'integer'],
-            [['imap_raw_content', 'imap_id', 'imap_date', 'imap_from', 'imap_to', 'imap_subject'], 'string'],
-            [['is_read', 'is_in_work'], 'boolean'],
+            [['lock_time', 'imap_raw_content', 'imap_id', 'imap_date', 'imap_from', 'imap_to', 'imap_subject'], 'string'],
+            [['is_read'], 'boolean'],
             [['created_at', 'updated_at'], 'safe'],
             [['comment'], 'string', 'max' => 255],
             [['mailbox_id'], 'exist', 'skipOnError' => true, 'targetClass' => Mails::className(), 'targetAttribute' => ['mailbox_id' => 'id']],
@@ -80,7 +80,7 @@ class Emails extends \yii\db\ActiveRecord implements EMailInterface
             'status_id' => 'Статус',
             'manager_id' => 'Менеджер',
             'is_read' => 'Прочтено',
-            'is_in_work' => 'В работе',
+            'lock_time' => 'lock_time',
             'imap_raw_content' => 'imap_raw_content',
             'imap_id' => 'imap_id',
             'imap_date' => 'Дата письма',

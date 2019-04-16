@@ -10,6 +10,7 @@ use app\models\Mails;
 use app\models\UploadForm;
 use app\services\mail\DownloadService;
 use app\services\mail\LastEmailsService;
+use app\services\mail\LockService;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Json;
 use yii\web\Controller;
@@ -24,10 +25,19 @@ class MailController extends Controller
 
     /* @var LastEmailsService */
     private $lastEmailsService;
+    /**
+     * @var LockService
+     */
+    private $lockService;
 
-    public function __construct($id, $module, LastEmailsService $lastEmailsService, $config = [])
+    public function __construct($id, $module,
+                                LastEmailsService $lastEmailsService,
+                                LockService $lockService,
+                                $config = []
+                       )
     {
         $this->lastEmailsService = $lastEmailsService;
+        $this->lockService = $lockService;
         parent::__construct($id, $module, $config = []);
     }
 
@@ -82,6 +92,16 @@ class MailController extends Controller
         ]);
     }
 
+    public function actionReleaseMail($mailId) {
+        $this->checkAccessToMail($mailId);
+
+        $mail = Emails::findOne($mailId);
+        $this->lockService->release($mail);
+
+        return $this->redirect(['mail/mailbox', 'mailboxId' => $mail->mailbox_id]);
+    }
+
+
     public function actionView($id)
     {
         $this->checkAccessToMail($id);
@@ -91,27 +111,34 @@ class MailController extends Controller
         if ($mail->load(\Yii::$app->request->post())) {
             $mail->manager_id = \Yii::$app->user->id;
             $mail->is_read = true;
-            $mail->is_in_work = false;
-            $mail->save();
+            $this->lockService->release($mail);
             return $this->redirect(['mail/mailbox', 'mailboxId' => $mail->mailbox_id]);
         } else {
-            $content = Json::decode($mail->imap_raw_content);
-            $textPlain = $content['textPlain'];
-            $textHtml = $content['textHtml'];
-            $textEmail = empty($textHtml) ? nl2br($textPlain) : $textHtml;
+            if ($this->lockService->isLocked($mail)) {
+                return $this->render('in-work', [
+                    'mail' => $mail,
+                ]);
+            } else {
+                $this->lockService->lock($mail);
 
-            $downloadService = new DownloadService($mail);
-            $attachmentFileNames = $downloadService->getFileNames();
+                $content = Json::decode($mail->imap_raw_content);
+                $textPlain = $content['textPlain'];
+                $textHtml = $content['textHtml'];
+                $textEmail = empty($textHtml) ? nl2br($textPlain) : $textHtml;
 
-            $replyEmails = EmailReply::find()->orderBy('created_at DESC')->all();
+                $downloadService = new DownloadService($mail);
+                $attachmentFileNames = $downloadService->getFileNames();
 
-            return $this->render('view', [
-                'mail' => $mail,
-                'textEmail' => $textEmail,
-                'content' => $content,
-                'attachmentFileNames' => $attachmentFileNames,
-                'replyEmails' => $replyEmails
-            ]);
+                $replyEmails = EmailReply::find()->orderBy('created_at DESC')->all();
+
+                return $this->render('view', [
+                    'mail' => $mail,
+                    'textEmail' => $textEmail,
+                    'content' => $content,
+                    'attachmentFileNames' => $attachmentFileNames,
+                    'replyEmails' => $replyEmails
+                ]);
+            }
         }
     }
 

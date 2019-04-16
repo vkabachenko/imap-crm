@@ -4,6 +4,7 @@
 /* @var $uploadForm \app\models\UploadForm */
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 $this->title = 'Ответ на письмо';
@@ -21,10 +22,21 @@ $this->title = 'Ответ на письмо';
         <?= $form->field($uploadForm, 'files[]')->fileInput(['multiple' => true]); ?>
 
 
-    <div class="form-group">
-            <?= Html::submitButton('Отправить',
-                ['class' => 'btn btn-success']) ?>
+    <div class="row">
+
+        <div class="form-group  col-md-4">
+                <?= Html::submitButton('Отправить',
+                    ['class' => 'btn btn-success']) ?>
         </div>
+
+        <div class="form-group col-md-4">
+            <?= Html::a('Отмена',
+                Url::to(['mail/release-mail', 'mailId' => $model->reply_to_id]),
+                ['class' => 'btn btn-primary']
+            ) ?>
+        </div>
+
+    </div>
 
 
     <?php ActiveForm::end(); ?>

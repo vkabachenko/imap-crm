@@ -74,7 +74,7 @@ $this->title = 'Полученное письмо';
     </div>
     <div class="form-group col-md-4">
         <?= Html::a('Отмена',
-            Url::to(['mail/mailbox', 'mailboxId' => $mail->mailbox_id]),
+            Url::to(['mail/release-mail', 'mailId' => $mail->id]),
             ['class' => 'btn btn-primary']
         ) ?>
     </div>
@@ -84,8 +84,7 @@ $this->title = 'Полученное письмо';
             ['class' => 'btn btn-primary']
         ) ?>
     </div>
-
-    </div>
+</div>
 
 <?php ActiveForm::end(); ?>
 
