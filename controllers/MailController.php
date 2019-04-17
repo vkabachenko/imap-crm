@@ -129,7 +129,10 @@ class MailController extends Controller
                 $downloadService = new DownloadService($mail);
                 $attachmentFileNames = $downloadService->getFileNames();
 
-                $replyEmails = EmailReply::find()->orderBy('created_at DESC')->all();
+                $replyEmails = EmailReply::find()
+                    ->where(['reply_to_id' => $id])
+                    ->orderBy('created_at DESC')
+                    ->all();
 
                 return $this->render('view', [
                     'mail' => $mail,
@@ -177,6 +180,7 @@ class MailController extends Controller
             $uploadForm->upload();
             $model->send();
             $model->save();
+            $this->lockService->release($mail);
             return $this->redirect(['view', 'id' => $id]);
         }
 
