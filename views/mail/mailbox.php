@@ -17,6 +17,12 @@ use yii\helpers\Html;
 
 <?= GridView::widget([
     'dataProvider' => $dataProvider,
+    'rowOptions' => function ($model, $key, $index, $grid)
+    {
+        if(boolval($model->is_read) === false) {
+            return ['class' => 'email-not-read'];
+        }
+    },
     'filterModel' => $searchModel,
     'summary' => '',
     'columns' => [
