@@ -16,6 +16,7 @@ use Yii;
  * @property string $pwd
  * @property string $guid
  * @property boolean $is_admin
+ * @property integer $default_mailbox_id
  *
  * @property Emails[] $emails
  * @property MailboxUser[] $mailboxUsers
@@ -37,7 +38,7 @@ class EmployeesAR extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'tel', 'email', 'rule', 'date', 'pwd', 'guid'], 'required'],
-            [['date'], 'integer'],
+            [['date', 'default_mailbox_id'], 'integer'],
             [['name', 'tel', 'email', 'rule', 'pwd', 'guid'], 'string', 'max' => 255],
             [['is_admin'], 'boolean']
         ];
@@ -57,7 +58,8 @@ class EmployeesAR extends \yii\db\ActiveRecord
             'date' => 'Date',
             'pwd' => 'Pwd',
             'guid' => 'Guid',
-            'is_admin' => 'Администратор'
+            'is_admin' => 'Администратор',
+            'default_mailbox_id' => 'Почтовый ящик по умолчанию'
         ];
     }
 

@@ -157,8 +157,9 @@ foreach ($rows as $value) {
 <td><?php  echo $value['email'];  ?></td>
 <td>
 
-<a href="<?php Echo Url::Toroute([$thisPageId, 'eid' => $value['id']]); ?>" class="btn default btn-xs purple"><i class="fa fa-edit"></i> Редактировать</a>
-<?php  if($value['id']!=1){  ?><a href="<?php Echo Url::Toroute([$thisPageId, 'did' => $value['id']]); ?>" class="btn default btn-xs black delclass"><i class="fa fa-trash-o"></i> Удалить</a> <?php } ?>
+<a href="<?php Echo Url::toRoute([$thisPageId, 'eid' => $value['id']]); ?>" class="btn default btn-xs purple"><i class="fa fa-edit"></i> Редактировать</a>
+<?= Html::a('Почтовый ящик', ['mailbox/default', 'userId' => $value['id']], ['class' => 'btn btn-xs btn-primary']); ?>
+<?php  if($value['id']!=1){  ?><a href="<?php Echo Url::toRoute([$thisPageId, 'did' => $value['id']]); ?>" class="btn default btn-xs black delclass"><i class="fa fa-trash-o"></i> Удалить</a> <?php } ?>
 </td>
 </tr>
 

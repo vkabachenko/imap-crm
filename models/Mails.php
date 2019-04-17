@@ -122,4 +122,16 @@ class Mails extends \yii\db\ActiveRecord
             $model->save();
         }
     }
+
+    public static function userMailboxesAsMap($userId)
+    {
+        $mailboxes = self::find()
+            ->select(['mails.name', 'mails.id'])
+            ->joinWith('mailboxUser', false)
+            ->where(['mailbox_user.user_id' => $userId])
+            ->orderBy('name')
+            ->indexBy('id')
+            ->column();
+        return $mailboxes;
+    }
 }
