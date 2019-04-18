@@ -1,6 +1,6 @@
-*
+/*
+!pages/
+!global/
+!admin/
 !.gitignore
-!/*.js
-!admin
-!global
-!pages
+!*.js
