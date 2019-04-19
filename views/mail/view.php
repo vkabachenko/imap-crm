@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use \app\models\MailboxStatus;
 use yii\helpers\Url;
+use app\models\Emails;
 
 /* @var $this yii\web\View */
 /* @var $form yii\widgets\ActiveForm */
@@ -67,6 +68,9 @@ $this->title = 'Полученное письмо';
 
     <?= $form->field($mail, 'status_id')
         ->dropDownList(MailboxStatus::emailStatusAsMap($mail->mailbox_id),['prompt' => 'Выбор']); ?>
+
+    <?= $form->field($mail, 'answer_method')
+        ->dropDownList(Emails::answerMethods(),['prompt' => 'Выбор']); ?>
 
     <?= $form->field($mail, 'comment')->textarea(); ?>
 

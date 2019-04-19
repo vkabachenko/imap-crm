@@ -25,11 +25,13 @@ use yii\behaviors\TimestampBehavior;
  * @property string imap_to
  * @property string imap_subject
  * @property integer lock_user_id
+ * @property string answer_method
  *
  * @property Mails $mailbox
  */
 class Emails extends \yii\db\ActiveRecord implements EMailInterface
 {
+
     /**
      * @inheritdoc
      */
@@ -64,6 +66,7 @@ class Emails extends \yii\db\ActiveRecord implements EMailInterface
             [['created_at', 'updated_at'], 'safe'],
             [['comment'], 'string', 'max' => 255],
             [['mailbox_id'], 'exist', 'skipOnError' => true, 'targetClass' => Mails::className(), 'targetAttribute' => ['mailbox_id' => 'id']],
+            ['answer_method', 'in', 'range' => array_keys(self::answerMethods())],
         ];
     }
 
@@ -88,7 +91,8 @@ class Emails extends \yii\db\ActiveRecord implements EMailInterface
             'imap_from' => 'Oт кого',
             'imap_to' => 'Кому',
             'imap_subject' => 'Тема',
-            'lock_user_id' => 'lock_user_id'
+            'lock_user_id' => 'lock_user_id',
+            'answer_method' => 'Способ ответа'
         ];
     }
 
@@ -132,5 +136,10 @@ class Emails extends \yii\db\ActiveRecord implements EMailInterface
             . '/'
             . strval($this->imap_id)
             . '/';
+    }
+
+    public static function answerMethods()
+    {
+        return ['mail' => 'Почта', 'phone' => 'Звонок'];
     }
 }

@@ -111,6 +111,7 @@ class MailController extends Controller
         if ($mail->load(\Yii::$app->request->post())) {
             $mail->manager_id = \Yii::$app->user->id;
             $mail->is_read = true;
+            $mail->answer_method = $mail->answer_method ? $mail->answer_method : null;
             $this->lockService->release($mail);
             return $this->redirect(['mail/mailbox', 'mailboxId' => $mail->mailbox_id]);
         } else {

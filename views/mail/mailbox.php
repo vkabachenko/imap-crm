@@ -12,6 +12,7 @@ use yii\grid\GridView;
 use app\models\MailboxStatus;
 use app\models\EmployeesAR;
 use yii\helpers\Html;
+use app\models\Emails;
 
 ?>
 
@@ -64,6 +65,15 @@ use yii\helpers\Html;
                 return $check;
             },
             'filter' => [1 => 'Прочтенные', 0 => 'Не прочтенные'],
+        ],
+        [
+            'attribute' => 'answer_method',
+            'value' => function ($model) {
+                /* @var $model \app\models\EMails */
+                $method = $model->answer_method ? Emails::answerMethods()[$model->answer_method] : null;
+                return $method;
+            },
+            'filter' => Emails::answerMethods()
         ],
         [
             'attribute' => 'manager_id',

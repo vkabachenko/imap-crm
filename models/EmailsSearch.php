@@ -20,7 +20,8 @@ class EmailsSearch extends Emails
                     'imap_from',
                     'imap_to',
                     'imap_subject',
-                    'comment'
+                    'comment',
+                    'answer_method'
                 ], 'safe'
             ],
             [
@@ -60,6 +61,7 @@ class EmailsSearch extends Emails
         $query->andFilterWhere(['like', 'imap_subject', $this->imap_subject]);
         $query->andFilterWhere(['status_id' => $this->status_id]);
         $query->andFilterWhere(['is_read' => $this->is_read]);
+        $query->andFilterWhere(['answer_method' => $this->answer_method]);
         $query->andFilterWhere(['manager_id' => $this->manager_id]);
         $query->andFilterWhere(['like', 'comment', $this->comment]);
 
