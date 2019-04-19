@@ -36,9 +36,11 @@ class LockService
 
     public function lock(Emails $mail)
     {
-        $mail->lock_time = date('Y-m-d H:i:s');
-        $mail->lock_user_id = $this->userId;
-        $mail->save();
+        if (!$this->isLocked($mail)) {
+            $mail->lock_time = date('Y-m-d H:i:s');
+            $mail->lock_user_id = $this->userId;
+            $mail->save();
+        }
     }
 
     public function release(Emails $mail)

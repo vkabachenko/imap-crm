@@ -114,34 +114,30 @@ class MailController extends Controller
             $this->lockService->release($mail);
             return $this->redirect(['mail/mailbox', 'mailboxId' => $mail->mailbox_id]);
         } else {
-            if ($this->lockService->isLocked($mail)) {
-                return $this->render('in-work', [
-                    'mail' => $mail,
-                ]);
-            } else {
-                $this->lockService->lock($mail);
+            $isLocked = $this->lockService->isLocked($mail);
+            $this->lockService->lock($mail);
 
-                $content = Json::decode($mail->imap_raw_content);
-                $textPlain = $content['textPlain'];
-                $textHtml = $content['textHtml'];
-                $textEmail = empty($textHtml) ? nl2br($textPlain) : $textHtml;
+            $content = Json::decode($mail->imap_raw_content);
+            $textPlain = $content['textPlain'];
+            $textHtml = $content['textHtml'];
+            $textEmail = empty($textHtml) ? nl2br($textPlain) : $textHtml;
 
-                $downloadService = new DownloadService($mail);
-                $attachmentFileNames = $downloadService->getFileNames();
+            $downloadService = new DownloadService($mail);
+            $attachmentFileNames = $downloadService->getFileNames();
 
-                $replyEmails = EmailReply::find()
-                    ->where(['reply_to_id' => $id])
-                    ->orderBy('created_at DESC')
-                    ->all();
+            $replyEmails = EmailReply::find()
+                ->where(['reply_to_id' => $id])
+                ->orderBy('created_at DESC')
+                ->all();
 
-                return $this->render('view', [
-                    'mail' => $mail,
-                    'textEmail' => $textEmail,
-                    'content' => $content,
-                    'attachmentFileNames' => $attachmentFileNames,
-                    'replyEmails' => $replyEmails
-                ]);
-            }
+            return $this->render('view', [
+                'mail' => $mail,
+                'textEmail' => $textEmail,
+                'content' => $content,
+                'attachmentFileNames' => $attachmentFileNames,
+                'replyEmails' => $replyEmails,
+                'isLocked' => $isLocked
+            ]);
         }
     }
 

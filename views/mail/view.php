@@ -12,6 +12,7 @@ use yii\helpers\Url;
 /* @var $textEmail string */
 /* @var $attachmentFileNames array */
 /* @var $replyEmails \app\models\EmailReply */
+/* @var $isLocked boolean */
 
 $this->title = 'Полученное письмо';
 
@@ -60,31 +61,46 @@ $this->title = 'Полученное письмо';
     </div>
 <?php endif; ?>
 
-<?php $form = ActiveForm::begin(); ?>
+<?php if (!$isLocked): ?>
 
-<?= $form->field($mail, 'status_id')
-    ->dropDownList(MailboxStatus::emailStatusAsMap($mail->mailbox_id),['prompt' => 'Выбор']); ?>
+    <?php $form = ActiveForm::begin(); ?>
 
-<?= $form->field($mail, 'comment')->textarea(); ?>
+    <?= $form->field($mail, 'status_id')
+        ->dropDownList(MailboxStatus::emailStatusAsMap($mail->mailbox_id),['prompt' => 'Выбор']); ?>
 
-<div class="row">
-    <div class="form-group col-md-4">
-        <?= Html::submitButton('OK',
-        ['class' => 'btn btn-success']) ?>
+    <?= $form->field($mail, 'comment')->textarea(); ?>
+
+    <div class="row">
+        <div class="form-group col-md-4">
+            <?= Html::submitButton('OK',
+            ['class' => 'btn btn-success']) ?>
+        </div>
+        <div class="form-group col-md-4">
+            <?= Html::a('Отмена',
+                Url::to(['mail/release-mail', 'mailId' => $mail->id]),
+                ['class' => 'btn btn-primary']
+            ) ?>
+        </div>
+        <div class="form-group col-md-4">
+            <?= Html::a('Ответить',
+                Url::to(['mail/reply', 'id' => $mail->id]),
+                ['class' => 'btn btn-primary']
+            ) ?>
+        </div>
     </div>
-    <div class="form-group col-md-4">
-        <?= Html::a('Отмена',
-            Url::to(['mail/release-mail', 'mailId' => $mail->id]),
-            ['class' => 'btn btn-primary']
-        ) ?>
-    </div>
-    <div class="form-group col-md-4">
-        <?= Html::a('Ответить',
-            Url::to(['mail/reply', 'id' => $mail->id]),
-            ['class' => 'btn btn-primary']
-        ) ?>
-    </div>
-</div>
 
-<?php ActiveForm::end(); ?>
+    <?php ActiveForm::end(); ?>
+
+<?php else: ?>
+
+    <div>
+        <div class="form-group">
+            <?= Html::a('Назад',
+                Url::to(['mail/mailbox', 'mailboxId' => $mail->mailbox_id]),
+                ['class' => 'btn btn-primary']
+            ) ?>
+        </div>
+    </div>
+
+<?php endif; ?>
 
