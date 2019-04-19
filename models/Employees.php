@@ -62,6 +62,7 @@ class Employees extends Model
 		    'name' => Yii::$app->request->post('name'),
 		    'tel' => Yii::$app->request->post('tel'),
 		    'email' => Yii::$app->request->post('email'),
+            'mail_signature' => Yii::$app->request->post('mail_signature'),
 		    'rule' => $rul,
 		    'pwd' => md5(Yii::$app->request->post('pwd'))
 		], 'id='.Yii::$app->request->get('eid'))->execute();
@@ -85,6 +86,7 @@ class Employees extends Model
 		    'name' => Yii::$app->request->post('name'),
 		    'tel' => Yii::$app->request->post('tel'),
 		    'email' => Yii::$app->request->post('email'),
+            'mail_signature' => Yii::$app->request->post('mail_signature'),
 		    'rule' => $rul,
 		    'date' => time(),
 		    'pwd' => md5(Yii::$app->request->post('pwd')),

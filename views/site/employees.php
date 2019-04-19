@@ -47,6 +47,12 @@ if(Yii::$app->request->get('add')){
 </div>
 
 <div class="form-group">
+    <?= Html::label('Подпись в письме','mail_signature') ?>
+    <?= Html::textInput('mail_signature','', ['class' => 'form-control']) ?>
+</div>
+
+
+    <div class="form-group">
 <label class="control-label">Права<span class="required">
 * </span>
 </label>
@@ -99,6 +105,12 @@ $thisRul = explode(",",$edit['rule']);
 <?= Html::label('Телефон','tel') ?>
 <?= Html::textInput('tel',$edit['tel'], ['class' => 'form-control tel']) ?>
 </div>
+
+<div class="form-group">
+    <?= Html::label('Подпись в письме','mail_signature') ?>
+    <?= Html::textInput('mail_signature', $edit['mail_signature'], ['class' => 'form-control']) ?>
+</div>
+
 
 <?php  if($edit['id']!=1){  ?>
 <div class="form-group">

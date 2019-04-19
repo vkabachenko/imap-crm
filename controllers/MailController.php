@@ -163,12 +163,17 @@ class MailController extends Controller
         $mail = Emails::findOne($id);
         $mailbox = Mails::findOne($mail->mailbox_id);
         $uploadForm = new UploadForm();
+        $content = "\n\n---------------------\n\n"
+            . \Yii::$app->user->identity->mail_signature
+            . "\n"
+            . $mailbox->signature;
         $model = new EmailReply([
             'mailbox_id' => $mail->mailbox_id,
             'reply_to_id' => $mail->id,
             'manager_id' => \Yii::$app->user->id,
             'from' => $mailbox->login,
-            'to' => $mail->imap_from
+            'to' => $mail->imap_from,
+            'content' => $content
         ]);
 
         if ($model->load(\Yii::$app->request->post())) {

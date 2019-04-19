@@ -15,6 +15,7 @@ use Yii;
  * @property string $pwd
  * @property string $comment
  * @property string $start_date
+ * @property string $signature
  */
 class Mails extends \yii\db\ActiveRecord
 {
@@ -36,7 +37,7 @@ class Mails extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'server', 'login', 'pwd'], 'required'],
-            [['name', 'server', 'login', 'pwd', 'comment', 'start_date'], 'string', 'max' => 255],
+            [['name', 'server', 'login', 'pwd', 'comment', 'start_date', 'signature'], 'string', 'max' => 255],
             [['users'], 'safe'],
         ];
     }
@@ -54,7 +55,8 @@ class Mails extends \yii\db\ActiveRecord
             'pwd' => 'Пароль',
             'comment' => 'Комментарий',
             'users' => 'Доступ сотрудникам',
-            'start_date' => 'Дата начала скачивания'
+            'start_date' => 'Дата начала скачивания',
+            'signature' => 'Подпись в письме'
         ];
     }
 
