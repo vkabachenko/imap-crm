@@ -382,7 +382,7 @@ $.get( "<?php echo Url::toRoute(['site/getlastcalls']); ?>", function( data ) {
 		phoneid.push(data[k].tel_from);
 		}
 	});
-	//setTimeout(chekcalls, 2000);
+	setTimeout(chekcalls, 2000);
 }, "json");
 	}
 jQuery(document).ready(function() {

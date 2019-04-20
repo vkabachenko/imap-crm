@@ -109,9 +109,8 @@ class MailController extends Controller
         $mail = Emails::findOne($id);
 
         if ($mail->load(\Yii::$app->request->post())) {
-            $mail->manager_id = \Yii::$app->user->id;
-            $mail->is_read = true;
             $this->lockService->release($mail);
+            $mail->createXml();
             return $this->redirect(['mail/mailbox', 'mailboxId' => $mail->mailbox_id]);
         } else {
             $isLocked = $this->lockService->isLocked($mail);

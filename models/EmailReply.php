@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\services\XmlService;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 
@@ -111,6 +112,8 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
     {
         parent::afterSave($insert, $changedAttributes);
 
+        $this->createXml();
+
         $uploadPath = \Yii::getAlias('@app/uploads/');
         $uploadedFiles = array_diff(scandir($uploadPath), ['..', '.']);
 
@@ -155,5 +158,36 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
             . 'reply'
             . strval($this->id)
             . '/';
+    }
+
+    private function createXml()
+    {
+        $in = [
+                  [
+                        'tag' => 'ФайлОбмена',
+                        'attributes' => [
+                            'ДатаВыгрузки' => date("dmYHis")
+                        ],
+                        'elements' => [
+                            [
+                                'tag' => 'Письмо',
+                                'attributes' => [
+                                    'Дата' => date("dmYHis", strtotime($this->created_at)),
+                                    'ОтКого' => $this->from,
+                                    'Кому' => $this->to,
+                                    'Направление' => 'Исходящее',
+                                    'Тема' => $this->subject,
+                                    'Комментарий' => $this->comment,
+                                    'Статус' => '',
+                                    'Связь' => ''
+                                 ]
+
+                            ]
+                        ]
+                  ]
+              ];
+
+        $service = new XmlService();
+        $service->create($in);
     }
 }

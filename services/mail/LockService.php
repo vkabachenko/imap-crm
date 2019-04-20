@@ -47,6 +47,8 @@ class LockService
     {
         $mail->lock_time = null;
         $mail->lock_user_id = null;
+        $mail->manager_id = $this->userId;
+        $mail->is_read = true;
         $mail->save();
     }
 

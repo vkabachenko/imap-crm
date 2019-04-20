@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\services\XmlService;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 
@@ -153,5 +154,36 @@ class Emails extends \yii\db\ActiveRecord implements EMailInterface
         }
 
         return parent::beforeValidate();
+    }
+
+    public function createXml()
+    {
+        $in = [
+            [
+                'tag' => 'ФайлОбмена',
+                'attributes' => [
+                    'ДатаВыгрузки' => date("dmYHis")
+                ],
+                'elements' => [
+                    [
+                        'tag' => 'Письмо',
+                        'attributes' => [
+                            'Дата' => date("dmYHis", strtotime($this->imap_date)),
+                            'ОтКого' => $this->imap_from,
+                            'Кому' => $this->imap_to,
+                            'Направление' => 'Входящее',
+                            'Тема' => $this->imap_subject,
+                            'Комментарий' => $this->comment,
+                            'Статус' => $this->emailStatus ? $this->emailStatus->status : '',
+                            'Связь' => $this->answer_method ? self::answerMethods()[$this->answer_method] : ''
+                        ]
+
+                    ]
+                ]
+            ]
+        ];
+
+        $service = new XmlService();
+        $service->create($in);
     }
 }

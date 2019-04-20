@@ -7,6 +7,9 @@ $config = [
     'id' => 'basic-console',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'aliases' => [
+        '@webroot' => dirname(dirname(__FILE__)) . '/web',
+    ],
     'controllerNamespace' => 'app\commands',
     'components' => [
         'cache' => [

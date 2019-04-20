@@ -5,6 +5,7 @@ namespace app\services\mail;
 
 use app\models\Emails;
 use app\models\Mails;
+use app\services\XmlService;
 use PhpImap\IncomingMail;
 use PhpImap\Mailbox;
 use yii\helpers\Json;
@@ -82,6 +83,7 @@ class ImapService
         foreach ($emails as $email) {
             $this->saveEmail($email);
         }
+        $this->createXml($emails);
 
     }
 
@@ -112,5 +114,43 @@ class ImapService
                 rename($attachment->filePath, $mailAttachmentPath . $attachment->name);
             }
         }
+    }
+
+    /*
+     * @var IncomingMail[] $emails
+     */
+    public function createXml($emails)
+    {
+        $in = [
+                  [
+                      'tag' => 'ФайлОбмена',
+                      'attributes' => [
+                                          'ДатаВыгрузки' => date("dmYHis")
+                                      ],
+                       'elements' => []
+                  ]
+              ];
+        $elements = [];
+        /* @var $email \PhpImap\IncomingMail */
+        foreach ($emails as $email) {
+            $elements[] = [
+                'tag' => 'Письмо',
+                'attributes' => [
+                    'Дата' => date("dmYHis", strtotime($email->date)),
+                    'ОтКого' => $email->fromAddress,
+                    'Кому' => $email->toString,
+                    'Направление' => 'Входящее',
+                    'Тема' => $email->subject,
+                    'Комментарий' => '',
+                    'Статус' => '',
+                    'Связь' => ''
+                ]
+            ];
+        }
+
+        $in[0]['elements'] = $elements;
+
+        $service = new XmlService();
+        $service->create($in);
     }
 }

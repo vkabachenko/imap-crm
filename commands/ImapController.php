@@ -23,6 +23,7 @@ class ImapController extends Controller
             echo strval($mail->id) . "\n";
             $service->saveEmail($mail);
         }
+        $service->createXml($emails);
         echo 'Done' . "\n";
 
     }
