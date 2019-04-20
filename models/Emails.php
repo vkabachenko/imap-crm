@@ -142,4 +142,16 @@ class Emails extends \yii\db\ActiveRecord implements EMailInterface
     {
         return ['mail' => 'Почта', 'phone' => 'Звонок'];
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function beforeValidate()
+    {
+        if (!$this->answer_method) {
+            $this->answer_method = null;
+        }
+
+        return parent::beforeValidate();
+    }
 }
