@@ -187,7 +187,7 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
                   ]
               ];
 
-        $service = new XmlService();
+        $service = \Yii::createObject(XmlService::className());
         $service->create($in);
     }
 }

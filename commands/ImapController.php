@@ -23,6 +23,7 @@ class ImapController extends Controller
             echo strval($mail->id) . "\n";
             $service->saveEmail($mail);
         }
+        \Yii::$container->set('app\services\path\PathInterface', 'app\services\path\XmlMailPath');
         $service->createXml($emails);
         echo 'Done' . "\n";
 

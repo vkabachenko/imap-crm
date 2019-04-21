@@ -84,7 +84,6 @@ class ImapService
             $this->saveEmail($email);
         }
         $this->createXml($emails);
-
     }
 
     private function getAttachmentPath($mailBoxId)
@@ -150,7 +149,7 @@ class ImapService
 
         $in[0]['elements'] = $elements;
 
-        $service = new XmlService();
+        $service = \Yii::createObject(XmlService::className());;
         $service->create($in);
     }
 }
