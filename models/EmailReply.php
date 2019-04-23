@@ -130,9 +130,34 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
         }
     }
 
+    /**
+     * @throws \yii\base\InvalidConfigException
+     */
     public function send()
     {
-        $message = \Yii::$app->mailer->compose();
+        /* @var $mailbox Mails */
+        $mailbox = $this->mailbox;
+
+        \Yii::$app->set('mailer', [
+            'class' => 'yii\swiftmailer\Mailer',
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.mail.ru',
+                'username' => $mailbox->login,
+                'password' => $mailbox->pwd,
+                'port' => '465',
+                'encryption' => 'ssl',
+            ],
+         ]);
+
+        /* @var $mailer \yii\swiftmailer\Mailer */
+        $mailer = \Yii::$app->mailer;
+        /* @var $transport \Swift_Transport */
+
+        $logger = new \Swift_Plugins_Loggers_ArrayLogger();
+        $mailer->getSwiftMailer()->registerPlugin(new \Swift_Plugins_LoggerPlugin($logger));
+
+        $message = $mailer->compose();
 
         $uploadPath = \Yii::getAlias('@app/uploads/');
         $uploadedFiles = array_diff(scandir($uploadPath), ['..', '.']);
@@ -144,8 +169,11 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
         $message->setFrom($this->from)
             ->setTo($this->to)
             ->setSubject($this->subject)
-            ->setTextBody($this->content)
-            ->send();
+            ->setTextBody($this->content);
+
+        if (!$message->send()) {
+            \Yii::error($logger->dump());
+        }
     }
 
     public function setAttachmentPath()
