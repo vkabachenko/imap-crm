@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\helpers\ConvertLinks;
 use app\models\EmailReply;
 use app\models\Emails;
 use app\models\EmailsSearch;
@@ -121,6 +122,7 @@ class MailController extends Controller
             $textPlain = $content['textPlain'];
             $textHtml = $content['textHtml'];
             $textEmail = empty($textHtml) ? nl2br($textPlain) : $textHtml;
+            $textEmail = ConvertLinks::convert($textEmail);
 
             $downloadService = new DownloadService($mail);
             $attachmentFileNames = $downloadService->getFileNames();
