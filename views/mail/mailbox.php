@@ -43,9 +43,27 @@ use app\models\Emails;
             ],
         ],
         'imap_date',
-        'imap_from',
+        [
+            'attribute' => 'imap_from',
+            'format' => 'raw',
+            'value' => function ($model) {
+                /* @var $model \app\models\EMails */
+                $html = Html::tag('div', $model->imap_from, ['style'=> 'width: 80px; white-space: normal; word-wrap: break-word']);
+                return $html;
+            },
+
+        ],
         'imap_to',
-        'imap_subject',
+        [
+            'attribute' => 'imap_subject',
+            'format' => 'raw',
+            'value' => function ($model) {
+                /* @var $model \app\models\EMails */
+                $html = Html::tag('div', $model->imap_subject, ['style'=> 'width: 200px; overflow: hidden;']);
+                return $html;
+            },
+
+        ],
         [
             'attribute' => 'status_id',
             'value' => function ($model) {
