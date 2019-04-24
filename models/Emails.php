@@ -124,6 +124,14 @@ class Emails extends \yii\db\ActiveRecord implements EMailInterface
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getLockUser()
+    {
+        return $this->hasOne(EmployeesAR::className(), ['id' => 'lock_user_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getEmailsReply()
     {
         return $this->hasMany(EmailReply::className(), ['reply_to_id' => 'id']);

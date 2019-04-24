@@ -98,6 +98,9 @@ $this->title = 'Полученное письмо';
 <?php else: ?>
 
     <div>
+        <div class="alert alert-danger" role="alert">
+            С письмом работает <?= $mail->lockUser->name ?>
+        </div>
         <div class="form-group">
             <?= Html::a('Назад',
                 Url::to(['mail/mailbox', 'mailboxId' => $mail->mailbox_id]),
