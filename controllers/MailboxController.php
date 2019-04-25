@@ -5,11 +5,9 @@ namespace app\controllers;
 
 
 use app\models\EmployeesAR;
-use yii\web\Controller;
 
 class MailboxController extends Controller
 {
-    use CheckAccessTrait;
 
     public function actionDefault($userId)
     {

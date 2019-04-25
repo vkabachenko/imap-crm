@@ -6,12 +6,9 @@ namespace app\controllers;
 use app\models\EmailStatus;
 use app\models\MailboxStatus;
 use yii\data\ActiveDataProvider;
-use yii\web\Controller;
 
 class MailboxStatusController extends Controller
 {
-    use CheckAccessTrait;
-
     public function beforeAction($action)
     {
         $this->checkAdmin();

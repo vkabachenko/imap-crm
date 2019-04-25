@@ -14,8 +14,6 @@ use app\services\mail\LastEmailsService;
 use app\services\mail\LockService;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Json;
-use yii\web\Controller;
-use yii\filters\AccessControl;
 use app\services\mail\ImapService;
 use yii\web\UploadedFile;
 
@@ -41,21 +39,6 @@ class MailController extends Controller
         $this->lockService = $lockService;
         \Yii::$container->set('app\services\path\PathInterface', 'app\services\path\XmlMailPath');
         parent::__construct($id, $module, $config = []);
-    }
-
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-        ];
     }
 
     public function actionIndex()
