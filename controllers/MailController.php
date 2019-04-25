@@ -108,6 +108,8 @@ class MailController extends Controller
             $downloadService = new DownloadService($mail);
             $attachmentFileNames = $downloadService->getFileNames();
 
+            $threadEmail = EmailReply::getThreadMail($mail);
+
             $replyEmails = EmailReply::find()
                 ->where(['reply_to_id' => $id])
                 ->orderBy('created_at DESC')
@@ -119,6 +121,7 @@ class MailController extends Controller
                 'content' => $content,
                 'attachmentFileNames' => $attachmentFileNames,
                 'replyEmails' => $replyEmails,
+                'threadEmail' => $threadEmail,
                 'isLocked' => $isLocked
             ]);
         }

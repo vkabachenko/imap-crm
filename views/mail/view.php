@@ -12,7 +12,8 @@ use app\models\Emails;
 /* @var $content array */
 /* @var $textEmail string */
 /* @var $attachmentFileNames array */
-/* @var $replyEmails \app\models\EmailReply */
+/* @var $replyEmails \app\models\EmailReply[] */
+/* @var $threadEmail \app\models\EmailReply */
 /* @var $isLocked boolean */
 
 $this->title = 'Полученное письмо';
@@ -47,6 +48,18 @@ $this->title = 'Полученное письмо';
     </div>
 <?php endif; ?>
 
+<?php if(!empty($threadEmail)): ?>
+    <div>
+        <div>
+            <strong>Исходное письмо:</strong>
+        </div>
+        <div>
+            <?= Html::a('От ' . $threadEmail->created_at, ['mail/reply-view', 'id' => $threadEmail->id]) ?>
+        </div>
+    </div>
+<?php endif; ?>
+
+
 <?php if(!empty($replyEmails)): ?>
     <div>
         <div>
@@ -54,7 +67,7 @@ $this->title = 'Полученное письмо';
         </div>
         <?php foreach ($replyEmails as $replyEmail): ?>
             <div>
-                <?= Html::a('от ' . $replyEmail->created_at,
+                <?= Html::a('От ' . $replyEmail->created_at,
                     ['mail/reply-view', 'id' => $replyEmail->id]);
                 ?>
             </div>

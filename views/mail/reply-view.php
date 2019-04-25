@@ -6,6 +6,12 @@
 $this->title = 'Ответ на письмо - просмотр';
 
 use yii\helpers\Html; ?>
+
+<div>
+    <strong style="margin-right: 10px;">Исходное письмо:</strong>
+    <?= Html::a('От ' . $model->replyTo->imap_date, ['mail/view', 'id' => $model->reply_to_id]) ?>
+</div>
+
 <div>
     <strong style="margin-right: 10px;">Дата:</strong>
     <?= $model->created_at ?>

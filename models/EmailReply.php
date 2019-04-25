@@ -218,4 +218,16 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
         $service = \Yii::createObject(XmlService::className());
         $service->create($in);
     }
+
+    public static function getThreadMail(Emails $mail)
+    {
+        $subject = trim(str_replace('Re:', '', $mail->imap_subject));
+        $model = self::find()
+            ->where(['to' => $mail->imap_from])
+            ->andWhere(['<', 'created_at', $mail->imap_date])
+            ->andWhere(['like', 'subject', $subject])
+            ->orderBy('created_at DESC')
+            ->one();
+        return $model;
+    }
 }
