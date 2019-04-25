@@ -20,8 +20,6 @@ use yii\web\UploadedFile;
 
 class MailController extends Controller
 {
-    use CheckAccessTrait;
-
     /* @var LastEmailsService */
     private $lastEmailsService;
     /**
@@ -146,6 +144,11 @@ class MailController extends Controller
         $this->checkAccessToMail($id);
 
         $mail = Emails::findOne($id);
+        $mail->load(\Yii::$app->request->post());
+        $mail->manager_id = \Yii::$app->user->id;
+        $mail->is_read = true;
+        $mail->save();
+
         $mailbox = Mails::findOne($mail->mailbox_id);
         $uploadForm = new UploadForm();
         $content = "\n\n---------------------\n\n"
@@ -158,6 +161,7 @@ class MailController extends Controller
             'manager_id' => \Yii::$app->user->id,
             'from' => $mailbox->login,
             'to' => $mail->imap_from,
+            'subject' => $mail->imap_subject,
             'content' => $content
         ]);
 

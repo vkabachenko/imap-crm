@@ -88,7 +88,12 @@ $this->title = 'Полученное письмо';
         <div class="form-group col-md-4">
             <?= Html::a('Ответить',
                 Url::to(['mail/reply', 'id' => $mail->id]),
-                ['class' => 'btn btn-primary']
+                [
+                    'class' => 'btn btn-primary',
+                    'data' => [
+                        'method' => 'post'
+                    ]
+                ]
             ) ?>
         </div>
     </div>
