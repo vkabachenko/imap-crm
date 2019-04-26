@@ -1,19 +1,18 @@
 <?php
 
-/**
- * @var $dataProvider \yii\data\ActiveDataProvider
- * @var $mailbox \app\models\Mails
- * @var $searchModel \app\models\EmailsSearch
- */
-
-$this->title = 'Почтовый ящик ' . $mailbox->name;
-
 use yii\grid\GridView;
 use app\models\MailboxStatus;
 use app\models\EmployeesAR;
 use yii\helpers\Html;
 use app\models\Emails;
 
+/**
+ * @var $dataProvider \yii\data\ActiveDataProvider
+ * @var $mailbox \app\models\Mails
+ * @var $searchModel \app\models\EmailsSearch
+ */
+
+$this->title = 'Почтовый ящик ' . $mailbox->name . ' входящая почта';
 ?>
 
 <?= GridView::widget([
@@ -51,7 +50,6 @@ use app\models\Emails;
                 $html = Html::tag('div', $model->imap_from, ['style'=> 'width: 80px; white-space: normal; word-wrap: break-word']);
                 return $html;
             },
-
         ],
         'imap_to',
         [
@@ -62,7 +60,6 @@ use app\models\Emails;
                 $html = Html::tag('div', $model->imap_subject, ['style'=> 'width: 200px; overflow: hidden;']);
                 return $html;
             },
-
         ],
         [
             'attribute' => 'status_id',

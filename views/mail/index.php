@@ -49,7 +49,7 @@ $this->title = 'Почтовые ящики';
         $actionColumn = [
                 [
                     'class' => 'yii\grid\ActionColumn',
-                    'template' => '{update}{status}{delete}',
+                    'template' => '{update}{status}{delete}{send}',
                     'buttons' => [
                         'update' => function ($url, $model, $key) {
                             return Html::a('<span class="fa
@@ -71,6 +71,7 @@ $this->title = 'Почтовые ящики';
                                     'data' => [
                                         'confirm' => 'Удалить безвозвратно почтовый ящик и все письма?'
                                     ],
+                                    'style' => 'margin-right: 10px;'
                                 ]);
                         },
                         'status' => function ($url, $model, $key) {
@@ -80,6 +81,16 @@ $this->title = 'Почтовые ящики';
                                 [
                                     'data-toggle' => 'tooltip',
                                     'title' => 'Статус',
+                                    'style' => 'margin-right: 10px;'
+                                ]);
+                        },
+                        'send' => function ($url, $model, $key) {
+                            return Html::a('<span class="fa
+                                fa-send-o"></span>',
+                                ['mail-send/index', 'mailboxId' => $model->id],
+                                [
+                                    'data-toggle' => 'tooltip',
+                                    'title' => 'Отправленные',
                                     'style' => 'margin-right: 10px;'
                                 ]);
                         },
