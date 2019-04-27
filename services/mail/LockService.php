@@ -20,6 +20,9 @@ class LockService
 
     public function isLocked(Emails $mail)
     {
+        if ($mail->is_deleted) {
+            return false;
+        }
         if (empty($mail->lock_time)) {
             return false;
         }
@@ -36,7 +39,7 @@ class LockService
 
     public function lock(Emails $mail)
     {
-        if (!$this->isLocked($mail)) {
+        if (!$this->isLocked($mail) && is_null($mail->is_deleted)) {
             $mail->lock_time = date('Y-m-d H:i:s');
             $mail->lock_user_id = $this->userId;
             $mail->save();
@@ -45,11 +48,13 @@ class LockService
 
     public function release(Emails $mail)
     {
-        $mail->lock_time = null;
-        $mail->lock_user_id = null;
-        $mail->manager_id = $this->userId;
-        $mail->is_read = true;
-        $mail->save();
+        if (is_null($mail->is_deleted)) {
+            $mail->lock_time = null;
+            $mail->lock_user_id = null;
+            $mail->manager_id = $this->userId;
+            $mail->is_read = true;
+            $mail->save();
+        }
     }
 
 }

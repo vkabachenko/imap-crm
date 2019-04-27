@@ -20,6 +20,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string $to
  * @property string $subject
  * @property string $content
+ * @property string $status
  *
  * @property Mails $mailbox
  * @property Employees $manager
@@ -61,6 +62,8 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
             [['mailbox_id'], 'exist', 'skipOnError' => true, 'targetClass' => Mails::className(), 'targetAttribute' => ['mailbox_id' => 'id']],
             [['manager_id'], 'exist', 'skipOnError' => true, 'targetClass' => EmployeesAR::className(), 'targetAttribute' => ['manager_id' => 'id']],
             [['reply_to_id'], 'exist', 'skipOnError' => true, 'targetClass' => Emails::className(), 'targetAttribute' => ['reply_to_id' => 'id']],
+            ['status', 'in', 'range' => array_keys(self::statuses())],
+
         ];
     }
 
@@ -81,6 +84,7 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
             'to' => 'Кому',
             'subject' => 'Тема',
             'content' => 'Содержание',
+            'status' => 'Статус',
         ];
     }
 
@@ -229,5 +233,10 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
             ->orderBy('created_at DESC')
             ->one();
         return $model;
+    }
+
+    public static function statuses()
+    {
+        return ['draft' => 'Черновик', 'deleted' => 'Удаленный'];
     }
 }

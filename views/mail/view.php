@@ -59,7 +59,6 @@ $this->title = 'Полученное письмо';
     </div>
 <?php endif; ?>
 
-
 <?php if(!empty($replyEmails)): ?>
     <div>
         <div>
@@ -75,7 +74,7 @@ $this->title = 'Полученное письмо';
     </div>
 <?php endif; ?>
 
-<?php if (!$isLocked): ?>
+<?php if (!$isLocked && is_null($mail->is_deleted)): ?>
 
     <?php $form = ActiveForm::begin(); ?>
 
@@ -114,18 +113,18 @@ $this->title = 'Полученное письмо';
     <?php ActiveForm::end(); ?>
 
 <?php else: ?>
-
-    <div>
-        <div class="alert alert-danger" role="alert">
-            С письмом работает <?= $mail->lockUser->name ?>
+    <?php if($isLocked): ?>
+        <div>
+            <div class="alert alert-danger" role="alert">
+                С письмом работает <?= $mail->lockUser->name ?>
+            </div>
         </div>
-        <div class="form-group">
-            <?= Html::a('Назад',
-                Url::to(['mail/mailbox', 'mailboxId' => $mail->mailbox_id]),
-                ['class' => 'btn btn-primary']
-            ) ?>
-        </div>
+    <?php endif; ?>
+    <div class="form-group">
+        <?= Html::a('Назад',
+            Url::to(['mail/mailbox', 'mailboxId' => $mail->mailbox_id, 'isDeleted' => $mail->is_deleted]),
+            ['class' => 'btn btn-primary']
+        ) ?>
     </div>
-
 <?php endif; ?>
 

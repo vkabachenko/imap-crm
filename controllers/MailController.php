@@ -59,19 +59,20 @@ class MailController extends Controller
         ]);
     }
 
-    public function actionMailbox($mailboxId)
+    public function actionMailbox($mailboxId, $isDeleted = null)
     {
         $this->checkAccessToMailbox($mailboxId);
 
         $mailbox = Mails::findOne($mailboxId);
 
-        $searchModel = new EmailsSearch(['mailbox_id' => $mailboxId]);
+        $searchModel = new EmailsSearch(['mailbox_id' => $mailboxId, 'is_deleted' => $isDeleted]);
         $dataProvider = $searchModel->search(\Yii::$app->request->queryParams);
 
         return $this->render('mailbox', [
             'mailbox' => $mailbox,
             'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel
+            'searchModel' => $searchModel,
+            'isDeleted' => $isDeleted
         ]);
     }
 
@@ -253,6 +254,28 @@ class MailController extends Controller
         $model = Mails::findOne($mailboxId);
         $model->delete();
         $this->redirect(['mail/index']);
+    }
+
+    public function actionDeleteMail($id)
+    {
+        $this->checkAccessToMail($id);
+        $email = Emails::findOne($id);
+        $isDeleted = $email->is_deleted;
+        if ($this->lockService->isLocked($email)) {
+            \Yii::$app->session->setFlash('error', 'Письмо используется другим пользователем');
+        } else {
+            if (is_null($isDeleted)) {
+                $email->is_deleted = true;
+                $email->save();
+                \Yii::$app->session->setFlash('success', 'Письмо успешно удалено');
+            } else {
+                $email->is_deleted = null;
+                $email->save();
+                \Yii::$app->session->setFlash('success', 'Письмо успешно восстановлено');
+            }
+
+        }
+        $this->redirect(['mail/mailbox', 'mailboxId' => $email->mailbox_id, 'isDeleted' => $isDeleted]);
     }
 
 }

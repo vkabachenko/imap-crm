@@ -10,10 +10,32 @@ use app\models\Emails;
  * @var $dataProvider \yii\data\ActiveDataProvider
  * @var $mailbox \app\models\Mails
  * @var $searchModel \app\models\EmailsSearch
+ * @var $isDeleted integer|null
  */
 
-$this->title = 'Почтовый ящик ' . $mailbox->name . ' входящая почта';
+$this->title = 'Почтовый ящик ' . $mailbox->name . ' входящая почта' . ($isDeleted ? ' - удаленные' : '');
 ?>
+
+<?php if (\Yii::$app->session->hasFlash('error')): ?>
+    <div class="alert alert-danger alert-dismissable">
+        <?= \Yii::$app->session->getFlash('error') ?>
+    </div>
+<?php endif; ?>
+
+<?php if (\Yii::$app->session->hasFlash('success')): ?>
+    <div class="alert alert-success alert-dismissable">
+        <?= \Yii::$app->session->getFlash('success') ?>
+    </div>
+<?php endif; ?>
+
+<div style="margin: 10px 0;">
+    <?php if (is_null($isDeleted)): ?>
+        <?= Html::a('Перейти к удаленным', ['mail/mailbox', 'mailboxId' => $mailbox->id, 'isDeleted' => true]) ?>
+    <?php else: ?>
+        <?= Html::a('Перейти к входящим', ['mail/mailbox', 'mailboxId' => $mailbox->id]) ?>
+    <?php endif; ?>
+</div>
+
 
 <?= GridView::widget([
     'dataProvider' => $dataProvider,
@@ -28,7 +50,7 @@ $this->title = 'Почтовый ящик ' . $mailbox->name . ' входяща�
     'columns' => [
         [
             'class' => 'yii\grid\ActionColumn',
-            'template' => '{view}',
+            'template' => '{view}{delete}',
             'buttons' => [
                 'view' => function ($url, $model, $key) {
                     return Html::a('<span class="fa
@@ -37,7 +59,34 @@ $this->title = 'Почтовый ящик ' . $mailbox->name . ' входяща�
                         [
                             'data-toggle' => 'tooltip',
                             'title' => 'Чтение почты',
+                            'style' => 'margin-right: 10px;'
                         ]);
+                },
+                'delete' => function ($url, $model, $key) {
+                    if (is_null($model->is_deleted)) {
+                        $html=  Html::a('<span class="fa
+                                fa-close"></span>',
+                            ['delete-mail', 'id' => $model->id],
+                            [
+                                'data-toggle' => 'tooltip',
+                                'title' => 'Удалить',
+                                'data' => [
+                                    'confirm' => 'Поместить письмо в корзину?'
+                                ],
+                            ]);
+                    } else {
+                        $html=  Html::a('<span class="fa
+                                fa-undo"></span>',
+                            ['delete-mail', 'id' => $model->id],
+                            [
+                                'data-toggle' => 'tooltip',
+                                'title' => 'Восстановить',
+                                'data' => [
+                                    'confirm' => 'Восстановить письмо из корзины?'
+                                ],
+                            ]);
+                    }
+                    return $html;
                 },
             ],
         ],

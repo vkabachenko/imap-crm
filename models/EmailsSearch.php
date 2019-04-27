@@ -44,8 +44,8 @@ class EmailsSearch extends Emails
     {
         $query = Emails::find()
             ->with(['emailStatus', 'manager'])
-            ->where(['mailbox_id' => $this->mailbox_id])
-            ->orderBy(['mailbox_id' => SORT_ASC, 'imap_date' => SORT_DESC]);
+            ->where(['mailbox_id' => $this->mailbox_id, 'is_deleted' => $this->is_deleted])
+            ->orderBy(['imap_date' => SORT_DESC]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

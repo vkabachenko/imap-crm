@@ -27,6 +27,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string imap_subject
  * @property integer lock_user_id
  * @property string answer_method
+ * @property boolean is_deleted
  *
  * @property Mails $mailbox
  */
@@ -63,7 +64,7 @@ class Emails extends \yii\db\ActiveRecord implements EMailInterface
             [['mailbox_id'], 'required'],
             [['mailbox_id', 'status_id', 'manager_id', 'lock_user_id'], 'integer'],
             [['lock_time', 'imap_raw_content', 'imap_id', 'imap_date', 'imap_from', 'imap_to', 'imap_subject'], 'string'],
-            [['is_read'], 'boolean'],
+            [['is_read', 'is_deleted'], 'boolean'],
             [['created_at', 'updated_at'], 'safe'],
             [['comment'], 'string', 'max' => 255],
             [['mailbox_id'], 'exist', 'skipOnError' => true, 'targetClass' => Mails::className(), 'targetAttribute' => ['mailbox_id' => 'id']],
@@ -93,7 +94,8 @@ class Emails extends \yii\db\ActiveRecord implements EMailInterface
             'imap_to' => 'Кому',
             'imap_subject' => 'Тема',
             'lock_user_id' => 'lock_user_id',
-            'answer_method' => 'Способ ответа'
+            'answer_method' => 'Способ ответа',
+            'is_deleted' => 'Удалено',
         ];
     }
 
