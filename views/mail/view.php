@@ -93,7 +93,7 @@ $this->title = 'Полученное письмо';
         </div>
         <div class="form-group col-md-4">
             <?= Html::a('Отмена',
-                Url::to(['mail/release-mail', 'mailId' => $mail->id]),
+                Url::previous(),
                 ['class' => 'btn btn-primary']
             ) ?>
         </div>
@@ -122,7 +122,7 @@ $this->title = 'Полученное письмо';
     <?php endif; ?>
     <div class="form-group">
         <?= Html::a('Назад',
-            Url::to(['mail/mailbox', 'mailboxId' => $mail->mailbox_id, 'isDeleted' => $mail->is_deleted]),
+            Url::previous(),
             ['class' => 'btn btn-primary']
         ) ?>
     </div>

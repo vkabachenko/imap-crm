@@ -15,6 +15,7 @@ use app\services\mail\LockService;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Json;
 use app\services\mail\ImapService;
+use yii\helpers\Url;
 use yii\web\UploadedFile;
 
 
@@ -68,6 +69,8 @@ class MailController extends Controller
         $searchModel = new EmailsSearch(['mailbox_id' => $mailboxId, 'is_deleted' => $isDeleted]);
         $dataProvider = $searchModel->search(\Yii::$app->request->queryParams);
 
+        Url::remember();
+
         return $this->render('mailbox', [
             'mailbox' => $mailbox,
             'dataProvider' => $dataProvider,
@@ -82,7 +85,7 @@ class MailController extends Controller
         $mail = Emails::findOne($mailId);
         $this->lockService->release($mail);
 
-        return $this->redirect(['mail/mailbox', 'mailboxId' => $mail->mailbox_id]);
+        return $this->redirect(Url::previous());
     }
 
 
@@ -95,7 +98,7 @@ class MailController extends Controller
         if ($mail->load(\Yii::$app->request->post())) {
             $this->lockService->release($mail);
             $mail->createXml();
-            return $this->redirect(['mail/mailbox', 'mailboxId' => $mail->mailbox_id]);
+            return $this->redirect(Url::previous());
         } else {
             $isLocked = $this->lockService->isLocked($mail);
             $this->lockService->lock($mail);
@@ -233,7 +236,7 @@ class MailController extends Controller
                 \Yii::$app->session->setFlash('success', 'Письмо успешно отправлено');
             }
 
-            return $this->redirect(['mail-send/index', 'mailboxId' => $model->mailbox_id, 'status' => $model->status]);
+            return $this->redirect(Url::previous());
         }
 
         return $this->render('reply-update', [
@@ -320,7 +323,8 @@ class MailController extends Controller
             }
 
         }
-        $this->redirect(['mail/mailbox', 'mailboxId' => $email->mailbox_id, 'isDeleted' => $isDeleted]);
+        //$this->redirect(['mail/mailbox', 'mailboxId' => $email->mailbox_id, 'isDeleted' => $isDeleted]);
+        $this->redirect(Url::previous());
     }
 
 }

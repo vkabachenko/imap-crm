@@ -7,6 +7,7 @@ namespace app\controllers;
 use app\models\EmailReply;
 use app\models\EmailReplySearch;
 use app\models\Mails;
+use yii\helpers\Url;
 
 class MailSendController extends Controller
 {
@@ -19,6 +20,8 @@ class MailSendController extends Controller
 
         $searchModel = new EmailReplySearch(['mailbox_id' => $mailboxId, 'status' => $status]);
         $dataProvider = $searchModel->search(\Yii::$app->request->queryParams);
+
+        Url::remember();
 
         return $this->render('index', [
             'mailbox' => $mailbox,
@@ -49,7 +52,7 @@ class MailSendController extends Controller
                 $email->save();
                 \Yii::$app->session->setFlash('success', 'Письмо успешно удалено');
         }
-        $this->redirect(['mail-send/index', 'mailboxId' => $email->mailbox_id, 'status' => $status]);
+        $this->redirect(Url::previous());
     }
 
 

@@ -29,6 +29,12 @@ $this->title = 'Почтовый ящик ' . $mailbox->name . ' входяща�
 <?php endif; ?>
 
 <div class="row" style="margin: 10px 0;">
+    <div class="col-md-3">
+        <?= Html::a('Назад',
+            ['mail/index'],
+            ['class' => 'btn btn-primary']
+        ) ?>
+    </div>
     <div class="col-md-4">
         <?= Html::a('Исходящие',
             ['mail-send/index', 'mailboxId' => $mailbox->id],

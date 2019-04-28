@@ -7,6 +7,13 @@ $this->title = 'Ответ на письмо - просмотр';
 
 use yii\helpers\Html; ?>
 
+<div style="margin-bottom: 10px;">
+    <?= Html::a('Назад',
+        \yii\helpers\Url::previous(),
+        ['class' => 'btn btn-primary']
+    ) ?>
+</div>
+
 <div>
     <strong style="margin-right: 10px;">Исходное письмо:</strong>
     <?= Html::a('От ' . $model->replyTo->imap_date, ['mail/view', 'id' => $model->reply_to_id]) ?>
