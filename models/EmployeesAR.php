@@ -94,6 +94,14 @@ class EmployeesAR extends \yii\db\ActiveRecord
         return $list;
     }
 
+
+    public static function usersAsMapForGrid()
+    {
+        $list = self::usersAsMap();
+        $empty = ['empty' => 'Не задано'];
+        return $empty + $list;
+    }
+
     /**
      * return array
      */

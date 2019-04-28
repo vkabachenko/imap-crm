@@ -20,10 +20,8 @@ class EmailReplySearch extends EmailReply
                     'to',
                     'subject',
                     'comment',
+                    'manager_id'
                 ], 'safe'
-            ],
-            [
-                ['manager_id'], 'integer'
             ],
         ];
     }
@@ -54,8 +52,12 @@ class EmailReplySearch extends EmailReply
         $query->andFilterWhere(['like', 'from', $this->from]);
         $query->andFilterWhere(['like', 'to', $this->to]);
         $query->andFilterWhere(['like', 'subject', $this->subject]);
-        $query->andFilterWhere(['manager_id' => $this->manager_id]);
-        $query->andFilterWhere(['like', 'comment', $this->comment]);
+
+        if ($this->manager_id === 'empty') {
+            $query->andWhere(['manager_id' => null]);
+        } else {
+            $query->andFilterWhere(['manager_id' => $this->manager_id]);
+        }        $query->andFilterWhere(['like', 'comment', $this->comment]);
 
         return $dataProvider;
     }

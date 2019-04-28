@@ -154,6 +154,11 @@ class Emails extends \yii\db\ActiveRecord implements EMailInterface
         return ['mail' => 'Почта', 'phone' => 'Звонок'];
     }
 
+    public static function answerMethodsForGrid()
+    {
+        return ['empty' => 'Не задано'] + self::answerMethods();
+    }
+
     /**
      * @inheritDoc
      */

@@ -16,8 +16,8 @@ $this->title = 'Редактирование черновика';
         <?= $form->field($model, 'from'); ?>
         <?= $form->field($model, 'to'); ?>
         <?= $form->field($model, 'subject'); ?>
-        <?= $form->field($model, 'content')->textarea(); ?>
-        <?= $form->field($model, 'comment')->textarea(); ?>
+        <?= $form->field($model, 'content')->textarea(['rows' => 10]); ?>
+        <?= $form->field($model, 'comment'); ?>
 
         <?php if(!empty($attachmentFileNames)): ?>
             <div id="files-attachment">

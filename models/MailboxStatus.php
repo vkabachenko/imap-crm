@@ -70,4 +70,14 @@ class MailboxStatus extends \yii\db\ActiveRecord
         return $list;
     }
 
+    /**
+     * return array
+     */
+    public static function emailStatusAsMapForGrid($mailboxId)
+    {
+        $list = self::emailStatusAsMap($mailboxId);
+        $empty = ['empty' => 'Не задано'];
+        return $empty + $list;
+    }
+
 }

@@ -137,7 +137,7 @@ $this->title = 'Почтовый ящик ' . $mailbox->name . ' входяща�
                 $status = $model->status_id ? $model->emailStatus->status : null;
                 return $status;
             },
-            'filter' => MailboxStatus::emailStatusAsMap($mailbox->id)
+            'filter' => MailboxStatus::emailStatusAsMapForGrid($mailbox->id)
         ],
         [
             'attribute' => 'is_read',
@@ -157,7 +157,7 @@ $this->title = 'Почтовый ящик ' . $mailbox->name . ' входяща�
                 $method = $model->answer_method ? Emails::answerMethods()[$model->answer_method] : null;
                 return $method;
             },
-            'filter' => Emails::answerMethods()
+            'filter' => Emails::answerMethodsForGrid()
         ],
         [
             'attribute' => 'manager_id',
@@ -166,7 +166,7 @@ $this->title = 'Почтовый ящик ' . $mailbox->name . ' входяща�
                 $manager = $model->manager_id ? $model->manager->name : null;
                 return $manager;
             },
-            'filter' => EmployeesAR::usersAsMap()
+            'filter' => EmployeesAR::usersAsMapForGrid()
         ],
         'comment'
     ],

@@ -21,11 +21,10 @@ class EmailsSearch extends Emails
                     'imap_to',
                     'imap_subject',
                     'comment',
-                    'answer_method'
+                    'answer_method',
+                    'status_id',
+                    'manager_id'
                 ], 'safe'
-            ],
-            [
-                ['status_id', 'manager_id'], 'integer'
             ],
             [
                 ['is_read'], 'boolean'
@@ -59,10 +58,27 @@ class EmailsSearch extends Emails
         $query->andFilterWhere(['like', 'imap_from', $this->imap_from]);
         $query->andFilterWhere(['like', 'imap_to', $this->imap_to]);
         $query->andFilterWhere(['like', 'imap_subject', $this->imap_subject]);
-        $query->andFilterWhere(['status_id' => $this->status_id]);
+
+        if ($this->status_id === 'empty') {
+            $query->andWhere(['status_id' => null]);
+        } else {
+            $query->andFilterWhere(['status_id' => $this->status_id]);
+        }
+
         $query->andFilterWhere(['is_read' => $this->is_read]);
-        $query->andFilterWhere(['answer_method' => $this->answer_method]);
-        $query->andFilterWhere(['manager_id' => $this->manager_id]);
+
+        if ($this->answer_method === 'empty') {
+            $query->andWhere(['answer_method' => null]);
+        } else {
+            $query->andFilterWhere(['answer_method' => $this->answer_method]);
+        }
+
+        if ($this->manager_id === 'empty') {
+            $query->andWhere(['manager_id' => null]);
+        } else {
+            $query->andFilterWhere(['manager_id' => $this->manager_id]);
+        }
+
         $query->andFilterWhere(['like', 'comment', $this->comment]);
 
         return $dataProvider;

@@ -146,7 +146,7 @@ $this->title = 'Почтовый ящик ' . $mailbox->name . ' исходящ�
                 $manager = $model->manager_id ? $model->manager->name : null;
                 return $manager;
             },
-            'filter' => EmployeesAR::usersAsMap()
+            'filter' => EmployeesAR::usersAsMapForGrid()
         ],
         'comment',
         [
