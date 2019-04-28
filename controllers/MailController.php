@@ -112,7 +112,7 @@ class MailController extends Controller
             $threadEmail = EmailReply::getThreadMail($mail);
 
             $replyEmails = EmailReply::find()
-                ->where(['reply_to_id' => $id])
+                ->where(['reply_to_id' => $id, 'status' => null])
                 ->orderBy('created_at DESC')
                 ->all();
 
@@ -143,7 +143,7 @@ class MailController extends Controller
         return $downloadService->download($fileName);
     }
 
-    public function actionReply($id)
+    public function actionReply($id, $isDraft = false)
     {
         $this->checkAccessToMail($id);
 
@@ -172,10 +172,20 @@ class MailController extends Controller
         if ($model->load(\Yii::$app->request->post())) {
             $uploadForm->files = UploadedFile::getInstances($uploadForm, 'files');
             $uploadForm->upload();
-            $model->send();
-            $model->save();
+            if ($isDraft) {
+                $model->status = 'draft';
+                $model->save();
+                \Yii::$app->session->setFlash('success', 'Сохранен черновик ответа');
+            } else {
+                $model->status = null;
+                $model->send();
+                $model->save();
+                $model->createXml();
+                \Yii::$app->session->setFlash('success', 'Письмо успешно отправлено');
+            }
+
             $this->lockService->release($mail);
-            return $this->redirect(['view', 'id' => $id]);
+            return $this->redirect(['mail-send/index', 'mailboxId' => $model->mailbox_id]);
         }
 
         return $this->render('reply', [
@@ -195,6 +205,41 @@ class MailController extends Controller
         return $this->render('reply-view', [
             'model' => $mail,
             'attachmentFileNames' => $attachmentFileNames
+        ]);
+    }
+
+    public function actionReplyUpdate($id, $isDraft = true)
+    {
+        $model = EmailReply::findOne($id);
+        $this->checkAccessToMail($model->reply_to_id);
+
+        $downloadService = new DownloadService($model);
+        $attachmentFileNames = $downloadService->getFileNames();
+
+        $uploadForm = new UploadForm();
+
+        if ($model->load(\Yii::$app->request->post())) {
+            $uploadForm->files = UploadedFile::getInstances($uploadForm, 'files');
+            $uploadForm->upload();
+            if ($isDraft) {
+                $model->status = 'draft';
+                $model->save();
+                \Yii::$app->session->setFlash('success', 'Сохранен черновик ответа');
+            } else {
+                $model->status = null;
+                $model->send();
+                $model->save();
+                $model->createXml();
+                \Yii::$app->session->setFlash('success', 'Письмо успешно отправлено');
+            }
+
+            return $this->redirect(['mail-send/index', 'mailboxId' => $model->mailbox_id, 'status' => $model->status]);
+        }
+
+        return $this->render('reply-update', [
+            'model' => $model,
+            'attachmentFileNames' => $attachmentFileNames,
+            'uploadForm' => $uploadForm
         ]);
     }
 

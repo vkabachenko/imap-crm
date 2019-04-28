@@ -116,8 +116,6 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
     {
         parent::afterSave($insert, $changedAttributes);
 
-        $this->createXml();
-
         $uploadPath = \Yii::getAlias('@app/uploads/');
         $uploadedFiles = array_diff(scandir($uploadPath), ['..', '.']);
 
@@ -126,6 +124,8 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
 
             if (!file_exists($mailAttachmentPath)) {
                 mkdir($mailAttachmentPath, 0777);
+            } else {
+                array_map('unlink', glob($mailAttachmentPath . '*'));
             }
 
             foreach ($uploadedFiles as $uploadedFile) {
@@ -163,8 +163,14 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
 
         $message = $mailer->compose();
 
-        $uploadPath = \Yii::getAlias('@app/uploads/');
-        $uploadedFiles = array_diff(scandir($uploadPath), ['..', '.']);
+        if ($this->status === 'draft') {
+            $uploadPath = $this->setAttachmentPath();
+        } else {
+            $uploadPath = \Yii::getAlias('@app/uploads/');
+        }
+
+        $scandir = scandir($uploadPath);
+        $uploadedFiles = is_array($scandir) ? array_diff($scandir, ['..', '.']) : [];
 
         foreach ($uploadedFiles as $uploadedFile) {
             $message->attach($uploadPath . $uploadedFile);
@@ -192,7 +198,7 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
             . '/';
     }
 
-    private function createXml()
+    public function createXml()
     {
         $in = [
                   [
@@ -237,6 +243,6 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
 
     public static function statuses()
     {
-        return ['draft' => 'Черновик', 'deleted' => 'Удаленный'];
+        return ['draft' => 'черновики', 'deleted' => 'удаленные'];
     }
 }

@@ -39,8 +39,8 @@ class EmailReplySearch extends EmailReply
     {
         $query = EmailReply::find()
             ->with(['manager'])
-            ->where(['mailbox_id' => $this->mailbox_id])
-            ->orderBy(['mailbox_id' => SORT_ASC, 'created_at' => SORT_DESC]);
+            ->where(['mailbox_id' => $this->mailbox_id, 'status' => $this->status])
+            ->orderBy(['created_at' => SORT_DESC]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

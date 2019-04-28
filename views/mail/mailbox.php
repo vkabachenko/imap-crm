@@ -28,12 +28,26 @@ $this->title = 'Почтовый ящик ' . $mailbox->name . ' входяща�
     </div>
 <?php endif; ?>
 
-<div style="margin: 10px 0;">
-    <?php if (is_null($isDeleted)): ?>
-        <?= Html::a('Перейти к удаленным', ['mail/mailbox', 'mailboxId' => $mailbox->id, 'isDeleted' => true]) ?>
-    <?php else: ?>
-        <?= Html::a('Перейти к входящим', ['mail/mailbox', 'mailboxId' => $mailbox->id]) ?>
-    <?php endif; ?>
+<div class="row" style="margin: 10px 0;">
+    <div class="col-md-4">
+        <?= Html::a('Исходящие',
+            ['mail-send/index', 'mailboxId' => $mailbox->id],
+            ['class' => 'btn btn-primary']
+        ) ?>
+    </div>
+    <div class="col-md-4">
+        <?php if (is_null($isDeleted)): ?>
+            <?= Html::a('Удаленные',
+                ['mail/mailbox', 'mailboxId' => $mailbox->id, 'isDeleted' => true],
+                ['class' => 'btn btn-primary']
+                ) ?>
+        <?php else: ?>
+            <?= Html::a('Входящие',
+                ['mail/mailbox', 'mailboxId' => $mailbox->id],
+                ['class' => 'btn btn-primary']
+                ) ?>
+        <?php endif; ?>
+    </div>
 </div>
 
 

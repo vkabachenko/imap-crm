@@ -29,6 +29,18 @@ $this->title = 'Ответ на письмо';
                     ['class' => 'btn btn-success']) ?>
         </div>
 
+        <div class="form-group  col-md-4">
+            <?= Html::a('Черновик',
+                Url::to(['mail/reply', 'id' => $model->reply_to_id, 'isDraft' => true]),
+                [
+                    'class' => 'btn btn-default',
+                    'data' => [
+                        'method' => 'post'
+                    ]
+                ]
+            ) ?>
+        </div>
+
         <div class="form-group col-md-4">
             <?= Html::a('Отмена',
                 Url::to(['mail/release-mail', 'mailId' => $model->reply_to_id]),
