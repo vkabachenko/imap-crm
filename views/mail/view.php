@@ -88,14 +88,14 @@ $this->title = 'Полученное письмо';
 
     <div class="row">
         <div class="form-group col-md-4">
-            <?= Html::submitButton('OK',
-            ['class' => 'btn btn-success']) ?>
-        </div>
-        <div class="form-group col-md-4">
-            <?= Html::a('Отмена',
+            <?= Html::a('Назад',
                 Url::previous(),
                 ['class' => 'btn btn-primary']
             ) ?>
+        </div>
+        <div class="form-group col-md-4">
+            <?= Html::submitButton('Сохранить',
+            ['class' => 'btn btn-success']) ?>
         </div>
         <div class="form-group col-md-4">
             <?= Html::a('Ответить',

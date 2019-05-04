@@ -137,4 +137,12 @@ return new static($rows[0]);
     //echo md5($password);
         return $this->pwd === md5($password);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDefaultMailbox()
+    {
+        return $this->hasOne(Mails::className(), ['id' => 'default_mailbox_id']);
+    }
 }
