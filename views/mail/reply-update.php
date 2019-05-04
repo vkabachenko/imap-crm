@@ -105,13 +105,15 @@ $script = <<<JS
         }
     });
 
+    var mailboxIdInit = $('#mailbox-id').val();
+    var fromInit = $('#from').val();
     $('[name="mailbox-default"]').change(function() {
         if ($(this).prop('checked')) {
             $('#mailbox-id').val($('#mailbox-id').data('value'));
             $('#from').val($('#from').data('value'));            
         } else {
-            $('#mailbox-id').val($('#mailbox-id').prop("defaultValue"));
-            $('#from').val($('#from').prop("defaultValue"));              
+            $('#mailbox-id').val(mailboxIdInit);
+            $('#from').val(fromInit);              
         }
     });
 
