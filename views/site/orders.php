@@ -252,8 +252,8 @@ if($NextStatus[0]['name']){
 
 </td>
 <td>
-<?php  if(Yii::$app->user->identity->is_admin){  ?><a href="<?php Echo Url::toRoute([$thisPageId, 'eid' => $value['id']]); ?>" class="btn default btn-xs purple"><i class="fa fa-edit"></i> </a><?php } ?>
-<?php  if(Yii::$app->user->identity->is_admin){  ?><a href="<?php Echo Url::toRoute([$thisPageId, 'did' => $value['id']]); ?>" class="btn default btn-xs black"><i class="fa fa-trash-o"></i> </a><?php } ?>
+<a href="<?php Echo Url::toRoute([$thisPageId, 'eid' => $value['id']]); ?>" class="btn default btn-xs purple"><i class="fa fa-edit"></i> </a>
+<a href="<?php Echo Url::toRoute([$thisPageId, 'did' => $value['id']]); ?>" class="btn default btn-xs black"><i class="fa fa-trash-o"></i> </a>
 </td>
 </tr>
 
