@@ -14,6 +14,7 @@ class LastEmailsService
         $query = Emails::find()
             ->select(['mailbox_id', 'COUNT(*) AS cnt'])
             ->where(['is_read' => false])
+            ->andWhere(['is_deleted' => null])
             ->groupBy('mailbox_id');
         if(!is_null($mailBoxId)) {
             $query->andWhere(['mailbox_id' => $mailBoxId]);
