@@ -54,7 +54,7 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
     public function rules()
     {
         return [
-            [['mailbox_id', 'reply_to_id'], 'required'],
+            [['mailbox_id'], 'required'],
             [['mailbox_id', 'reply_to_id', 'manager_id'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['content'], 'string'],

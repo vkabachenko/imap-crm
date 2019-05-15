@@ -214,7 +214,11 @@ class MailController extends Controller
     public function actionReplyUpdate($id, $isDraft = true)
     {
         $model = EmailReply::findOne($id);
-        $this->checkAccessToMail($model->reply_to_id);
+        if ($model->reply_to_id) {
+            $this->checkAccessToMail($model->reply_to_id);
+        } else {
+            $this->checkAccessToMailbox($model->mailbox_id);
+        }
 
         $downloadService = new DownloadService($model);
         $attachmentFileNames = $downloadService->getFileNames();

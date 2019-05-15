@@ -1,5 +1,5 @@
-<?php /** @noinspection PhpUndefinedFieldInspection */
-
+<?php
+/** @noinspection PhpUndefinedFieldInspection */
 /* @var $model \app\models\EmailReply */
 /* @var $uploadForm \app\models\UploadForm */
 
@@ -7,7 +7,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
-$this->title = 'Ответ на письмо';
+$this->title = $model->reply_to_id ? 'Ответ на письмо' : 'Новое письмо';
 ?>
 
 <div>
@@ -47,7 +47,10 @@ $this->title = 'Ответ на письмо';
 
         <div class="form-group  col-md-4">
             <?= Html::a('Черновик',
-                Url::to(['mail/reply', 'id' => $model->reply_to_id, 'isDraft' => true]),
+                Url::to($model->reply_to_id
+                    ? ['mail/reply', 'id' => $model->reply_to_id, 'isDraft' => true]
+                    : ['mail-send/create', 'mailboxId' => $model->mailbox_id, 'isDraft' => true]
+                ),
                 [
                     'class' => 'btn btn-default',
                     'data' => [
@@ -59,7 +62,10 @@ $this->title = 'Ответ на письмо';
 
         <div class="form-group col-md-4">
             <?= Html::a('Отмена',
-                Url::to(['mail/release-mail', 'mailId' => $model->reply_to_id]),
+                Url::to($model->reply_to_id
+                    ? ['mail/release-mail', 'mailId' => $model->reply_to_id]
+                    : ['mail-send/index', 'mailboxId' => $model->mailbox_id]
+                ),
                 ['class' => 'btn btn-primary']
             ) ?>
         </div>

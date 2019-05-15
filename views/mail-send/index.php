@@ -23,14 +23,20 @@ $this->title = 'Почтовый ящик ' . $mailbox->name . ' исходящ�
 <?php endif; ?>
 
 <div class="row" style="margin: 10px 0;">
-    <div class="col-md-4">
+    <div class="col-md-3">
+        <?= Html::a('Написать',
+            ['mail-send/create', 'mailboxId' => $mailbox->id],
+            ['class' => 'btn btn-success']
+        ) ?>
+    </div>
+    <div class="col-md-3">
         <?= Html::a('Входящие',
             ['mail/mailbox', 'mailboxId' => $mailbox->id],
             ['class' => 'btn btn-primary']
         ) ?>
     </div>
     <?php if ($status !== 'deleted'): ?>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <?= Html::a('Удаленные',
                 ['mail-send/index', 'mailboxId' => $mailbox->id, 'status' => 'deleted'],
                 ['class' => 'btn btn-primary']
@@ -38,7 +44,7 @@ $this->title = 'Почтовый ящик ' . $mailbox->name . ' исходящ�
         </div>
     <?php endif; ?>
     <?php if ($status !== 'draft'): ?>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <?= Html::a('Черновики',
                 ['mail-send/index', 'mailboxId' => $mailbox->id, 'status' => 'draft'],
                 ['class' => 'btn btn-primary']
@@ -46,7 +52,7 @@ $this->title = 'Почтовый ящик ' . $mailbox->name . ' исходящ�
         </div>
     <?php endif; ?>
     <?php if (!is_null($status)): ?>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <?= Html::a('Исходящие',
                 ['mail-send/index', 'mailboxId' => $mailbox->id],
                 ['class' => 'btn btn-primary']
@@ -155,7 +161,9 @@ $this->title = 'Почтовый ящик ' . $mailbox->name . ' исходящ�
             'format' => 'raw',
             'value' => function ($model) {
                 /* @var $model \app\models\EMailReply */
-                $html = Html::a('Входящее письмо', ['mail/view', 'id' => $model->reply_to_id]);
+                $html = $model->reply_to_id
+                    ? Html::a('Входящее письмо', ['mail/view', 'id' => $model->reply_to_id])
+                    : '';
                 return $html;
             },
         ],
