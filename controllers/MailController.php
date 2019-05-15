@@ -36,7 +36,6 @@ class MailController extends Controller
     {
         $this->lastEmailsService = $lastEmailsService;
         $this->lockService = $lockService;
-        \Yii::$container->set('app\services\path\PathInterface', 'app\services\path\XmlMailPath');
         parent::__construct($id, $module, $config = []);
     }
 
