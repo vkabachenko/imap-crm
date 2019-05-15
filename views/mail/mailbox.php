@@ -110,7 +110,12 @@ $this->title = 'Почтовый ящик ' . $mailbox->name . ' входяща�
                 },
             ],
         ],
-        'imap_date',
+        [
+            'attribute' => 'imap_date',
+            'value' => function ($model) {
+                return \app\helpers\LocalDateTime::convertFromUtc($model->imap_date);
+            },
+        ],
         [
             'attribute' => 'imap_from',
             'format' => 'raw',

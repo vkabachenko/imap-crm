@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use \app\models\MailboxStatus;
 use yii\helpers\Url;
 use app\models\Emails;
+use app\helpers\LocalDateTime;
 
 /* @var $this yii\web\View */
 /* @var $form yii\widgets\ActiveForm */
@@ -20,6 +21,10 @@ $this->title = 'Полученное письмо';
 
 ?>
 
+<div class="row">
+    <div class="col-md-2"><strong>Дата</strong></div>
+    <div class="col-md-10"><?= LocalDateTime::convertFromUtc($mail->imap_date) ?></div>
+</div>
 <div class="row">
     <div class="col-md-2"><strong>От кого</strong></div>
     <div class="col-md-10"><?= $mail->imap_from ?></div>

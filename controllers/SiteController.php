@@ -26,7 +26,7 @@ use app\models\Allf;
 use app\models\Index;
 
 
-class SiteController extends Controller
+class SiteController extends \yii\web\Controller
 {
 
 		public function beforeAction($action)

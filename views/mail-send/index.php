@@ -117,7 +117,12 @@ $this->title = 'Почтовый ящик ' . $mailbox->name . ' исходящ�
                 },
             ],
         ],
-        'created_at',
+        [
+            'attribute' => 'created_at',
+            'value' => function ($model) {
+                return \app\helpers\LocalDateTime::convertFromUtc($model->created_at);
+            },
+        ],
         [
             'attribute' => 'from',
             'format' => 'raw',
