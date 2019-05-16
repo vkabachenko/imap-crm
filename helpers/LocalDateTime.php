@@ -18,4 +18,19 @@ class LocalDateTime
 
         return $localDate->format('Y-m-d H:i:s');
     }
+
+    public static function convertFromFull($dateTime, $timeZone = 'Europe/Moscow')
+    {
+        $utcDate = \DateTime::createFromFormat(
+            'D, d M Y H:i:s O',
+            $dateTime);
+
+
+        $localDate = $utcDate;
+        $localDate->setTimeZone(new \DateTimeZone($timeZone));
+
+        return $localDate->format('Y-m-d H:i:s');
+    }
+
+
 }

@@ -5,6 +5,7 @@ namespace app\models;
 use app\services\XmlService;
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\helpers\Json;
 
 
 /**
@@ -97,6 +98,13 @@ class Emails extends \yii\db\ActiveRecord implements EMailInterface
             'answer_method' => 'Способ ответа',
             'is_deleted' => 'Удалено',
         ];
+    }
+
+    public function getFullTime()
+    {
+        $content = Json::decode($this->imap_raw_content);
+
+        return $content['headers']['date'];
     }
 
     /**

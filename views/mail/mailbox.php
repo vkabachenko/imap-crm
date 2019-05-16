@@ -113,7 +113,8 @@ $this->title = 'Почтовый ящик ' . $mailbox->name . ' входяща�
         [
             'attribute' => 'imap_date',
             'value' => function ($model) {
-                return \app\helpers\LocalDateTime::convertFromUtc($model->imap_date);
+                /* @var $model \app\models\EMails */
+                return \app\helpers\LocalDateTime::convertFromFull($model->getFullTime());
             },
         ],
         [
