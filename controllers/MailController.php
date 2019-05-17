@@ -102,12 +102,6 @@ class MailController extends Controller
             $isLocked = $this->lockService->isLocked($mail);
             $this->lockService->lock($mail);
 
-            $content = Json::decode($mail->imap_raw_content);
-            $textPlain = $content['textPlain'];
-            $textHtml = $content['textHtml'];
-            $textEmail = empty($textHtml) ? nl2br($textPlain) : $textHtml;
-            $textEmail = ConvertLinks::convert($textEmail);
-
             $downloadService = new DownloadService($mail);
             $attachmentFileNames = $downloadService->getFileNames();
 
@@ -120,8 +114,6 @@ class MailController extends Controller
 
             return $this->render('view', [
                 'mail' => $mail,
-                'textEmail' => $textEmail,
-                'content' => $content,
                 'attachmentFileNames' => $attachmentFileNames,
                 'replyEmails' => $replyEmails,
                 'threadEmail' => $threadEmail,

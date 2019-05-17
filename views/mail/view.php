@@ -10,8 +10,6 @@ use app\helpers\LocalDateTime;
 /* @var $this yii\web\View */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $mail \app\models\Emails */
-/* @var $content array */
-/* @var $textEmail string */
 /* @var $attachmentFileNames array */
 /* @var $replyEmails \app\models\EmailReply[] */
 /* @var $threadEmail \app\models\EmailReply */
@@ -38,7 +36,7 @@ $this->title = 'Полученное письмо';
     <div class="col-md-10"><?= $mail->imap_subject ?></div>
 </div>
 <div class="row" style="margin: 10px; font-family: 'Courier New', Courier, monospace">
-    <?= $textEmail ?>
+    <?= $mail->content ?>
 </div>
 
 <?php if(!empty($attachmentFileNames)): ?>

@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\helpers\ConvertLinks;
 use app\services\XmlService;
 use Yii;
 use yii\behaviors\TimestampBehavior;
@@ -105,6 +106,17 @@ class Emails extends \yii\db\ActiveRecord implements EMailInterface
         $content = Json::decode($this->imap_raw_content);
 
         return $content['headers']['date'];
+    }
+
+    public function getContent()
+    {
+        $content = Json::decode($this->imap_raw_content);
+        $textPlain = $content['textPlain'];
+        $textHtml = $content['textHtml'];
+        $textEmail = empty($textHtml) ? nl2br($textPlain) : $textHtml;
+        $textEmail = ConvertLinks::convert($textEmail);
+
+        return $textEmail;
     }
 
     /**
