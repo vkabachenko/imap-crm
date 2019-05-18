@@ -176,8 +176,10 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
             $message->attach($uploadPath . $uploadedFile);
         }
 
+        $to = preg_split("/,[\s]*/", $this->to);
+
         $message->setFrom($this->from)
-            ->setTo($this->to)
+            ->setTo($to)
             ->setSubject($this->subject)
             ->setTextBody($this->content);
 
