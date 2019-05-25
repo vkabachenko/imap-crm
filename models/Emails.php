@@ -119,6 +119,35 @@ class Emails extends \yii\db\ActiveRecord implements EMailInterface
         return $textEmail;
     }
 
+    public function getContentForReply()
+    {
+        $content = Json::decode($this->imap_raw_content);
+        $textPlain = $content['textPlain'];
+        $textHtml = $content['textHtml'];
+        $textEmail = empty($textHtml) ? $textPlain : self::convertHtml2Text($textHtml);
+
+        $divider = "\n\n---------------------\n\n";
+        $signature = \Yii::$app->user->identity->mail_signature . "\n" . $this->mailbox->signature;
+
+
+        return $divider . $textEmail . $divider . $signature;
+    }
+
+    public static function convertHtml2Text($html)
+    {
+        $rules = [
+                    '<div>' => "\n",
+                    '</div>' => "\n",
+                    '<p>' => "\n",
+                    '</p>' => "\n",
+                    '<br>' => "\n",
+                    '<br/>' => "\n",
+                 ];
+
+        $text = strtr($html, $rules);
+        return strip_tags($text);
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
