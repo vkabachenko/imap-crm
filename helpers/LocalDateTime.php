@@ -21,8 +21,11 @@ class LocalDateTime
 
     public static function convertFromFull($dateTime, $timeZone = 'Europe/Moscow')
     {
+        $format = strpos($dateTime, ',') ? 'D, d M Y H:i:s O' : 'd M Y H:i:s O';
+
+
         $utcDate = \DateTime::createFromFormat(
-            'D, d M Y H:i:s O',
+            $format,
             $dateTime);
 
 
