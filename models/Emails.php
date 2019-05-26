@@ -127,10 +127,12 @@ class Emails extends \yii\db\ActiveRecord implements EMailInterface
         $textEmail = empty($textHtml) ? $textPlain : self::convertHtml2Text($textHtml);
 
         $divider = "\n\n---------------------\n\n";
+        $senderData = 'Исходное сообщение от ' . $this->imap_from . ' получено ' . $this->getFullTime() . "\n\n";
+
         $signature = \Yii::$app->user->identity->mail_signature . "\n" . $this->mailbox->signature;
 
 
-        return $divider . $textEmail . $divider . $signature;
+        return $divider . $senderData . $textEmail . $divider . $signature;
     }
 
     public static function convertHtml2Text($html)
