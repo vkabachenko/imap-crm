@@ -194,7 +194,6 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
             . '/'
             . strval($this->mailbox_id)
             . '/'
-            . strval($this->replyTo->imap_id)
             . 'reply'
             . strval($this->id)
             . '/';

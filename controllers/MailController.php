@@ -126,12 +126,11 @@ class MailController extends Controller
     {
         if ($reply) {
             $mail = EmailReply::findOne($mailId);
-            $mailId = $mail->reply_to_id;
         } else {
             $mail = Emails::findOne($mailId);
         }
 
-        $this->checkAccessToMail($mailId);
+        $this->checkAccessToMailbox($mail->mailbox_id);
 
         $downloadService = new DownloadService($mail);
         return $downloadService->download($fileName);
