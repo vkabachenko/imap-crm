@@ -27,4 +27,14 @@ class DownloadService
         return \Yii::$app->response->sendFile($this->mailAttachmentPath . $fileName, $fileName );
     }
 
+    public function copyUploadedFiles($to)
+    {
+        $files = glob($this->mailAttachmentPath . "*.*");
+        if (is_array($files)) {
+            foreach($files as $file){
+                $fileDest = str_replace($this->mailAttachmentPath,$to,$file);
+                copy($file, $fileDest);
+            }
+        }
+    }
 }

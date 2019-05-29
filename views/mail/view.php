@@ -90,21 +90,32 @@ $this->title = 'Полученное письмо';
     <?= $form->field($mail, 'comment')->textarea(); ?>
 
     <div class="row">
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-3">
             <?= Html::a('Назад',
                 Url::previous(),
                 ['class' => 'btn btn-primary']
             ) ?>
         </div>
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-3">
             <?= Html::submitButton('Сохранить',
             ['class' => 'btn btn-success']) ?>
         </div>
-        <div class="form-group col-md-4">
+        <div class="form-group col-md-3">
             <?= Html::a('Ответить',
                 Url::to(['mail/reply', 'id' => $mail->id]),
                 [
                     'class' => 'btn btn-primary',
+                    'data' => [
+                        'method' => 'post'
+                    ]
+                ]
+            ) ?>
+        </div>
+        <div class="form-group col-md-3">
+            <?= Html::a('Переслать',
+                Url::to(['mail-forward/index', 'mailId' => $mail->id]),
+                [
+                    'class' => 'btn btn-success',
                     'data' => [
                         'method' => 'post'
                     ]

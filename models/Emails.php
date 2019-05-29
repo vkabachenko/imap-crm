@@ -135,6 +135,19 @@ class Emails extends \yii\db\ActiveRecord implements EMailInterface
         return $divider . $senderData . $textEmail . $divider . $signature;
     }
 
+    public function getContentForForward()
+    {
+        $content = Json::decode($this->imap_raw_content);
+        $textPlain = $content['textPlain'];
+        $textHtml = $content['textHtml'];
+        $textEmail = empty($textHtml) ? $textPlain : self::convertHtml2Text($textHtml);
+
+        $divider = "\n\n---------------------\n\n";
+        $senderData = 'Пересланное сообщение от ' . $this->imap_from . ' получено ' . $this->getFullTime() . "\n\n";
+
+        return $divider . $senderData . $textEmail . $divider;
+    }
+
     public static function convertHtml2Text($html)
     {
         $rules = [
