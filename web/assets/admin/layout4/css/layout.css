@@ -1799,3 +1799,7 @@ Page Loading
 .email-not-read td {
   font-weight: bold;
 }
+
+.email-deleted td {
+  opacity: 0.5;
+}

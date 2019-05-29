@@ -14,8 +14,13 @@ $this->title = 'Почтовые ящики';
 ?>
 <div>
     <?php if(\Yii::$app->user->identity->is_admin): ?>
-        <div style="margin-bottom: 10px;">
-            <?= Html::a('Создать', ['mail/create'], ['class' => 'btn btn-success']); ?>
+        <div class="row" style="margin-bottom: 10px;">
+            <div class="col-md-4">
+                <?= Html::a('Создать', ['mail/create'], ['class' => 'btn btn-success']); ?>
+            </div>
+            <div class="col-md-4">
+                <?= Html::a('Все ящики', ['mail-all/index'], ['class' => 'btn btn-primary']); ?>
+            </div>
         </div>
     <?php endif; ?>
 

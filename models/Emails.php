@@ -81,7 +81,7 @@ class Emails extends \yii\db\ActiveRecord implements EMailInterface
     {
         return [
             'id' => 'ID',
-            'mailbox_id' => 'Mailbox ID',
+            'mailbox_id' => 'Ящик',
             'created_at' => 'В системе',
             'updated_at' => 'Updated At',
             'comment' => 'Комментарий',
