@@ -223,6 +223,13 @@ class Emails extends \yii\db\ActiveRecord implements EMailInterface
         return ['empty' => 'Не задано'] + self::answerMethods();
     }
 
+    public function setAnswerMethod($answerMethod)
+    {
+        if (array_key_exists($answerMethod, self::answerMethods()) || is_null($answerMethod)) {
+            $this->answer_method = $answerMethod;
+        }
+    }
+
     /**
      * @inheritDoc
      */
