@@ -21,7 +21,7 @@ $this->title = 'Полученное письмо';
 
 <div class="row">
     <div class="col-md-2"><strong>Дата</strong></div>
-    <div class="col-md-10"><?= LocalDateTime::convertFromFull($mail->getFullTime()) ?></div>
+    <div class="col-md-10"><?= LocalDateTime::convertFromFull($mail->getFullTime(), $mail->imap_date) ?></div>
 </div>
 <div class="row">
     <div class="col-md-2"><strong>От кого</strong></div>
