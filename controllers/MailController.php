@@ -307,6 +307,7 @@ class MailController extends Controller
         $isDeleted = $email->is_deleted;
         if ($this->lockService->isLocked($email)) {
             \Yii::$app->session->setFlash('error', 'Письмо используется другим пользователем');
+
         } else {
             if (is_null($isDeleted)) {
                 $email->is_deleted = true;
