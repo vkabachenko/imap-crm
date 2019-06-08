@@ -93,28 +93,31 @@ $script = <<<JS
         $('#id-upload-files').hide();
     }
     
-    $('[name="allow-upload"]').change(function() {
-        var self = $(this);
-        if (self.prop('checked')) {
-           $('#id-upload-files').show(); 
-           $('#files-attachment').hide();
-        } else {
-           $('#files-attachment').show();
-           $('#id-upload-files').hide();
-           $('#id-upload-files').val('');
-        }
-    });
-
-    var mailboxIdInit = $('#mailbox-id').val();
-    var fromInit = $('#from').val();
     $('[name="mailbox-default"]').change(function() {
         if ($(this).prop('checked')) {
+            var mailboxIdPrev = mailboxIdInit;
             $('#mailbox-id').val($('#mailbox-id').data('value'));
             $('#from').val($('#from').data('value'));            
         } else {
+            mailboxIdPrev = $('#mailbox-id').data('value');
             $('#mailbox-id').val(mailboxIdInit);
             $('#from').val(fromInit);              
         }
+        $.ajax({
+            url: $(this).data('url'),
+            method: 'POST',
+            data: {
+                mailboxIdPrev: mailboxIdPrev,
+                mailboxId: $('#mailbox-id').val(),
+                content: $('#content').val()
+            }
+        })
+        .done(function(result) {
+            $('#content').val(result.content)
+        })
+        .fail(function() {
+            console.log('fail')
+        });
     });
 
 JS;

@@ -28,7 +28,10 @@ $this->title = $model->reply_to_id ? 'Ответ на письмо' : 'Ново�
 
         <?php if (\Yii::$app->user->identity->default_mailbox_id):?>
             <div style="margin: 10px 0;">
-                <?= Html::checkbox('mailbox-default', false, ['label' => 'Отправить с ящика по умолчанию']) ?>
+                <?= Html::checkbox('mailbox-default', false, [
+                        'label' => 'Отправить с ящика по умолчанию',
+                        'data-url' => Url::to(['mail/set-sign'])
+                ]) ?>
             </div>
         <?php endif; ?>
 
@@ -46,7 +49,7 @@ $this->title = $model->reply_to_id ? 'Ответ на письмо' : 'Ново�
         ?>
         <?= $form->field($model, 'to'); ?>
         <?= $form->field($model, 'subject'); ?>
-        <?= $form->field($model, 'content')->textarea(['rows' => 10]); ?>
+        <?= $form->field($model, 'content')->textarea(['rows' => 10, 'id' => 'content']); ?>
         <?= $form->field($model, 'comment'); ?>
 
         <?= $form->field($uploadForm, 'files[]')->fileInput(['multiple' => true]); ?>
@@ -91,17 +94,33 @@ $this->title = $model->reply_to_id ? 'Ответ на письмо' : 'Ново�
 
 <?php
 $script = <<<JS
-
     var mailboxIdInit = $('#mailbox-id').val();
     var fromInit = $('#from').val();
     $('[name="mailbox-default"]').change(function() {
         if ($(this).prop('checked')) {
+            var mailboxIdPrev = mailboxIdInit;
             $('#mailbox-id').val($('#mailbox-id').data('value'));
             $('#from').val($('#from').data('value'));            
         } else {
+            mailboxIdPrev = $('#mailbox-id').data('value');
             $('#mailbox-id').val(mailboxIdInit);
             $('#from').val(fromInit);              
         }
+        $.ajax({
+            url: $(this).data('url'),
+            method: 'POST',
+            data: {
+                mailboxIdPrev: mailboxIdPrev,
+                mailboxId: $('#mailbox-id').val(),
+                content: $('#content').val()
+            }
+        })
+        .done(function(result) {
+            $('#content').val(result.content)
+        })
+        .fail(function() {
+            console.log('fail')
+        });
     });
 JS;
 

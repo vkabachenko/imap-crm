@@ -319,8 +319,25 @@ class MailController extends Controller
             }
 
         }
-        //$this->redirect(['mail/mailbox', 'mailboxId' => $email->mailbox_id, 'isDeleted' => $isDeleted]);
         $this->redirect(Url::previous());
+    }
+
+    public function actionSetSign()
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $data = \Yii::$app->request->post();
+        try {
+            $signPrev = Mails::findOne($data['mailboxIdPrev'])->signature;
+            $signCurrent = Mails::findOne($data['mailboxId'])->signature;
+            $content = $data['content'];
+            if (mb_substr($content,-mb_strlen($signPrev, 'UTF-8'), null, 'UTF-8') === $signPrev) {
+                $content = mb_substr($content, 0, mb_strlen($content, 'UTF-8') - mb_strlen($signPrev, 'UTF-8'), 'UTF-8') . $signCurrent;
+                return ['content' => $content];
+            }
+        } catch (\Throwable $e) {
+            \Yii::error($e->getMessage());
+        }
+        return ['content' => $data['content']];
     }
 
 }
