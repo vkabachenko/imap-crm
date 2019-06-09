@@ -174,6 +174,7 @@ class MailController extends Controller
                 \Yii::$app->session->setFlash('success', 'Письмо успешно отправлено');
             }
 
+            $mail->setStatus('Обработан');
             $mail->setAnswerMethod('mail');
             $this->lockService->release($mail);
             return $this->redirect(Url::previous());

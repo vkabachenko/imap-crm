@@ -230,6 +230,21 @@ class Emails extends \yii\db\ActiveRecord implements EMailInterface
         }
     }
 
+    public function setStatus($status, $ifNotAlreadySet = true)
+    {
+        if ($this->status_id && $ifNotAlreadySet) {
+            return;
+        }
+
+        $statusModel = MailboxStatus::find()->where(['mailbox_id' => $this->mailbox_id, 'status' => $status])->one();
+
+        if (is_null($statusModel)) {
+            return;
+        }
+
+        $this->status_id = $statusModel->id;
+    }
+
     /**
      * @inheritDoc
      */

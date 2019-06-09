@@ -70,6 +70,7 @@ class MailForwardController extends Controller
             $model->createXml();
 
             \Yii::$app->session->setFlash('success', 'Письмо успешно переслано');
+            $mail->setStatus('Обработан');
             $mail->setAnswerMethod('mail');
             $this->lockService->release($mail);
             return $this->redirect(['mail-send/index', 'mailboxId' => $model->mailbox_id]);
