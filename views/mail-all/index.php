@@ -1,7 +1,7 @@
 <?php
 
 use yii\grid\GridView;
-use app\models\MailboxStatus;
+use app\models\EmailStatus;
 use app\models\EmployeesAR;
 use yii\helpers\Html;
 use app\models\Emails;
@@ -150,7 +150,7 @@ $this->title = 'Входящая почта всех почтовых ящико
                 $status = $model->status_id ? $model->emailStatus->status : null;
                 return $status;
             },
-            'filter' => MailboxStatus::emailStatusAsMapForGrid($mailbox->id)
+            'filter' => EmailStatus::emailStatusAsMapForGrid()
         ],
         [
             'attribute' => 'is_read',

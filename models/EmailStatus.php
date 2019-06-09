@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "email_status".
@@ -44,5 +45,26 @@ class EmailStatus extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * return array
+     */
+    public static function emailStatusAsMap()
+    {
+        $models = self::find()->all();
+        $list = ArrayHelper::map($models, 'status', 'status');
+
+
+        return $list;
+    }
+
+    /**
+     * return array
+     */
+    public static function emailStatusAsMapForGrid()
+    {
+        $list = self::emailStatusAsMap();
+        $empty = ['empty' => 'Не задано'];
+        return $empty + $list;
+    }
 
 }

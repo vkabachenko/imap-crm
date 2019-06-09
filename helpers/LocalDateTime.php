@@ -29,6 +29,9 @@ class LocalDateTime
                 $format,
                 $dateTime);
 
+            if (!$utcDate instanceof \DateTime) {
+                return $dateTimeModel;
+            }
 
             $localDate = $utcDate;
             $localDate->setTimeZone(new \DateTimeZone($timeZone));

@@ -45,8 +45,9 @@ class EmailsAllSearch extends Emails
     public function search($params)
     {
         $query = Emails::find()
-            ->with(['emailStatus', 'manager'])
-            ->where(['mailbox_id' => $this->mailboxes])
+            ->with(['manager'])
+            ->joinWith(['emailStatus'], false)
+            ->where(['emails.mailbox_id' => $this->mailboxes])
             ->orderBy(['imap_date' => SORT_DESC]);
 
         $dataProvider = new ActiveDataProvider([
@@ -66,7 +67,7 @@ class EmailsAllSearch extends Emails
         if ($this->status_id === 'empty') {
             $query->andWhere(['status_id' => null]);
         } else {
-            $query->andFilterWhere(['status_id' => $this->status_id]);
+            $query->andFilterWhere(['mailbox_status.status' => $this->status_id]);
         }
 
         $query->andFilterWhere(['is_read' => $this->is_read]);
