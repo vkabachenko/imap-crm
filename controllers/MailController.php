@@ -323,10 +323,12 @@ class MailController extends Controller
         $this->redirect(Url::previous());
     }
 
+
     public function actionSetSign()
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $data = \Yii::$app->request->post();
+        $this->checkAccessToMailbox($data['mailboxIdPrev']);
         try {
             $signPrev = Mails::findOne($data['mailboxIdPrev'])->signature;
             $signCurrent = Mails::findOne($data['mailboxId'])->signature;

@@ -35,13 +35,13 @@ $this->title = 'Почтовый ящик ' . $mailbox->name . ' входяща�
             ['class' => 'btn btn-primary']
         ) ?>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <?= Html::a('Исходящие',
             ['mail-send/index', 'mailboxId' => $mailbox->id],
             ['class' => 'btn btn-primary']
         ) ?>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
         <?php if (is_null($isDeleted)): ?>
             <?= Html::a('Удаленные',
                 ['mail/mailbox', 'mailboxId' => $mailbox->id, 'isDeleted' => true],
@@ -53,6 +53,15 @@ $this->title = 'Почтовый ящик ' . $mailbox->name . ' входяща�
                 ['class' => 'btn btn-primary']
                 ) ?>
         <?php endif; ?>
+    </div>
+    <div class="col-md-3">
+        <?= Html::beginForm('','GET') ?>
+        <?= Html::textInput('EmailsSearch[imap_raw_content]', $searchModel['imap_raw_content'], [
+            'class' => 'form-control',
+            'placeholder' => 'Поиск в письме'
+        ]) ?>
+        <?= Html::submitInput('', ['style' => 'display: none;']) ?>
+        <?= Html::endForm() ?>
     </div>
 </div>
 

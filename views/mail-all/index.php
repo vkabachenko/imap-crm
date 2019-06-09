@@ -35,6 +35,15 @@ $this->title = 'Входящая почта всех почтовых ящико
             ['class' => 'btn btn-primary']
         ) ?>
     </div>
+    <div class="col-md-offset-4 col-md-4">
+        <?= Html::beginForm('','GET') ?>
+        <?= Html::textInput('EmailsAllSearch[imap_raw_content]', $searchModel['imap_raw_content'], [
+            'class' => 'form-control',
+            'placeholder' => 'Поиск в письме'
+        ]) ?>
+        <?= Html::submitInput('', ['style' => 'display: none;']) ?>
+        <?= Html::endForm() ?>
+    </div>
 </div>
 
 

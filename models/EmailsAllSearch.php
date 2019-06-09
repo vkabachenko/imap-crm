@@ -25,7 +25,8 @@ class EmailsAllSearch extends Emails
                     'comment',
                     'answer_method',
                     'status_id',
-                    'manager_id'
+                    'manager_id',
+                    'imap_raw_content'
                 ], 'safe'
             ],
             [
@@ -60,6 +61,7 @@ class EmailsAllSearch extends Emails
         $query->andFilterWhere(['like', 'imap_from', $this->imap_from]);
         $query->andFilterWhere(['like', 'imap_to', $this->imap_to]);
         $query->andFilterWhere(['like', 'imap_subject', $this->imap_subject]);
+        $query->andFilterWhere(['like', 'imap_raw_content', $this->imap_raw_content]);
 
         if ($this->status_id === 'empty') {
             $query->andWhere(['status_id' => null]);
