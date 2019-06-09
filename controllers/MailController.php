@@ -176,7 +176,7 @@ class MailController extends Controller
 
             $mail->setAnswerMethod('mail');
             $this->lockService->release($mail);
-            return $this->redirect(['mail-send/index', 'mailboxId' => $model->mailbox_id]);
+            return $this->redirect(Url::previous());
         }
 
         return $this->render('reply', [
