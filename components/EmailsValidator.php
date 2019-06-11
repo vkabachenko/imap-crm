@@ -15,7 +15,7 @@ class EmailsValidator extends Validator
 
         foreach ($emails as $email) {
             if (!$emailValidator->validate($email, $error)) {
-                $this->addError($model, $email, $error);
+                $this->addError($model, $attribute, $error);
             }
         }
     }

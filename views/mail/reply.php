@@ -10,6 +10,13 @@ use yii\widgets\ActiveForm;
 $this->title = $model->reply_to_id ? 'Ответ на письмо' : 'Новое письмо';
 ?>
 
+
+<?php if (\Yii::$app->session->hasFlash('error')): ?>
+    <div class="alert alert-danger alert-dismissable">
+        <?= \Yii::$app->session->getFlash('error') ?>
+    </div>
+<?php endif; ?>
+
 <div>
     <?php if ($model->reply_to_id): ?>
         <div>Содержание входящего письма</div>

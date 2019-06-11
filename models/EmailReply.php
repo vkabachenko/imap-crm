@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\components\EmailsValidator;
 use app\services\XmlService;
 use Yii;
 use yii\behaviors\TimestampBehavior;
@@ -59,6 +60,7 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
             [['created_at', 'updated_at'], 'safe'],
             [['content'], 'string'],
             [['comment', 'from', 'to', 'subject'], 'string', 'max' => 255],
+            ['to', EmailsValidator::className()],
             [['mailbox_id'], 'exist', 'skipOnError' => true, 'targetClass' => Mails::className(), 'targetAttribute' => ['mailbox_id' => 'id']],
             [['manager_id'], 'exist', 'skipOnError' => true, 'targetClass' => EmployeesAR::className(), 'targetAttribute' => ['manager_id' => 'id']],
             [['reply_to_id'], 'exist', 'skipOnError' => true, 'targetClass' => Emails::className(), 'targetAttribute' => ['reply_to_id' => 'id']],
@@ -185,6 +187,22 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
 
         if (!$message->send()) {
             \Yii::error($logger->dump());
+            throw new \Exception('Ошибка при отправке письма');
+        }
+    }
+
+    public function sendAndSave()
+    {
+        try {
+            $this->status = null;
+            $this->send();
+            $this->save(false);
+            $this->createXml();
+            \Yii::$app->session->setFlash('success', 'Письмо успешно отправлено');
+            return true;
+        } catch (\Throwable $e) {
+            \Yii::$app->session->setFlash('error', 'Возникла ошибка при отправке письма id=' . $this->id);
+            return false;
         }
     }
 

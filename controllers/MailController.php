@@ -159,19 +159,20 @@ class MailController extends Controller
             'content' => $mail->getContentForReply()
         ]);
 
-        if ($model->load(\Yii::$app->request->post())) {
+        if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
             $uploadForm->files = UploadedFile::getInstances($uploadForm, 'files');
             $uploadForm->upload();
             if ($isDraft) {
                 $model->status = 'draft';
-                $model->save();
+                $model->save(false);
                 \Yii::$app->session->setFlash('success', 'Сохранен черновик ответа');
             } else {
-                $model->status = null;
-                $model->send();
-                $model->save();
-                $model->createXml();
-                \Yii::$app->session->setFlash('success', 'Письмо успешно отправлено');
+                if (!$model->sendAndSave()) {
+                    return $this->render('reply', [
+                        'model' => $model,
+                        'uploadForm' => $uploadForm
+                    ]);
+                }
             }
 
             $mail->setStatus('Обработан');
@@ -218,19 +219,21 @@ class MailController extends Controller
 
         $uploadForm = new UploadForm();
 
-        if ($model->load(\Yii::$app->request->post())) {
+        if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
             $uploadForm->files = UploadedFile::getInstances($uploadForm, 'files');
             $uploadForm->upload();
             if ($isDraft) {
                 $model->status = 'draft';
-                $model->save();
+                $model->save(false);
                 \Yii::$app->session->setFlash('success', 'Сохранен черновик ответа');
             } else {
-                $model->status = null;
-                $model->send();
-                $model->save();
-                $model->createXml();
-                \Yii::$app->session->setFlash('success', 'Письмо успешно отправлено');
+                if (!$model->sendAndSave()) {
+                    return $this->render('reply-update', [
+                        'model' => $model,
+                        'attachmentFileNames' => $attachmentFileNames,
+                        'uploadForm' => $uploadForm
+                    ]);
+                }
             }
 
             return $this->redirect(Url::previous());

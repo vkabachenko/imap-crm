@@ -10,6 +10,12 @@ use yii\widgets\ActiveForm;
 $this->title = 'Редактирование черновика';
 ?>
 
+<?php if (\Yii::$app->session->hasFlash('error')): ?>
+    <div class="alert alert-danger alert-dismissable">
+        <?= \Yii::$app->session->getFlash('error') ?>
+    </div>
+<?php endif; ?>
+
 <div>
     <?php $form = ActiveForm::begin(); ?>
 

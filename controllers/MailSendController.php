@@ -83,11 +83,13 @@ class MailSendController extends Controller
                 $model->save();
                 \Yii::$app->session->setFlash('success', 'Сохранен черновик письма');
             } else {
-                $model->status = null;
-                $model->send();
-                $model->save();
-                $model->createXml();
-                \Yii::$app->session->setFlash('success', 'Письмо успешно отправлено');
+                if (!$model->sendAndSave()) {
+                    return $this->render('/mail/reply', [
+                        'model' => $model,
+                        'uploadForm' => $uploadForm,
+                        'createMail' => true
+                    ]);
+                }
             }
 
             return $this->redirect(['mail-send/index', 'mailboxId' => $mailboxId]);
