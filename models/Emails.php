@@ -98,7 +98,15 @@ class Emails extends \yii\db\ActiveRecord implements EMailInterface
             'lock_user_id' => 'lock_user_id',
             'answer_method' => 'Способ ответа',
             'is_deleted' => 'Удалено',
+            'fromName' => 'Имя отправителя'
         ];
+    }
+
+    public function getFromName()
+    {
+        $content = Json::decode($this->imap_raw_content);
+
+        return $content['fromName'];
     }
 
     public function getFullTime()

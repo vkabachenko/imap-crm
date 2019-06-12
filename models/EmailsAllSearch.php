@@ -9,6 +9,8 @@ class EmailsAllSearch extends Emails
 {
     /* @var array */
     public $mailboxes;
+
+    public $fromName;
     /**
      * @inheritdoc
      */
@@ -26,7 +28,8 @@ class EmailsAllSearch extends Emails
                     'answer_method',
                     'status_id',
                     'manager_id',
-                    'imap_raw_content'
+                    'imap_raw_content',
+                    'fromName'
                 ], 'safe'
             ],
             [
@@ -85,6 +88,10 @@ class EmailsAllSearch extends Emails
         }
 
         $query->andFilterWhere(['like', 'comment', $this->comment]);
+
+        if (!empty($this->fromName)) {
+            $query->andWhere(['like', 'imap_raw_content', '%\"fromName\":\"%' . $this->fromName . '%\"%', false]);
+        }
 
         return $dataProvider;
     }

@@ -8,6 +8,8 @@ use yii\data\ActiveDataProvider;
 
 class EmailsSearch extends Emails
 {
+    public $fromName;
+
     /**
      * @inheritdoc
      */
@@ -24,7 +26,8 @@ class EmailsSearch extends Emails
                     'answer_method',
                     'status_id',
                     'manager_id',
-                    'imap_raw_content'
+                    'imap_raw_content',
+                    'fromName'
                 ], 'safe'
             ],
             [
@@ -82,6 +85,11 @@ class EmailsSearch extends Emails
         }
 
         $query->andFilterWhere(['like', 'comment', $this->comment]);
+
+        if (!empty($this->fromName)) {
+            $query->andWhere(['like', 'imap_raw_content', '%\"fromName\":\"%' . $this->fromName . '%\"%', false]);
+        }
+
 
         return $dataProvider;
     }

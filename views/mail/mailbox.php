@@ -127,6 +127,15 @@ $this->title = 'Почтовый ящик ' . $mailbox->name . ' входяща�
             },
         ],
         [
+            'attribute' => 'fromName',
+            'format' => 'raw',
+            'value' => function ($model) {
+                /* @var $model \app\models\EMails */
+                $html = Html::tag('div', $model->fromName, ['style'=> 'width: 70px; white-space: normal; word-wrap: break-word']);
+                return $html;
+            },
+        ],
+        [
             'attribute' => 'imap_from',
             'format' => 'raw',
             'value' => function ($model) {
