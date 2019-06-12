@@ -66,12 +66,7 @@ class MailForwardController extends Controller
             $downloadService = new DownloadService($mail);
             $downloadService->copyUploadedFiles(\Yii::getAlias('@app/uploads/'));
 
-            if (!$model->sendAndSave()) {
-                return $this->render('index', [
-                    'mailId' => $mailId,
-                    'model' => $modelForm,
-                ]);
-            }
+            $model->sendAndSave();
             $mail->setStatus('Обработан');
             $mail->setAnswerMethod('mail');
             $this->lockService->release($mail);

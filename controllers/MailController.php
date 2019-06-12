@@ -167,12 +167,7 @@ class MailController extends Controller
                 $model->save(false);
                 \Yii::$app->session->setFlash('success', 'Сохранен черновик ответа');
             } else {
-                if (!$model->sendAndSave()) {
-                    return $this->render('reply', [
-                        'model' => $model,
-                        'uploadForm' => $uploadForm
-                    ]);
-                }
+                $model->sendAndSave();
             }
 
             $mail->setStatus('Обработан');
@@ -227,13 +222,7 @@ class MailController extends Controller
                 $model->save(false);
                 \Yii::$app->session->setFlash('success', 'Сохранен черновик ответа');
             } else {
-                if (!$model->sendAndSave()) {
-                    return $this->render('reply-update', [
-                        'model' => $model,
-                        'attachmentFileNames' => $attachmentFileNames,
-                        'uploadForm' => $uploadForm
-                    ]);
-                }
+                $model->sendAndSave();
             }
 
             return $this->redirect(Url::previous());
