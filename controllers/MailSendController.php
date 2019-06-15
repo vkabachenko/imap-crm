@@ -9,6 +9,7 @@ use app\models\EmailReplySearch;
 use app\models\Emails;
 use app\models\Mails;
 use app\models\UploadForm;
+use app\services\mail\CopyService;
 use yii\helpers\Url;
 use yii\web\UploadedFile;
 
@@ -75,12 +76,12 @@ class MailSendController extends Controller
             'content' => $content
         ]);
 
-        if ($model->load(\Yii::$app->request->post())) {
+        if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
             $uploadForm->files = UploadedFile::getInstances($uploadForm, 'files');
             $uploadForm->upload();
             if ($isDraft) {
                 $model->status = 'draft';
-                $model->save();
+                $model->save(false);
                 \Yii::$app->session->setFlash('success', 'Сохранен черновик письма');
             } else {
                 $model->sendAndSave();
@@ -94,6 +95,20 @@ class MailSendController extends Controller
             'uploadForm' => $uploadForm,
             'createMail' => true
         ]);
+    }
+
+    public function actionAgain($id)
+    {
+        $model = EmailReply::findOne($id);
+        $this->checkAccessToMailbox($model->mailbox_id);
+
+        $service = new CopyService($model);
+        /* @var $copyModel \app\models\EmailReply */
+        $copyModel = $service->getCopy();
+
+        Url::remember(['mail/mailbox', 'mailboxId' => $model->mailbox_id]);
+
+        $this->redirect(['mail/reply-update', 'id' => $copyModel->id]);
     }
 
 

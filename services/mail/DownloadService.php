@@ -31,8 +31,11 @@ class DownloadService
     {
         $files = glob($this->mailAttachmentPath . "*.*");
         if (is_array($files)) {
+            if (!file_exists($to)) {
+                mkdir($to, 0777);
+            }
             foreach($files as $file){
-                $fileDest = str_replace($this->mailAttachmentPath,$to,$file);
+                $fileDest = str_replace($this->mailAttachmentPath, $to, $file);
                 copy($file, $fileDest);
             }
         }

@@ -264,4 +264,14 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
     {
         return ['draft' => 'черновики', 'deleted' => 'удаленные'];
     }
+
+    public function clearAttributes()
+    {
+        unset($this->id);
+        unset($this->created_at);
+        unset($this->updated_at);
+        $this->comment = null;
+        $this->manager_id = \Yii::$app->user->id;
+        $this->status = 'draft';
+    }
 }

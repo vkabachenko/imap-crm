@@ -295,4 +295,19 @@ class Emails extends \yii\db\ActiveRecord implements EMailInterface
         $service = \Yii::createObject(XmlService::className());;
         $service->create($in);
     }
+
+    public function clearAttributes()
+    {
+        unset($this->id);
+        unset($this->created_at);
+        unset($this->updated_at);
+        $this->comment = null;
+        $this->manager_id = \Yii::$app->user->id;
+        $this->is_read = false;
+        $this->imap_id = null;
+        $this->lock_time = null;
+        $this->lock_user_id = null;
+        $this->answer_method = null;
+        $this->is_deleted = null;
+    }
 }
