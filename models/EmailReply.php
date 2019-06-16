@@ -250,6 +250,9 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
 
     public static function getThreadMail(Emails $mail)
     {
+        if (strpos('Re:', $mail->imap_subject) !== 0) {
+            return null;
+        }
         $subject = trim(str_replace('Re:', '', $mail->imap_subject));
         $model = self::find()
             ->where(['to' => $mail->imap_from])
