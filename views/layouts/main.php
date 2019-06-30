@@ -206,7 +206,7 @@ echo Html::dropDownList('order_brand',0,$arr, ['class' => 'form-control']) ;
 				<li class="<?php if(Url::to()==Url::toRoute(['site/index'])){echo 'active';} ?>">
 					<a href="<?php echo Url::toRoute(['site/index']); ?>">
 					<i class="icon-home"></i>
-					<span class="title">Рабочий стол</span>
+					<span class="title">Телефония</span>
 					</a>
 				</li>
 

@@ -165,6 +165,7 @@ class Emails extends \yii\db\ActiveRecord implements EMailInterface
                     '</p>' => "\n",
                     '<br>' => "\n",
                     '<br/>' => "\n",
+                    '&nbsp;' => ' '
                  ];
 
         $text = strtr($html, $rules);
