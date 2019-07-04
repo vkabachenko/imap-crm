@@ -22,6 +22,9 @@ $this->title = 'Почтовые ящики';
             <div class="col-md-4">
                 <?= Html::a('Все ящики', ['mail-all/index'], ['class' => 'btn btn-primary']); ?>
             </div>
+            <div class="col-md-4">
+                <?= Html::a('Все исходящие', ['mail-reply-all/index'], ['class' => 'btn btn-primary']); ?>
+            </div>
         </div>
 
     <?php
