@@ -140,7 +140,7 @@ class Emails extends \yii\db\ActiveRecord implements EMailInterface
         $signature = \Yii::$app->user->identity->mail_signature . "\n" . $this->mailbox->signature;
 
 
-        return $divider . $senderData . $textEmail . $divider . $signature;
+        return $divider . $senderData . $textEmail . $divider . "\n" . $signature;
     }
 
     public function getContentForForward()
@@ -169,7 +169,7 @@ class Emails extends \yii\db\ActiveRecord implements EMailInterface
                  ];
 
         $text = strtr($html, $rules);
-        $text = implode("\n", array_filter(explode("\n", $text)));
+        $text = preg_replace('/^\h*\v+/m', '', $text);;
         return strip_tags($text);
     }
 
