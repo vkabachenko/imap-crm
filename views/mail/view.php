@@ -41,12 +41,13 @@ $this->title = 'Полученное письмо';
 
 <?php if(!empty($attachmentFileNames)): ?>
     <div>
-        <strong style="margin-right: 10px;">Приложения:</strong>
+        <strong style="margin-left: 10px;">Приложения:</strong>
         <?php foreach ($attachmentFileNames as $fileName): ?>
-            <?= Html::a($fileName,
-                ['mail/download', 'mailId' => $mail->id, 'fileName' => $fileName],
-                ['style' => 'margin-right: 10px;']);
-            ?>
+            <div>
+                <?= Html::a($fileName,
+                    ['mail/download', 'mailId' => $mail->id, 'fileName' => $fileName]);
+                ?>
+            </div>
         <?php endforeach; ?>
     </div>
 <?php endif; ?>
