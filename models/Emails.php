@@ -169,6 +169,7 @@ class Emails extends \yii\db\ActiveRecord implements EMailInterface
                  ];
 
         $text = strtr($html, $rules);
+        $text = implode("\n", array_filter(explode("\n", $text)));
         return strip_tags($text);
     }
 
