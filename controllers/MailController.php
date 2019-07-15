@@ -8,6 +8,7 @@ use app\models\Emails;
 use app\models\EmailsSearch;
 use app\models\EmployeesAR;
 use app\models\Mails;
+use app\models\UploadFileForm;
 use app\models\UploadForm;
 use app\services\mail\DownloadService;
 use app\services\mail\LastEmailsService;
@@ -147,7 +148,7 @@ class MailController extends Controller
         $mail->save();
 
         $mailbox = Mails::findOne($mail->mailbox_id);
-        $uploadForm = new UploadForm();
+        $uploadForm = new UploadFileForm();
 
         $model = new EmailReply([
             'mailbox_id' => $mail->mailbox_id,
@@ -160,7 +161,6 @@ class MailController extends Controller
         ]);
 
         if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
-            $uploadForm->files = UploadedFile::getInstances($uploadForm, 'files');
             $uploadForm->upload();
             if ($isDraft) {
                 $model->status = 'draft';
@@ -212,10 +212,9 @@ class MailController extends Controller
         $downloadService = new DownloadService($model);
         $attachmentFileNames = $downloadService->getFileNames();
 
-        $uploadForm = new UploadForm();
+        $uploadForm = new UploadFileForm();
 
         if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
-            $uploadForm->files = UploadedFile::getInstances($uploadForm, 'files');
             $uploadForm->upload();
             if ($isDraft) {
                 $model->status = 'draft';

@@ -3,6 +3,7 @@
 /* @var $model \app\models\EmailReply */
 /* @var $uploadForm \app\models\UploadForm */
 
+use dosamigos\fileupload\FileUploadUI;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
@@ -45,21 +46,30 @@ $this->title = 'Редактирование черновика';
         <?php if(!empty($attachmentFileNames)): ?>
             <div id="files-attachment">
                 <strong style="margin-right: 10px;">Приложения:</strong>
+
                 <?php foreach ($attachmentFileNames as $fileName): ?>
-                    <?= Html::a($fileName,
-                        ['mail/download', 'mailId' => $model->id, 'fileName' => $fileName, 'reply' => true],
-                        ['style' => 'margin-right: 10px;']);
-                    ?>
+                    <div>
+                        <?= Html::a($fileName,
+                            ['mail/download', 'mailId' => $model->id, 'fileName' => $fileName, 'reply' => true],
+                            ['style' => 'margin-right: 10px;']);
+                        ?>
+                    </div>
                 <?php endforeach; ?>
+
             </div>
             <div style="margin: 10px 0;">
                 <?= Html::checkbox('allow-upload', false, ['label' => 'Заменить загрузку файлов']) ?>
             </div>
         <?php endif; ?>
 
-        <?= $form->field($uploadForm, 'files[]', ['options' => ['id' => 'id-upload-files']])
-            ->fileInput(['multiple' => true]); ?>
-
+        <div id="id-upload-files" style="display: none;">
+            <?= FileUploadUI::widget([
+                'model' => $uploadForm,
+                'attribute' => 'file',
+                'url' => ['file-upload/upload'],
+                'gallery' => false,
+            ]); ?>
+        </div>
 
     <div class="row" style="margin-top: 10px;">
 
@@ -95,9 +105,13 @@ $this->title = 'Редактирование черновика';
 
 <?php
 $script = <<<JS
-    if ($('[name="allow-upload"]').is(':visible')) {
-        $('#id-upload-files').hide();
-    }
+    $('[name="allow-upload"]').change(function() {
+        if ($(this).is(':checked')) {
+            $('#id-upload-files').show();
+        } else {
+            $('#id-upload-files').hide();
+        }
+     });
     
     $('[name="mailbox-default"]').change(function() {
         if ($(this).prop('checked')) {

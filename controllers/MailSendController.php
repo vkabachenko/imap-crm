@@ -8,7 +8,7 @@ use app\models\EmailReply;
 use app\models\EmailReplySearch;
 use app\models\Emails;
 use app\models\Mails;
-use app\models\UploadForm;
+use app\models\UploadFileForm;
 use app\services\mail\CopyService;
 use yii\helpers\Url;
 use yii\web\UploadedFile;
@@ -64,7 +64,7 @@ class MailSendController extends Controller
         $this->checkAccessToMailbox($mailboxId);
 
         $mailbox = Mails::findOne($mailboxId);
-        $uploadForm = new UploadForm();
+        $uploadForm = new UploadFileForm();
         $content = "\n\n---------------------\n\n"
             . \Yii::$app->user->identity->mail_signature
             . "\n"
@@ -77,7 +77,6 @@ class MailSendController extends Controller
         ]);
 
         if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
-            $uploadForm->files = UploadedFile::getInstances($uploadForm, 'files');
             $uploadForm->upload();
             if ($isDraft) {
                 $model->status = 'draft';

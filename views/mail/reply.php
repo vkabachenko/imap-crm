@@ -1,11 +1,12 @@
 <?php
 /** @noinspection PhpUndefinedFieldInspection */
 /* @var $model \app\models\EmailReply */
-/* @var $uploadForm \app\models\UploadForm */
+/* @var $uploadForm \app\models\UploadFileForm */
 
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+use dosamigos\fileupload\FileUploadUI;
 
 $this->title = $model->reply_to_id ? 'Ответ на письмо' : 'Новое письмо';
 ?>
@@ -52,7 +53,12 @@ $this->title = $model->reply_to_id ? 'Ответ на письмо' : 'Ново�
         <?= $form->field($model, 'content')->textarea(['rows' => 10, 'id' => 'content']); ?>
         <?= $form->field($model, 'comment'); ?>
 
-        <?= $form->field($uploadForm, 'files[]')->fileInput(['multiple' => true]); ?>
+    <?= FileUploadUI::widget([
+        'model' => $uploadForm,
+        'attribute' => 'file',
+        'url' => ['file-upload/upload'],
+        'gallery' => false,
+    ]); ?>
 
     <div class="row">
 
