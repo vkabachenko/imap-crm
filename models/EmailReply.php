@@ -200,7 +200,7 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
             $this->createXml();
             \Yii::$app->session->setFlash('success', 'Письмо успешно отправлено');
             return true;
-        } catch (\Throwable $e) {
+        } catch (\Exception $e) {
             \Yii::$app->session->setFlash('error', 'Возникла ошибка при отправке письма id=' . $this->id);
             return false;
         }

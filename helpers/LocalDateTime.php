@@ -36,7 +36,7 @@ class LocalDateTime
             $localDate = $utcDate;
             $localDate->setTimeZone(new \DateTimeZone($timeZone));
             return $localDate->format('Y-m-d H:i:s');
-        } catch (\Throwable $e) {
+        } catch (\Exception $e) {
             return $dateTimeModel;
         }
 

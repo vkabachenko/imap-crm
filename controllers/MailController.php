@@ -329,7 +329,7 @@ class MailController extends Controller
                 $content = mb_substr($content, 0, mb_strlen($content, 'UTF-8') - mb_strlen($signPrev, 'UTF-8'), 'UTF-8') . $signCurrent;
                 return ['content' => $content];
             }
-        } catch (\Throwable $e) {
+        } catch (\Exception $e) {
             \Yii::error($e->getMessage());
         }
         return ['content' => $data['content']];
