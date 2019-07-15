@@ -175,7 +175,7 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
         $uploadedFiles = is_array($scandir) ? array_diff($scandir, ['..', '.']) : [];
 
         foreach ($uploadedFiles as $uploadedFile) {
-            $message->attach($uploadPath . $uploadedFile);
+            $message->attach($uploadPath . $uploadedFile, ['fileName' => $uploadedFile]);
         }
 
         $to = preg_split("/,[\s]*/", $this->to);
@@ -194,8 +194,8 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
     public function sendAndSave()
     {
         try {
-            $this->status = null;
             $this->send();
+            $this->status = null;
             $this->save(false);
             $this->createXml();
             \Yii::$app->session->setFlash('success', 'Письмо успешно отправлено');
