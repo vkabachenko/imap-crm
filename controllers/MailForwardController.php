@@ -8,6 +8,7 @@ use app\models\EmailReply;
 use app\models\Emails;
 use app\models\MailForwardForm;
 use app\models\Mails;
+use app\models\UploadFileForm;
 use app\services\mail\DownloadService;
 use app\services\mail\LockService;
 
@@ -64,7 +65,7 @@ class MailForwardController extends Controller
                 'status' => null
             ]);
             $downloadService = new DownloadService($mail);
-            $downloadService->copyUploadedFiles(\Yii::getAlias('@app/uploads/'));
+            $downloadService->copyUploadedFiles(UploadFileForm::getUploadPath());
 
             $model->sendAndSave();
             $mail->setStatus('Обработан');

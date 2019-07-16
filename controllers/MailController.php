@@ -161,7 +161,7 @@ class MailController extends Controller
         ]);
 
         if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
-            $uploadForm->upload();
+
             if ($isDraft) {
                 $model->status = 'draft';
                 $model->save(false);
@@ -215,7 +215,6 @@ class MailController extends Controller
         $uploadForm = new UploadFileForm();
 
         if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
-            $uploadForm->upload();
             if ($isDraft) {
                 $model->status = 'draft';
                 $model->save(false);

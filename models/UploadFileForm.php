@@ -17,14 +17,11 @@ class UploadFileForm extends Model
 
     public function __construct($config = [])
     {
-        $path = DIRECTORY_SEPARATOR . \Yii::$app->session->id . DIRECTORY_SEPARATOR;
-        $this->directory = \Yii::getAlias('@webroot/temp') . $path;
-        $this->url = '/temp' . $path;
+        $this->directory = self::getUploadPath();
+        $this->url = self::getUploadUrl();
         if (!is_dir($this->directory)) {
             FileHelper::createDirectory($this->directory);
         }
-        $this->uploadsPath = \Yii::getAlias('@app/uploads/');
-
         parent::__construct($config);
     }
 
@@ -48,10 +45,24 @@ class UploadFileForm extends Model
         ];
     }
 
-    public function upload()
+    public static function clear()
     {
-        FileHelper::copyDirectory($this->directory, $this->uploadsPath);
-        FileHelper::removeDirectory($this->directory);
+        $directory = self::getUploadPath();
+        if (is_dir($directory)) {
+            FileHelper::removeDirectory($directory);
+        }
+    }
+
+    public static function getUploadPath()
+    {
+        $path = DIRECTORY_SEPARATOR . \Yii::$app->session->id . DIRECTORY_SEPARATOR;
+        return \Yii::getAlias('@webroot/temp') . $path;
+    }
+
+    public static function getUploadUrl()
+    {
+        $path = DIRECTORY_SEPARATOR . \Yii::$app->session->id . DIRECTORY_SEPARATOR;
+        return '/temp' . $path;
     }
 
 

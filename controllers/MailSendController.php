@@ -77,7 +77,6 @@ class MailSendController extends Controller
         ]);
 
         if ($model->load(\Yii::$app->request->post()) && $model->validate()) {
-            $uploadForm->upload();
             if ($isDraft) {
                 $model->status = 'draft';
                 $model->save(false);

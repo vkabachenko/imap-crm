@@ -118,8 +118,10 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
     {
         parent::afterSave($insert, $changedAttributes);
 
-        $uploadPath = \Yii::getAlias('@app/uploads/');
-        $uploadedFiles = array_diff(scandir($uploadPath), ['..', '.']);
+        $uploadPath = UploadFileForm::getUploadPath();
+
+        $scandir = @scandir($uploadPath);
+        $uploadedFiles = is_array($scandir) ? array_diff($scandir, ['..', '.']) : [];
 
         if (!empty($uploadedFiles)) {
             $mailAttachmentPath = $this->setAttachmentPath();
@@ -134,6 +136,7 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
                 rename($uploadPath . $uploadedFile, $mailAttachmentPath . $uploadedFile);
             }
         }
+        UploadFileForm::clear();
     }
 
     /**
@@ -165,13 +168,14 @@ class EmailReply extends \yii\db\ActiveRecord implements EMailInterface
 
         $message = $mailer->compose();
 
+        $uploadPath = UploadFileForm::getUploadPath();
         if ($this->status === 'draft') {
-            $uploadPath = $this->setAttachmentPath();
-        } else {
-            $uploadPath = \Yii::getAlias('@app/uploads/');
+            if (!is_dir($uploadPath) || count(scandir($uploadPath)) === 2) {
+                $uploadPath = $this->setAttachmentPath();
+            }
         }
 
-        $scandir = scandir($uploadPath);
+        $scandir = @scandir($uploadPath);
         $uploadedFiles = is_array($scandir) ? array_diff($scandir, ['..', '.']) : [];
 
         foreach ($uploadedFiles as $uploadedFile) {
