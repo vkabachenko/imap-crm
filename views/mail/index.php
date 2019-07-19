@@ -15,14 +15,17 @@ $this->title = 'Почтовые ящики';
 <div>
         <div class="row" style="margin-bottom: 10px;">
             <?php if(\Yii::$app->user->identity->is_admin): ?>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <?= Html::a('Создать', ['mail/create'], ['class' => 'btn btn-success']); ?>
                 </div>
             <?php endif; ?>
-            <div class="col-md-4">
-                <?= Html::a('Все ящики', ['mail-all/index'], ['class' => 'btn btn-primary']); ?>
+            <div class="col-md-3">
+                <?= Html::a('Вся почта', ['mail-union/index'], ['class' => 'btn btn-primary']); ?>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
+                <?= Html::a('Все входящие', ['mail-all/index'], ['class' => 'btn btn-primary']); ?>
+            </div>
+            <div class="col-md-3">
                 <?= Html::a('Все исходящие', ['mail-reply-all/index'], ['class' => 'btn btn-primary']); ?>
             </div>
         </div>

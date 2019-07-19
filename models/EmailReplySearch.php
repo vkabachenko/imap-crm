@@ -57,7 +57,8 @@ class EmailReplySearch extends EmailReply
             $query->andWhere(['manager_id' => null]);
         } else {
             $query->andFilterWhere(['manager_id' => $this->manager_id]);
-        }        $query->andFilterWhere(['like', 'comment', $this->comment]);
+        }
+        $query->andFilterWhere(['like', 'comment', $this->comment]);
 
         return $dataProvider;
     }
