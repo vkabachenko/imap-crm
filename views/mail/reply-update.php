@@ -62,7 +62,7 @@ $this->title = 'Редактирование черновика';
             </div>
         <?php endif; ?>
 
-        <div id="id-upload-files" style="display: none;">
+        <div id="id-upload-files">
             <?= FileUploadUI::widget([
                 'model' => $uploadForm,
                 'attribute' => 'file',
@@ -105,6 +105,12 @@ $this->title = 'Редактирование черновика';
 
 <?php
 $script = <<<JS
+
+   if ($('[name="allow-upload"]').length > 0) {
+       $('#id-upload-files').hide();
+   }
+
+
     $('[name="allow-upload"]').change(function() {
         if ($(this).is(':checked')) {
             $('#id-upload-files').show();
