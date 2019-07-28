@@ -127,7 +127,7 @@ $this->title = 'Вся почта ';
                     $content = Json::decode($model['content']);
                     $date = LocalDateTime::convertFromFull($content['headers']['date'], $model['created_at']);
                 } else {
-                    $date = LocalDateTime::convertFromUtc($model['created_at']);
+                    $date = $model['created_at'];
                 }
                 return $date;
             },
