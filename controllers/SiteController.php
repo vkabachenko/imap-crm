@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\RecentCalls;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -9,6 +10,7 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use yii\helpers\Url;
 use app\helpers\Array2xml;
+use yii\web\Response;
 use yii\web\UploadedFile;
 
 // Модельки
@@ -310,6 +312,7 @@ class SiteController extends \yii\web\Controller
 	     return $this->render('mail');
 	 }
 	public function actionGet_calls(){
+        \Yii::info(\Yii::$app->request->get(), 'calls');
 		    $model = new Allf();
 			$status=$model->GetCalls();
 	     return true;
@@ -451,18 +454,42 @@ class SiteController extends \yii\web\Controller
 
    public function actionGetlastcalls()
     {
+        $delayTime = 30;
+
         if (Yii::$app->user->isGuest) {
             Yii::$app->response->redirect(Url::to(['login']), 301)->send();
         }
 
-	$rows = (new \yii\db\Query())
-    ->select(['*'])
-    ->from('calls')
-    ->where("calls.date>'".(time()-300)."' and type=0")
-    ->orderBy('id DESC')
-    ->all();
+        \Yii::$app->response->format = Response::FORMAT_JSON;
 
-        return json_encode($rows);
+        $connection = Yii::$app->getDb();
+
+        $minDate = date('Y-m-d H:i:s', time() - $delayTime);
+
+        $sids = RecentCalls::find()->select('sid')->where(['status' => 'finish'])->andWhere(['<', 'date', $minDate])->column();
+
+        if (!empty($sids)) {
+            $sids = implode(', ', $sids);
+            $command = $connection->createCommand('DELETE FROM recent_calls WHERE sid IN (' . $sids . ')');
+            $command->execute();
+        }
+
+        $sql = <<<SQL
+            select
+                a.*
+            from
+                recent_calls a
+                inner join 
+                    (select sid, max(date) as date 
+                     from recent_calls group by sid) as b on
+                    a.sid = b.sid
+                    and a.date = b.date
+            order by date desc
+SQL;
+        $command = $connection->createCommand($sql);
+        $result = $command->queryAll();
+
+        return $result;
     }
 
    public function actionUserinfo()

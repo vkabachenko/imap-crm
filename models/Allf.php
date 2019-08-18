@@ -26,42 +26,56 @@ class Allf extends Model
 		$p1 = substr($phone_to, 0, 1); $p2 = substr($phone_to, 1, 3); $p3 = substr($phone_to, 4, 3); $p4 = substr($phone_to, 7, 2); $p5 = substr($phone_to, 9, 2);
 		$phone_to_clean = '+'.$p1.' ('.$p2.') '.$p3.'-'.$p4.'-'.$p5;
 
-		//$rest = substr(Yii::$app->request->get('contact_phone_number'), 0, 4);
-		$contact_id = Yii::$app->request->get(); if(!$contact_id){$contact_id=0;}
+		$status= Yii::$app->request->get('status');
 
-		$type=0;
+		if ($status === 'start') {
+            //$rest = substr(Yii::$app->request->get('contact_phone_number'), 0, 4);
+            $contact_id = Yii::$app->request->get(); if(!$contact_id){$contact_id=0;}
 
-		$connection = Yii::$app->db;
-		$connection->createCommand()->insert('calls', [
-		    'tel_from' => $phone_from_clean,
-		    'tel_to' => $phone_to_clean,
-		    'file' => '',
-		    'date' => time(),
-		    'sid' => Yii::$app->request->get('call_session_id'),
-		    'type' => $type,
-		    'status' => 0,
-		    'contact_id' => '',
-		    'sip' => '',
-		    'time' => ''
-		])->execute();
+            $type=0;
 
-		$user = (new \yii\db\Query())
-		    ->select(['id'])
-		    ->from('users')
-		    ->where("tel='".$phone_from_clean."'")
-		    ->all();
-		if($user[0]['id']>0){
-		$connection->createCommand()->insert('user_history', [
-		    'uid' => $user[0]['id'],
-		    'type' => 0,
-		    'text' => 'Звонок от '.$phone_from_clean,
-		    'date' => time()
-		])->execute();
+            $connection = Yii::$app->db;
+            $connection->createCommand()->insert('calls', [
+                'tel_from' => $phone_from_clean,
+                'tel_to' => $phone_to_clean,
+                'file' => '',
+                'date' => time(),
+                'sid' => Yii::$app->request->get('call_session_id'),
+                'type' => $type,
+                'status' => 0,
+                'contact_id' => '',
+                'sip' => '',
+                'time' => ''
+            ])->execute();
 
-		}else {
+            $user = (new \yii\db\Query())
+                ->select(['id'])
+                ->from('users')
+                ->where("tel='".$phone_from_clean."'")
+                ->all();
+            if($user[0]['id']>0){
+                $connection->createCommand()->insert('user_history', [
+                    'uid' => $user[0]['id'],
+                    'type' => 0,
+                    'text' => 'Звонок от '.$phone_from_clean,
+                    'date' => time()
+                ])->execute();
+        }
 
-			}
-
+		}
+		    if ($status) {
+                $model = new RecentCalls([
+                    'sid' => Yii::$app->request->get('call_session_id'),
+                    'tel_from' => $phone_from_clean,
+                    'tel_to' => $phone_to_clean,
+                    'date' => Yii::$app->request->get('notification_time'),
+                    'sip' => Yii::$app->request->get('sip'),
+                    'status' => $status
+                ]);
+                if (!$model->save()) {
+                    Yii::error($model->getErrors(), 'calls');
+                }
+            }
 		}
 
 
@@ -375,7 +389,8 @@ class Allf extends Model
 
 	// Обновление записей
     public function xmlCals()
-    {			$restaurant = array();
+    {
+			$restaurant = array();
 
 			$restaurant =  //empty node with attributes
 			    array( '@attributes' => array(

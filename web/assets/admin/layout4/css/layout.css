@@ -1803,3 +1803,20 @@ Page Loading
 .email-deleted td {
   opacity: 0.5;
 }
+
+.page-notifications {
+  float: left;
+  padding: 5px 10px;
+}
+
+.notification-time, .notification-phone, .notification-status {
+  color: #273EB7;
+}
+
+.notification-text {
+  color: #BCBFCD;
+}
+
+.notification-wrap {
+  font-family: "Courier New", Courier, monospace;
+}

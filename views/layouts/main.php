@@ -159,6 +159,11 @@ echo Html::dropDownList('order_brand',0,$arr, ['class' => 'form-control']) ;
 							</div>
                 </div>
 
+        <div class="page-notifications">
+
+        </div>
+
+
 		<div class="page-top">
 			<div class="top-menu">
 				<ul class="nav navbar-nav pull-right">
@@ -371,19 +376,57 @@ if($this->params['breadcrumbs'][0]!='Login'){
 </div>
 
 <?php $this->endBody() ?>
+
 <script>
-var phoneid=[];
+
 function chekcalls(){
-$.get( "<?php echo Url::toRoute(['site/getlastcalls']); ?>", function( data ) {
-	$.each( data, function( k ) {
-	//alert(jQuery.inArray( data[k].tel_from, phoneid));
-		if(data[k].type==0 && jQuery.inArray( data[k].tel_from, phoneid )=='-1'){
-		toastr.info('<a href="<?php echo Url::toRoute(['site/users','add'=>'true','from'=>'']); ?>'+data[k].tel_from+'">Звонок от - '+data[k].tel_from+'</a>');
-		phoneid.push(data[k].tel_from);
-		}
-	});
-	setTimeout(chekcalls, 2000);
-}, "json");
+    $.ajax({
+        url: '<?= Url::to(['site/getlastcalls']); ?>',
+        method: "GET",
+        dataType: "json",
+        success: function(data) {
+            if (data.length === 0) {
+                $('.notification-wrap').remove();
+            }
+            $.each(data, function(index, obj) {
+                var status = 'notification-default';
+                var statusMsg = 'Не определен';
+                switch (obj.status) {
+                    case 'start':
+                        status = 'notification-start';
+                        statusMsg = 'Ожидает';
+                        break;
+                    case 'up':
+                        status = 'notification-up';
+                        statusMsg = 'Разговор с ' + obj.sip;
+                        break;
+                    case 'finish':
+                        status = 'notification-finish';
+                        statusMsg = 'Завершен';
+                        break;
+                }
+                var el = $('.page-notifications').find('#sid' + obj.sid);
+
+                if (el.length > 0) {
+                    el.find('.notification-status').text(statusMsg)
+                } else {
+                    var el = $('<div>').addClass('notification-wrap').addClass(status).attr('id', 'sid' + obj.sid);
+                    $('<span>').addClass('notification-time').text(obj.date.substr(-8)).appendTo(el);
+                    $('<span>').addClass('notification-text').text('  Звонок от  ').appendTo(el);
+                    $('<span>').addClass('notification-phone').text(obj.tel_from.substr(0, 22)).appendTo(el);
+                    $('<span>').addClass('notification-text').text('  на  ').appendTo(el);
+                    $('<span>').addClass('notification-phone').text(obj.tel_to.substr(0, 22)).appendTo(el);
+                    $('<span>').addClass('notification-text').text('  Статус  ').appendTo(el);
+                    $('<span>').addClass('notification-status').text(statusMsg).appendTo(el);
+                    el.appendTo('.page-notifications');
+                }
+            });
+            setTimeout(chekcalls, 2000);
+        },
+        error: function (jqXHR, status) {
+            console.log(status);
+        }
+    })
 	}
 jQuery(document).ready(function() {
 
@@ -432,24 +475,6 @@ if(callsStr){$('.note-info').remove(); $('#NewClientForm').before('<div class="n
 
 $('.tel').mask('+9 (999) 999-99-99');
 Layout.init();
-
-toastr.options = {
-  "closeButton": false,
-  "debug": false,
-  "newestOnTop": false,
-  "progressBar": true,
-  "positionClass": "toast-top-right",
-  "preventDuplicates": false,
-  "onclick": null,
-  "showDuration": "300",
-  "hideDuration": "1000",
-  "timeOut": "60000",
-  "extendedTimeOut": "5000",
-  "showEasing": "swing",
-  "hideEasing": "linear",
-  "showMethod": "fadeIn",
-  "hideMethod": "fadeOut"
-}
 
 
 chekcalls();
