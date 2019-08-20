@@ -385,9 +385,17 @@ function chekcalls(){
         method: "GET",
         dataType: "json",
         success: function(data) {
-            if (data.length === 0) {
-                $('.notification-wrap').remove();
-            }
+
+            var sids = data.map(function (obj) {
+                return 'sid' + obj.sid;
+            });
+
+            $('.page-notifications .notification-wrap').each(function() {
+                if(sids.indexOf($(this).attr('id')) === -1) {
+                    $(this).remove();
+                }
+            });
+
             $.each(data, function(index, obj) {
                 var status = 'notification-default';
                 var statusMsg = 'Не определен';
@@ -405,10 +413,10 @@ function chekcalls(){
                         statusMsg = 'Завершен';
                         break;
                 }
-                var el = $('.page-notifications').find('#sid' + obj.sid);
+                var el1 = $('.page-notifications').find('#sid' + obj.sid);
 
-                if (el.length > 0) {
-                    el.find('.notification-status').text(statusMsg)
+                if (el1.length > 0) {
+                    el1.find('.notification-status').text(statusMsg)
                 } else {
                     var el = $('<div>').addClass('notification-wrap').addClass(status).attr('id', 'sid' + obj.sid);
                     $('<span>').addClass('notification-time').text(obj.date.substr(-8)).appendTo(el);
