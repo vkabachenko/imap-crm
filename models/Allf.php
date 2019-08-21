@@ -149,7 +149,25 @@ class Allf extends Model
 		    'sip' => Yii::$app->request->get('sip'),
 		    'time' => Yii::$app->request->get('time')
 		], 'sid='.Yii::$app->request->get('call_session_id'))->execute();
-			}
+
+		// for outgoing call check all previous unanswered calls
+        $row = (new \yii\db\Query())
+            ->from('calls')
+            ->where(['type' => 1, 'sid' => Yii::$app->request->get('call_session_id')])
+            ->one();
+        if (!empty($row)) {
+            $ids = (new \yii\db\Query())
+                ->select(['id'])
+                ->from('calls')
+                ->where(['file' => '', 'tel_from' => $row['tel_from']])
+                ->andWhere(['<', 'date', $row['date']])
+                ->column();
+            if (!empty($ids)) {
+                $connection->createCommand()->update('calls', ['file' => '*'], ['id' => $ids])->execute();
+            }
+        }
+
+		}
     }
 
 	// Обновление записей
