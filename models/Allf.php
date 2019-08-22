@@ -150,10 +150,10 @@ class Allf extends Model
 		    'time' => Yii::$app->request->get('time')
 		], 'sid='.Yii::$app->request->get('call_session_id'))->execute();
 
-		// for outgoing call check all previous unanswered calls
+		// check all previous unanswered calls
         $row = (new \yii\db\Query())
             ->from('calls')
-            ->where(['type' => 1, 'sid' => Yii::$app->request->get('call_session_id')])
+            ->where(['sid' => Yii::$app->request->get('call_session_id')])
             ->one();
         if (!empty($row)) {
             $ids = (new \yii\db\Query())

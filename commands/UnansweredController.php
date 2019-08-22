@@ -18,7 +18,6 @@ class UnansweredController extends Controller
         $connection = \Yii::$app->db;
         $rows = (new \yii\db\Query())
             ->from('calls')
-            ->where(['type' => 1])
             ->andWhere(['<>', 'file', ''])
             ->orderBy('date DESC')
             ->all();
@@ -31,8 +30,10 @@ class UnansweredController extends Controller
                 ->column();
             echo $row['date'] . '  ' . $row['tel_from'] . '  ' . implode(', ', $ids) . "\n";
 
+            if (!empty($ids)) {
+                $connection->createCommand()->update('calls', ['file' => '*'], ['id' => $ids])->execute();
+            }
 
-            $connection->createCommand()->update('calls', ['file' => '*'], ['id' => $ids])->execute();
         }
     }
 }
