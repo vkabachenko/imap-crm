@@ -121,6 +121,29 @@ class Allf extends Model
 		    'time' => ''
 		])->execute();
 
+            $sip = Yii::$app->request->get('sip');
+            if (!empty($sip)) {
+                $row = (new \yii\db\Query())
+                    ->from('sip')
+                    ->where(['num' => $sip])
+                    ->one();
+                if (!empty($row)) {
+                    $sip = $row['name'];
+                }
+            }
+
+            $model = new RecentCalls([
+                'sid' => Yii::$app->request->get('call_session_id'),
+                'tel_from' => $phone_from_clean,
+                'tel_to' => $phone_to_clean,
+                'date' => Yii::$app->request->get('notification_time'),
+                'sip' => $sip,
+                'status' => 'outgoing'
+            ]);
+            if (!$model->save()) {
+                Yii::error($model->getErrors(), 'calls');
+            }
+
 		}
 
 

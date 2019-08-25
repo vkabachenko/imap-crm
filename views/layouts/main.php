@@ -408,6 +408,10 @@ function chekcalls(){
                         status = 'notification-up';
                         statusMsg = 'Разговор с ' + obj.sip;
                         break;
+                    case 'outgoing':
+                        status = 'notification-outgoing';
+                        statusMsg = 'Исходящий ' + obj.sip;
+                        break;
                     case 'finish':
                         status = 'notification-finish';
                         statusMsg = 'Завершен';
