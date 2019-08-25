@@ -97,9 +97,9 @@ $sip = $model->Getsip($v['sip']);
 <tr>
 <td>
 <?php  if($v['type']==0){  ?>
-<a href="#modal" tel="<?php  echo $v['tel_from'];  ?>" class="btn btn-xs blue"> <i class="fa fa-arrow-right"></i></a>
+<a href="#modal" tel="<?php  echo $v['tel_from'];  ?>" class="btn btn-xs blue"> Вход</a>
 <?php }else { ?>
-<a href="#modal" tel="<?php  echo $v['tel_from'];  ?>" class="btn btn-xs default"> <i class="fa fa-arrow-left"></i></a>
+<a href="#modal" tel="<?php  echo $v['tel_from'];  ?>" class="btn btn-xs default"> Исход</i></a>
 <?php } ?>
 (<?php echo $v['tel_from'] ?>) <br /><b>  <?php echo $user[0]['name']; ?></b></td>
 <td> (<?php echo $v['tel_to'] ?>) <br /> <b><small><?php echo $sorce[0]['name']; ?></small></b></td>

@@ -75,7 +75,7 @@ class Index extends Model
 		$whr='id>0';
 		if(Yii::$app->request->get('call_status')==1){$whr.=" and type='0'";}
 		if(Yii::$app->request->get('call_status')==2){$whr.=" and type='1'";}
-		if(Yii::$app->request->get('call_status')==3){$whr.=" and file='' and date<'".(time()-300)."'";}
+		if(Yii::$app->request->get('call_status')==3){$whr.=" and type='0' and file='' and date<'".(time()-300)."'";}
 
 		if(Yii::$app->request->get('call_status')==4){$whr.=" and status='1'";}
 		if(Yii::$app->request->get('call_status')==5){$whr.=" and status='0'";}
