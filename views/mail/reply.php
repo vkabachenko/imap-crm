@@ -13,16 +13,18 @@ $this->title = $model->reply_to_id ? 'Ответ на письмо' : 'Ново�
 
 <div>
     <?php if ($model->reply_to_id): ?>
-        <div>Содержание входящего письма</div>
-        <div style="
-            font-family: 'Courier New', Courier, monospace;
-            margin: 10px;
-            padding: 5px;
-            max-height: 300px;
-            overflow: auto;
-            border: 1px solid #999"
-        >
-            <?= $model->replyTo->content ?>
+        <div style="display: none;">
+            <div>Содержание входящего письма</div>
+            <div style="
+                font-family: 'Courier New', Courier, monospace;
+                margin: 10px;
+                padding: 5px;
+                max-height: 300px;
+                overflow: auto;
+                border: 1px solid #999"
+            >
+                <?= $model->replyTo->content ?>
+            </div>
         </div>
     <?php endif; ?>
     <?php $form = ActiveForm::begin(); ?>
