@@ -13,7 +13,7 @@ $thisPagelmit=10;
 $this->title = 'Сипы';
 $thisRule = explode(",",Yii::$app->user->identity->rule);
 
-$this->params['titleBut'] = '<a href="'.Url::toRoute([$thisPageId, 'add' => 'true']).'" class="btn btn-xs green">Добавить <i class="fa fa-plus"></i></a>';
+$this->params['titleBut'] = '<a href="'.Url::toRoute(['sip/create']).'" class="btn btn-xs green">Добавить <i class="fa fa-plus"></i></a>';
 //echo Url::toRoute(['index', 'add' => 'yes']);
 
 
@@ -87,8 +87,8 @@ foreach ($rows as $value) {
 <td><?php  echo $value['id'];  ?></td>
 <td><?php  echo $value['name'];  ?></td>
 <td>
-<a href="<?php Echo Url::Toroute([$thisPageId, 'eid' => $value['id']]); ?>" class="btn default btn-xs purple"><i class="fa fa-edit"></i> Редактировать</a>
-<a href="<?php Echo Url::Toroute([$thisPageId, 'did' => $value['id']]); ?>" class="btn default btn-xs black"><i class="fa fa-trash-o"></i> Удалить</a>
+<a href="<?php Echo Url::toRoute(['sip/update', 'sipId' => $value['id']]); ?>" class="btn default btn-xs purple"><i class="fa fa-edit"></i> Редактировать</a>
+<a href="<?php Echo Url::toRoute([$thisPageId, 'did' => $value['id']]); ?>" class="btn default btn-xs black"><i class="fa fa-trash-o"></i> Удалить</a>
 </td>
 </tr>
 

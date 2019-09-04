@@ -21,6 +21,7 @@ use Yii;
  *
  * @property Emails[] $emails
  * @property MailboxUser[] $mailboxUsers
+ * @property SipUser[] $sipUsers
  */
 class EmployeesAR extends \yii\db\ActiveRecord
 {
@@ -79,6 +80,14 @@ class EmployeesAR extends \yii\db\ActiveRecord
     public function getMailboxUsers()
     {
         return $this->hasMany(MailboxUser::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSipUsers()
+    {
+        return $this->hasMany(SipUser::className(), ['user_id' => 'id']);
     }
 
     /**

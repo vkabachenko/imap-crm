@@ -2,22 +2,18 @@
 
 namespace app\controllers;
 
-use app\helpers\ConvertLinks;
 use app\models\EmailReply;
 use app\models\Emails;
 use app\models\EmailsSearch;
 use app\models\EmployeesAR;
 use app\models\Mails;
 use app\models\UploadFileForm;
-use app\models\UploadForm;
 use app\services\mail\DownloadService;
 use app\services\mail\LastEmailsService;
 use app\services\mail\LockService;
 use yii\data\ActiveDataProvider;
-use yii\helpers\Json;
 use app\services\mail\ImapService;
 use yii\helpers\Url;
-use yii\web\UploadedFile;
 
 
 class MailController extends Controller
