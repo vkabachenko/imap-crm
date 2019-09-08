@@ -34,18 +34,40 @@ $thisRule = explode(",",Yii::$app->user->identity->rule);
 	<div class="page-header-inner">
 		<!-- BEGIN LOGO -->
 		<div class="page-logo">
-			<a href="<?php echo Yii::$app->homeUrl; ?>" class="hide">
-            <h3>SMT-service</h3>
-			</a>
-			<div class="menu-toggler sidebar-toggler">
-				<!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
+            <div class="notification-summary-wrap">
+                <div>
+                    <span class="notification-summary-label">Звонков:</span>
+                    <span class="notification-summary-calls notification-summary-text notification-summary">0</span>
+                    <span class="notification-summary-label">Неотв:</span>
+                    <span class="notification-summary-calls-lost notification-summary-text notification-summary">0</span>
+                </div>
+                <div>
+                    <span class="notification-summary-label">Принято:</span>
+                    <span class="notification-summary-calls-in notification-summary-text notification-summary">0</span>
+                    <span class="notification-summary-label notification-summary">Вами:</span>
+                    <span class="notification-summary-calls-in-user notification-summary-text notification-summary">0</span>
+                </div>
+                <div>
+                    <span class="notification-summary-label">Писем:</span>
+                    <span class="notification-summary-mails notification-summary-text notification-summary">0</span>
+                    <span class="notification-summary-label">Неотв:</span>
+                    <span class="notification-summary-mails-lost notification-summary-text notification-summary">0</span>
+                </div>
+                <div>
+                    <span class="notification-summary-label">Принято:</span>
+                    <span class="notification-summary-mails-in notification-summary-text notification-summary">0</span>
+                    <span class="notification-summary-label notification-summary">Вами:</span>
+                    <span class="notification-summary-mails-in-user notification-summary-text notification-summary">0</span>
+                </div>
+            </div>
+			<div class="menu-toggler sidebar-toggler" onclick="$('.page-logo .notification-summary-wrap').toggle();return true;">
+
 			</div>
 		</div>
-		<a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
-		</a>
+
                 <div class="page-actions">
                         <button type="button" class="btn red-haze btn-sm NewClientBtn" href="#modalCall" data-toggle="modal">
-                            <span class="hidden-sm hidden-xs">Дрбавить клиента/заказ</span>
+                            <span class="hidden-sm hidden-xs">Добавить клиента/заказ</span>
                             <i class="fa fa-plus"></i>
                         </button>
 
@@ -379,6 +401,30 @@ if($this->params['breadcrumbs'][0]!='Login'){
 
 <script>
 
+function checksummary() {
+    $.ajax({
+        url: '<?= Url::to(['summary/check']); ?>',
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+            $('.notification-summary-wrap .notification-summary-calls').text(data.calls ? data.calls : 0);
+            $('.notification-summary-wrap .notification-summary-calls-lost').text(data.callsLost ? data.callsLost : 0);
+            $('.notification-summary-wrap .notification-summary-calls-in').text(data.callsIn ? data.callsIn : 0);
+            $('.notification-summary-wrap .notification-summary-calls-in-user').text(data.callsInUser ? data.callsInUser : 0);
+            $('.notification-summary-wrap .notification-summary-mails').text(data.mails ? data.mails : 0);
+            $('.notification-summary-wrap .notification-summary-mails-lost').text(data.mailsLost ? data.mailsLost : 0);
+            $('.notification-summary-wrap .notification-summary-mails-in').text(data.mailsIn ? data.mailsIn : 0);
+            $('.notification-summary-wrap .notification-summary-mails-in-user').text(data.mailsInUser ? data.mailsInUser : 0);
+
+            setTimeout(checksummary, 5 * 1000 * 60);
+        },
+        error: function (jqXHR, status) {
+            console.log(status);
+        }
+    });
+}
+
+
 function chekcalls(){
     $.ajax({
         url: '<?= Url::to(['site/getlastcalls']); ?>',
@@ -490,6 +536,8 @@ Layout.init();
 
 
 chekcalls();
+checksummary();
+
             $('.black').click(function(){
             var hrefthis = $(this).attr('href');
                 bootbox.confirm("Вы действительно хотите удалить элемент?", function(result) {

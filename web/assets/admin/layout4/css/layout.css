@@ -1820,3 +1820,20 @@ Page Loading
 .notification-wrap {
   font-family: "Courier New", Courier, monospace;
 }
+
+.notification-summary-wrap {
+  font-family: "Courier New", Courier, monospace;
+  float: left;
+}
+
+.notification-summary-label {
+  color: #a5a5a5;
+}
+
+.notification-summary {
+  margin-left: 1px;
+}
+
+.notification-summary-text {
+  color: #273EB7;
+}
