@@ -1823,11 +1823,18 @@ Page Loading
 
 .notification-summary-wrap {
   font-family: "Courier New", Courier, monospace;
-  float: left;
+  margin-top: -20px;
+  background-color: #fff;
 }
 
 .notification-summary-label {
   color: #a5a5a5;
+}
+
+.notification-summary-label-main {
+  color: #777;
+  font-weight: bold;
+  margin-left: 5px;
 }
 
 .notification-summary {

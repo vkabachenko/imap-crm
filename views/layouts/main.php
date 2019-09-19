@@ -34,34 +34,7 @@ $thisRule = explode(",",Yii::$app->user->identity->rule);
 	<div class="page-header-inner">
 		<!-- BEGIN LOGO -->
 		<div class="page-logo">
-            <div class="notification-summary-wrap">
-                <div>
-                    <span class="notification-summary-label">Звонков:</span>
-                    <span class="notification-summary-calls notification-summary-text notification-summary">0</span>
-                    <span class="notification-summary-label">Неотв:</span>
-                    <span class="notification-summary-calls-lost notification-summary-text notification-summary">0</span>
-                </div>
-                <div>
-                    <span class="notification-summary-label">Принято:</span>
-                    <span class="notification-summary-calls-in notification-summary-text notification-summary">0</span>
-                    <span class="notification-summary-label notification-summary">Вами:</span>
-                    <span class="notification-summary-calls-in-user notification-summary-text notification-summary">0</span>
-                </div>
-                <div>
-                    <span class="notification-summary-label">Писем:</span>
-                    <span class="notification-summary-mails notification-summary-text notification-summary">0</span>
-                    <span class="notification-summary-label">Неотв:</span>
-                    <span class="notification-summary-mails-lost notification-summary-text notification-summary">0</span>
-                </div>
-                <div>
-                    <span class="notification-summary-label">Принято:</span>
-                    <span class="notification-summary-mails-in notification-summary-text notification-summary">0</span>
-                    <span class="notification-summary-label notification-summary">Вами:</span>
-                    <span class="notification-summary-mails-in-user notification-summary-text notification-summary">0</span>
-                </div>
-            </div>
-			<div class="menu-toggler sidebar-toggler" onclick="$('.page-logo .notification-summary-wrap').toggle();return true;">
-
+			<div class="menu-toggler sidebar-toggler">
 			</div>
 		</div>
 
@@ -361,6 +334,26 @@ if($this->params['breadcrumbs'][0]!='Login'){
 			<!-- BEGIN PAGE HEADER-->
 			<!-- BEGIN PAGE HEAD -->
 			<div class="page-head">
+                <div class="notification-summary-wrap">
+                    <div>
+                        <span class="notification-summary-label-main">Звонков:</span>
+                        <span class="notification-summary-calls notification-summary-text notification-summary">0</span>
+                        <span class="notification-summary-label">Неотв:</span>
+                        <span class="notification-summary-calls-lost notification-summary-text notification-summary">0</span>
+                        <span class="notification-summary-label">Принято:</span>
+                        <span class="notification-summary-calls-in notification-summary-text notification-summary">0</span>
+                        <span class="notification-summary-label notification-summary">Вами:</span>
+                        <span class="notification-summary-calls-in-user notification-summary-text notification-summary">0</span>
+                        <span class="notification-summary-label-main">Писем:</span>
+                        <span class="notification-summary-mails notification-summary-text notification-summary">0</span>
+                        <span class="notification-summary-label">Неотв:</span>
+                        <span class="notification-summary-mails-lost notification-summary-text notification-summary">0</span>
+                        <span class="notification-summary-label">Принято:</span>
+                        <span class="notification-summary-mails-in notification-summary-text notification-summary">0</span>
+                        <span class="notification-summary-label notification-summary">Вами:</span>
+                        <span class="notification-summary-mails-in-user notification-summary-text notification-summary">0</span>
+                    </div>
+                </div>
 				<!-- BEGIN PAGE TITLE -->
 				<div class="page-title">
 					<h1><?php  echo $this->title; ?>
