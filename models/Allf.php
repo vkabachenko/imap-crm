@@ -191,6 +191,14 @@ class Allf extends Model
         }
 
 		}
+
+		// Call forwarding: client press 1 for auto instructions
+        if(Yii::$app->request->get('call_forward')){
+            $connection = Yii::$app->db;
+            $connection->createCommand()->update('calls', [
+                'file' => '*'
+            ], 'sid='.Yii::$app->request->get('call_session_id'))->execute();
+        }
     }
 
 	// Обновление записей
