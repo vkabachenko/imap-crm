@@ -13,6 +13,8 @@ use app\services\mail\LastEmailsService;
 use app\services\mail\LockService;
 use yii\data\ActiveDataProvider;
 use app\services\mail\ImapService;
+use yii\db\Exception;
+use yii\helpers\Json;
 use yii\helpers\Url;
 
 
@@ -308,6 +310,14 @@ class MailController extends Controller
 
         }
         $this->redirect(Url::previous());
+    }
+
+    public function actionGroupDelete()
+    {
+        $this->checkAdmin();
+        $toDelete = \Yii::$app->request->post('checked');
+        Emails::updateAll(['is_deleted' => true], ['id' => $toDelete]);
+        return '';
     }
 
 

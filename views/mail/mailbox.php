@@ -7,6 +7,7 @@ use yii\helpers\Html;
 use app\models\Emails;
 
 /**
+ * @var $this \yii\web\View
  * @var $dataProvider \yii\data\ActiveDataProvider
  * @var $mailbox \app\models\Mails
  * @var $searchModel \app\models\EmailsSearch
@@ -29,19 +30,25 @@ $this->title = 'Почтовый ящик ' . $mailbox->name . ' входяща�
 <?php endif; ?>
 
 <div class="row" style="margin: 10px 0;">
-    <div class="col-md-3">
+    <div class="col-md-2">
         <?= Html::a('Назад',
             ['mail/index'],
             ['class' => 'btn btn-primary']
         ) ?>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2" style="display: none">
+        <?= Html::a('Удалить выделенные',
+            ['mail/group-delete'],
+            ['class' => 'btn btn-danger group-delete']
+        ) ?>
+    </div>
+    <div class="col-md-2">
         <?= Html::a('Исходящие',
             ['mail-send/index', 'mailboxId' => $mailbox->id],
             ['class' => 'btn btn-primary']
         ) ?>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
         <?php if (is_null($isDeleted)): ?>
             <?= Html::a('Удаленные',
                 ['mail/mailbox', 'mailboxId' => $mailbox->id, 'isDeleted' => true],
@@ -54,7 +61,7 @@ $this->title = 'Почтовый ящик ' . $mailbox->name . ' входяща�
                 ) ?>
         <?php endif; ?>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <?= Html::beginForm('','GET') ?>
         <?= Html::textInput('EmailsSearch[imap_raw_content]', $searchModel['imap_raw_content'], [
             'class' => 'form-control',
@@ -65,18 +72,23 @@ $this->title = 'Почтовый ящик ' . $mailbox->name . ' входяща�
     </div>
 </div>
 
+<?php
+    if (\Yii::$app->user->identity->is_admin && !boolval($isDeleted)) {
+        $checkedColumn = [
+            [
+                'header' => Html::checkbox('', false, ['class' => 'all-emails-check']),
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return Html::checkbox('', false, ['class' => 'email-check']);
+                }
+            ]
+        ];
+    } else {
+        $checkedColumn = [];
+    }
 
-<?= GridView::widget([
-    'dataProvider' => $dataProvider,
-    'rowOptions' => function ($model, $key, $index, $grid)
-    {
-        if(boolval($model->is_read) === false) {
-            return ['class' => 'email-not-read'];
-        }
-    },
-    'filterModel' => $searchModel,
-    'summary' => '',
-    'columns' => [
+
+    $columns = [
         [
             'class' => 'yii\grid\ActionColumn',
             'template' => '{view}{delete}',
@@ -193,8 +205,85 @@ $this->title = 'Почтовый ящик ' . $mailbox->name . ' входяща�
             'filter' => EmployeesAR::usersAsMapForGrid()
         ],
         'comment'
-    ],
+    ];
+
+    $columns = array_merge($checkedColumn, $columns);
+
+?>
+
+
+<?= GridView::widget([
+    'dataProvider' => $dataProvider,
+    'rowOptions' => function ($model, $key, $index, $grid)
+    {
+        if(boolval($model->is_read) === false) {
+            return ['class' => 'email-not-read'];
+        }
+    },
+    'filterModel' => $searchModel,
+    'summary' => '',
+    'columns' => $columns,
 ]); ?>
+
+<?php
+
+if (\Yii::$app->user->identity->is_admin && !boolval($isDeleted)) {
+    $script = <<<JS
+        $(function() {
+            $('.email-check').change(function() {
+                var checked = false;
+                $('.email-check').each(function() {
+                    if ($(this).prop('checked')) {
+                        checked = true;
+                    }
+                });
+                actionButtonShow(checked);
+            });
+    
+            $('.all-emails-check').change(function() {
+               var checked = $(this).prop('checked');
+               $('.email-check').each(function() {
+                   $(this).prop('checked', checked);
+               });
+               actionButtonShow(checked);
+            });
+            
+            $('.group-delete').click(function(evt) {
+                evt.preventDefault();
+                var checked = [];
+                $('.email-check').each(function() {
+                    if ($(this).prop('checked')) {
+                        checked.push($(this).closest('td').closest('tr').attr('data-key'));
+                    }
+                });
+                
+                $.ajax({
+                    url: $(this).attr('href'),
+                    method: 'POST',
+                    data: {checked: checked}
+                }).then(function() {
+                    location.reload();
+                }).catch(function(error) {
+                    console.log(error.message);
+                    alert('Ошибка удаления');
+                })
+              
+            });
+            
+            function actionButtonShow(checked) {
+                var div = $('.group-delete').closest('div');
+                if (checked) {
+                    div.show();
+                } else {
+                    div.hide();
+                }
+            }
+        })
+JS;
+
+    $this->registerJs($script);
+}
+
 
 
 
