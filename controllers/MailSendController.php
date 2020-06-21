@@ -109,5 +109,13 @@ class MailSendController extends Controller
         $this->redirect(['mail/reply-update', 'id' => $copyModel->id]);
     }
 
+    public function actionGroupDelete()
+    {
+        $this->checkAdmin();
+        $toDelete = \Yii::$app->request->post('checked');
+        EmailReply::updateAll(['status' => 'deleted'], ['id' => $toDelete]);
+        return '';
+    }
+
 
 }
