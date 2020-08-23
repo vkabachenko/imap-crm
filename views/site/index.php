@@ -8,6 +8,7 @@ use yii\db\ActiveRecord;
 use yii\db\Command;
 use yii\data\Pagination;
 use yii\widgets\LinkPager;
+
 $call_status = Yii::$app->request->get('call_status');
 $this->title = 'Последние звонки';
 if($call_status==3){$this->title = 'Пропущены';}
@@ -73,6 +74,7 @@ $thisRule = explode(",",Yii::$app->user->identity->rule);
 <th style="width:80px;"><small>Длит.</small></th>
 <th style="width:100px;"><small>Сип</small></th>
 <th style="width:130px;"><small>Дата и время</small></th>
+<th style="width:15px;"><small><i class="fa fa-male"></i></small></th>
 <th style="width:15px;"><small><i class="fa fa-check"></i></small></th>
 <th style="width:15px;"><small><i class="fa fa-plus"></i></small></th>
 <th style="width:15px;"><small><i class="fa fa-play"></i></small></th>
@@ -105,7 +107,18 @@ $sip = $model->Getsip($v['sip']);
 <td> (<?php echo $v['tel_to'] ?>) <br /> <b><small><?php echo $sorce[0]['name']; ?></small></b></td>
 <td><?php echo $v['time']; ?></td>
 <td><?php echo $v['sip']; ?><br /><b><small><?php echo $sip[0]['name']; ?></small></td>
+
 <td><?php echo date("d.m.Y H:i",$v['date']); ?></td>
+
+<td>
+    <?php if ($v['type'] == 0): ?>
+        <?= Html::a('<i class="fa fa-male" aria-hidden="true"></i>',
+            ['portal/index', 'phone' => $v['tel_from']],
+            ['class' => 'btn btn-xs yellow open-client']
+        ) ?>
+    <?php endif; ?>
+</td>
+
 <td>
 <?php  if($v['status']==0){  ?>
 <a href="<?php echo Url::toRoute(['index', 'up_status3' => $v['id'], 'call_status' => Yii::$app->request->get('call_status')])?>" class="btn btn-xs red" ><i class="fa fa-check" aria-hidden="true"></i></a>
@@ -155,4 +168,5 @@ echo LinkPager::widget([
 ?>
 
 			</div></div></div></div>
+<?= $this->render('modal/open-client') ?>
 
