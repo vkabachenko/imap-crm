@@ -34,13 +34,17 @@ class ImapController extends Controller
 
     private function fetch($mailboxId, $dateBegin, callable $logFunction)
     {
-        $service = new ImapService($mailboxId);
-        $emails = $service->getEmails($dateBegin);
-        foreach ($emails as $mail) {
-            $logFunction($mail);
-            $service->saveEmail($mail);
+        try {
+            $service = new ImapService($mailboxId);
+            $emails = $service->getEmails($dateBegin);
+            foreach ($emails as $mail) {
+                $logFunction($mail);
+                $service->saveEmail($mail);
+            }
+            \Yii::$container->set('app\services\path\PathInterface', 'app\services\path\XmlMailPath');
+            $service->createXml($emails);
+        } catch (\Exception $e) {
+            \Yii::error($e->getMessage());
         }
-        \Yii::$container->set('app\services\path\PathInterface', 'app\services\path\XmlMailPath');
-        $service->createXml($emails);
     }
 }
