@@ -5,7 +5,7 @@
 
 <style>
     .client-header {
-        font-weight: bold;;
+        font-weight: bold;
     }
 </style>
 

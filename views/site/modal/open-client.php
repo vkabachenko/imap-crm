@@ -30,6 +30,24 @@ $script = <<<JS
         });
     });
 
+
+    $(document).on('click', '.btn-add-phone', function(evt) {
+        evt.preventDefault();
+        $.ajax({
+            type: 'GET',
+            url: $(this).attr('href'),
+            beforeSend: function () {
+                $("#client-modal .modal-body").text('Загружаются данные...');
+            },
+            success: function(html) {
+                $("#client-modal .modal-body").html(html);
+            },
+            error: function (jqXHR, status) {
+                $("#client-modal .modal-body").text(status);
+            }
+        });
+    });
+
 JS;
 
 $this->registerJs($script);
