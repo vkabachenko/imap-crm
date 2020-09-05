@@ -40,4 +40,10 @@ class DownloadService
             }
         }
     }
+
+    public function getPaths()
+    {
+        $files = glob($this->mailAttachmentPath . "*.*");
+        return is_array($files) ? $files : [];
+    }
 }
