@@ -8,8 +8,10 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use yii\helpers\Json;
 use yii\helpers\Url;
 use app\helpers\Array2xml;
+use yii\httpclient\Client;
 use yii\web\Response;
 use yii\web\UploadedFile;
 
@@ -103,8 +105,6 @@ class SiteController extends \yii\web\Controller
      */
     public function actionIndex()
     {
-
-
         if (!Yii::$app->user->id) {
             Yii::$app->response->redirect(Url::to(['login']), 301)->send();
         }
@@ -121,12 +121,23 @@ class SiteController extends \yii\web\Controller
         if (Yii::$app->request->get('up_status2')){ $model->up_status2(); }
         if (Yii::$app->request->get('up_status3')){ $model->up_status3(); }
 
+        $phones = array_map(function($item) {return $item['tel_from'];},
+            $model->getRows()['calls']);
+
+        $httpClient = new Client();
+        $url = \Yii::$app->params['portalUrl'] . \Yii::$app->params['getActiveClientsAction'];
+
+        $response = $httpClient->createRequest()
+            ->setMethod('POST')
+            ->setUrl($url)
+            ->setData(['phones' => $phones, 'token' => \Yii::$app->params['portalToken']])
+            ->send();
+
 	    return $this->render('index', [
             'model' => $model,
+            'pagePhones' => Json::decode($response->content)
         ]);
 
-
-        return $this->render('index');
         }
     }
 

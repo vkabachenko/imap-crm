@@ -111,12 +111,10 @@ $sip = $model->Getsip($v['sip']);
 <td><?php echo date("d.m.Y H:i",$v['date']); ?></td>
 
 <td>
-    <?php if ($v['type'] == 0): ?>
         <?= Html::a('<i class="fa fa-male" aria-hidden="true"></i>',
             ['portal/index', 'phone' => $v['tel_from']],
-            ['class' => 'btn btn-xs yellow open-client']
+            ['class' => 'btn btn-xs open-client ' . ($pagePhones[$v['tel_from']] ? 'green' : 'yellow')]
         ) ?>
-    <?php endif; ?>
 </td>
 
 <td>
