@@ -419,6 +419,7 @@ function checksummary() {
 
 
 function chekcalls(){
+    var urlClient = '<?= Url::to(['portal/index', 'phone' => '']); ?>'
     $.ajax({
         url: '<?= Url::to(['site/getlastcalls']); ?>',
         method: "GET",
@@ -465,6 +466,12 @@ function chekcalls(){
                     $('<span>').addClass('notification-time').text(obj.date.substr(-8)).appendTo(el);
                     $('<span>').addClass('notification-text').text('  Звонок от  ').appendTo(el);
                     $('<span>').addClass('notification-phone').text(obj.tel_from.substr(0, 22)).appendTo(el);
+                    var clientClass = obj.client ? 'green' : 'yellow';
+                    $('<a>')
+                        .attr('href', urlClient + obj.tel_from.substr(0, 22))
+                        .addClass('btn btn-xs open-client ' + clientClass)
+                        .html('<i class="fa fa-male" aria-hidden="true"></i>')
+                        .appendTo(el);
                     $('<span>').addClass('notification-text').text('  на  ').appendTo(el);
                     $('<span>').addClass('notification-phone').text(obj.tel_to.substr(0, 22)).appendTo(el);
                     $('<span>').addClass('notification-text').text('  Статус  ').appendTo(el);
@@ -528,8 +535,8 @@ $('.tel').mask('+9 (999) 999-99-99');
 Layout.init();
 
 
-chekcalls();
-checksummary();
+//chekcalls();
+//checksummary();
 
             $('.black').click(function(){
             var hrefthis = $(this).attr('href');

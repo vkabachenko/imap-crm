@@ -9,6 +9,7 @@ use yii\db\ActiveRecord;
 use yii\db\Command;
 use yii\data\Pagination;
 use yii\web\UploadedFile;
+use app\services\portal\ClientService;
 
 class Allf extends Model
 {
@@ -25,6 +26,8 @@ class Allf extends Model
 		$phone_to=Yii::$app->request->get('virtual_phone_number');
 		$p1 = substr($phone_to, 0, 1); $p2 = substr($phone_to, 1, 3); $p3 = substr($phone_to, 4, 3); $p4 = substr($phone_to, 7, 2); $p5 = substr($phone_to, 9, 2);
 		$phone_to_clean = '+'.$p1.' ('.$p2.') '.$p3.'-'.$p4.'-'.$p5;
+
+		$clientService = new ClientService($phone_from_clean);
 
 		$status= Yii::$app->request->get('status');
 
@@ -81,8 +84,10 @@ class Allf extends Model
                     'tel_to' => $phone_to_clean,
                     'date' => Yii::$app->request->get('notification_time'),
                     'sip' => $sip,
-                    'status' => $status
+                    'status' => $status,
+                    'client' => $clientService->getClient()
                 ]);
+
                 if (!$model->save()) {
                     Yii::error($model->getErrors(), 'calls');
                 }
@@ -104,6 +109,8 @@ class Allf extends Model
 		$phone_to_clean = '+'.$p1.' ('.$p2.') '.$p3.'-'.$p4.'-'.$p5;
 
 		$contact_id = Yii::$app->request->get(); if(!$contact_id){$contact_id=0;}
+
+        $clientService = new ClientService($phone_from_clean);
 
 		$type=1;
 
@@ -138,7 +145,8 @@ class Allf extends Model
                 'tel_to' => $phone_to_clean,
                 'date' => Yii::$app->request->get('notification_time'),
                 'sip' => $sip,
-                'status' => 'outgoing'
+                'status' => 'outgoing',
+                'client' => $clientService->getClient()
             ]);
             if (!$model->save()) {
                 Yii::error($model->getErrors(), 'calls');

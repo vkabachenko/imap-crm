@@ -125,6 +125,10 @@
             </div>
         </div>
     <?php endforeach; ?>
+    <?php else: ?>
+    <div>
+        Заявок на портале пока нет
+    </div>
     <?php endif; ?>
 
 

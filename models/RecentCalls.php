@@ -14,6 +14,7 @@ use Yii;
  * @property string $date
  * @property string $sip
  * @property string $status
+ * @property array|null $client
  */
 class RecentCalls extends \yii\db\ActiveRecord
 {
@@ -51,5 +52,10 @@ class RecentCalls extends \yii\db\ActiveRecord
             'sip' => 'Sip',
             'status' => 'Status',
         ];
+    }
+
+    public static function getByPhoneFrom($phone)
+    {
+        return self::find()->where(['tel_from' => $phone])->one();
     }
 }

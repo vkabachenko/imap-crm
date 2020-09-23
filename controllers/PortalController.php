@@ -4,6 +4,7 @@
 namespace app\controllers;
 
 use app\models\FindBidForm;
+use app\services\portal\ClientService;
 use yii\helpers\Json;
 use yii\httpclient\Client;
 
@@ -11,19 +12,13 @@ class PortalController extends Controller
 {
     public function actionIndex($phone)
     {
-        $httpClient = new Client();
-        $url = \Yii::$app->params['portalUrl'] . \Yii::$app->params['getClientAction'];
+        $clientService = new ClientService($phone);
+        $client = $clientService->getClientFromPortal();
 
-        $response = $httpClient->createRequest()
-            ->setMethod('GET')
-            ->setUrl($url)
-            ->setData(['phone' => $phone, 'token' => \Yii::$app->params['portalToken']])
-            ->send();
-
-        if ($response->content == 'null') {
+        if ($client === null) {
             return $this->renderAjax('no-client', ['findBidForm' => new FindBidForm(), 'phone' => $phone]);
         } else {
-            return $this->renderPartial('index', ['response' => Json::decode($response->content)]);
+            return $this->renderPartial('index', ['response' => $client]);
         }
     }
 
