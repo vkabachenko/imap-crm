@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\services\calls\RefsService;
 use Yii;
 use yii\base\Model;
 use yii\helpers\Url;
@@ -35,6 +36,8 @@ class Allf extends Model
             //$rest = substr(Yii::$app->request->get('contact_phone_number'), 0, 4);
             $contact_id = Yii::$app->request->get(); if(!$contact_id){$contact_id=0;}
 
+            $refsService = new RefsService(Yii::$app->request->get());
+
             $type=0;
 
             $connection = Yii::$app->db;
@@ -48,7 +51,8 @@ class Allf extends Model
                 'status' => 0,
                 'contact_id' => '',
                 'sip' => '',
-                'time' => ''
+                'time' => '',
+                'refs' => $refsService->createRefs()
             ])->execute();
 
             $user = (new \yii\db\Query())
