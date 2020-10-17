@@ -2,6 +2,8 @@
 
 namespace app\services\calls;
 
+use yii\helpers\Json;
+
 class RefsService
 {
     const REF_ATTRIBUTES = [
@@ -41,7 +43,7 @@ class RefsService
             }
         }
 
-        return $refs;
+        return Json::encode($refs);
     }
 
 }

@@ -21,7 +21,7 @@
 
 <?php
 $script = <<<JS
-    $('.open-client').click(function(evt) {
+    $(document).on('click', '.open-client', function(evt) {
         evt.preventDefault();
         $("#client-modal .modal-body").text('Загружаются данные...');
         $('#client-modal').modal('show');

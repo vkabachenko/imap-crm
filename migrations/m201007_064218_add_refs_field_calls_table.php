@@ -6,7 +6,7 @@ class m201007_064218_add_refs_field_calls_table extends Migration
 {
     public function up()
     {
-        $this->addColumn('calls', 'refs', 'json');
+        $this->addColumn('calls', 'refs', 'text');
     }
 
     public function down()
