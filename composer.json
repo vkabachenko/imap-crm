@@ -22,7 +22,8 @@
         "yiisoft/yii2-jui": "^2.0@dev",
         "bupy7/xml-constructor": "dev-master",
         "2amigos/yii2-file-upload-widget": "~1.0",
-        "yiisoft/yii2-httpclient": "2.0.3"
+        "yiisoft/yii2-httpclient": "2.0.3",
+        "kartik-v/yii2-export": "@dev"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
