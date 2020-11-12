@@ -29,6 +29,7 @@ class ReportController extends Controller
             $row['campaign'] = isset($ref['campaign_name']) ? $ref['campaign_name'] : '';
             $row['search_engine'] = isset($ref['search_engine']) ? $ref['search_engine'] : '';
             $row['search_query'] = isset($ref['search_query']) ? $ref['search_query'] : '';
+            $row['utm_term'] = isset($ref['utm_term']) ? $ref['utm_term'] : '';
         }
 
         $dataProvider = new ArrayDataProvider(['allModels' => $rows]);

@@ -44,6 +44,12 @@ $columns = [
             return $model['search_query'];
         }
     ],
+    [
+        'header' => 'UTM запрос',
+        'value' => function ($model) {
+            return $model['utm_term'];
+        }
+    ],
 ];
 
 ?>
