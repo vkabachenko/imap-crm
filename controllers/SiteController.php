@@ -105,8 +105,8 @@ class SiteController extends \yii\web\Controller
      */
     public function actionIndex()
     {
-        if (!Yii::$app->user->id) {
-            Yii::$app->response->redirect(Url::to(['login']), 301)->send();
+        if (Yii::$app->user->isGuest) {
+            return Yii::$app->response->redirect(Url::to(['login']), 301)->send();
         }
         if (Yii::$app->request->get('excel')){
         $model = new Allf();

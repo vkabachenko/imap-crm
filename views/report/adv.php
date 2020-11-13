@@ -1,58 +1,78 @@
 <?php
 
 /* @var $dataProvider \yii\data\ArrayDataProvider */
+/* @var $searchModel \app\models\ReportAdvSearch */
+/* @var $dateBegin int */
+/* @var $dateEnd int */
 
 use kartik\export\ExportMenu;
 use kartik\grid\GridView;
+use kartik\date\DatePicker;
 
 $this->title = 'Рекламные кампании';
 
 $columns = [
     [
-        'header' => 'Дата',
-        'value' => function ($model) {
-            return date('d-m-Y H:i', $model['date']);
-        }
+        'attribute' => 'date',
+        'label' => 'Дата',
+        'value' => function($row) {
+            return date('d-m-Y H:i', $row['date']);
+        },
+        'filter' => false
     ],
     [
-        'header' => 'Тел исходящий',
-        'value' => function ($model) {
-            return $model['tel_from'];
-        }
+        'attribute' => 'tel_from',
+        'label' => 'Тел исходящий',
     ],
     [
-        'header' => 'Тел входящий',
-        'value' => function ($model) {
-            return $model['tel_to'];
-        }
+        'attribute' => 'tel_to',
+        'label' => 'Тел входящий',
     ],
     [
-        'header' => 'Кампания',
-        'value' => function ($model) {
-            return $model['campaign'];
-        }
+        'attribute' => 'campaign',
+        'label' => 'Кампания',
     ],
     [
-        'header' => 'Поисковый сайт',
-        'value' => function ($model) {
-            return $model['search_engine'];
-        }
+        'attribute' => 'search_engine',
+        'label' => 'Поисковый сайт',
     ],
     [
-        'header' => 'Поисковый запрос',
-        'value' => function ($model) {
-            return $model['search_query'];
-        }
+        'attribute' => 'search_query',
+        'label' => 'Поисковый запрос',
     ],
     [
-        'header' => 'UTM запрос',
-        'value' => function ($model) {
-            return $model['utm_term'];
-        }
+        'attribute' => 'utm_term',
+        'label' => 'UTM запрос',
     ],
 ];
 
 ?>
+
+<div class="row form-group">
+
+     <div class="col-md-8">
+        <div>
+            <label class="control-label">Выберите интервал дат</label>
+            <?= DatePicker::widget([
+                'name' => 'ReportAdvSearch[dateBegin]',
+                'value' => $dateBegin,
+                'name2' => 'ReportAdvSearch[dateEnd]',
+                'value2' => $dateEnd,
+                'type' => DatePicker::TYPE_RANGE,
+                'separator' => '-',
+                'pluginOptions' => ['autoclose' => true, 'format' => 'dd-mm-yyyy']
+            ]) ?>
+        </div>
+     </div>
+
+    <div class="col-md-4" style="padding-top: 25px;">
+        <?= \yii\bootstrap\Html::a(
+            'Применить',
+        ['report/adv'],
+        ['class' => 'btn btn-date-filter btn-success']
+        ) ?>
+    </div>
+</div>
 
 <div>
     <?= ExportMenu::widget([
@@ -66,9 +86,25 @@ $columns = [
 <hr/>
 
    <?= GridView::widget([
-    'dataProvider' => $dataProvider,
-    'columns' => $columns,
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => $columns,
     ]) ?>
 
 
 </div>
+
+<?php
+$script = <<<JS
+$('.btn-date-filter').click(function(evt) {
+    evt.preventDefault();
+    var dateBegin = $('input[name="ReportAdvSearch[dateBegin]"]').val();
+    var dateEnd = $('input[name="ReportAdvSearch[dateEnd]"]').val();
+    var url = $(this).attr('href');
+    window.location.href = url + '?ReportAdvSearch[dateBegin]=' + dateBegin + '&ReportAdvSearch[dateEnd]=' + dateEnd;
+})
+
+JS;
+
+$this->registerJs($script);
+
