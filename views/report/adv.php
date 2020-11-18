@@ -13,11 +13,13 @@ $this->title = 'Рекламные кампании';
 
 $columns = [
     [
-        'attribute' => 'date',
+        'attribute' => 'day',
         'label' => 'Дата',
-        'value' => function($row) {
-            return date('d-m-Y H:i', $row['date']);
-        },
+        'filter' => false
+    ],
+    [
+        'attribute' => 'time',
+        'label' => 'Время',
         'filter' => false
     ],
     [

@@ -47,7 +47,7 @@ class ReportAdvSearch extends Model
                 'campaign',
                 'search_engine',
                 'search_query',
-                'utm_term'
+                'utm_term',
             ],
                 'safe'],
         ];
@@ -87,14 +87,21 @@ class ReportAdvSearch extends Model
             $row['search_engine'] = isset($ref['search_engine']) ? $ref['search_engine'] : '';
             $row['search_query'] = isset($ref['search_query']) ? $ref['search_query'] : '';
             $row['utm_term'] = isset($ref['utm_term']) ? $ref['utm_term'] : '';
+            $row['day'] = date('d-m-Y', $row['date']);
+            $row['time'] = date('H:i', $row['date']);
         }
 
         $dataProvider = new ArrayDataProvider([
             'allModels' => $rows,
             'sort' => [
                 'attributes' => [
-                    'tel_from', 'tel_to', 'date', 'campaign', 'search_engine', 'search_query', 'utm_term',],
-                'defaultOrder' => ['date' => SORT_DESC]
+                    'tel_from', 'tel_to',  'time', 'campaign', 'search_engine', 'search_query', 'utm_term',
+                    'day' => [
+                        'asc' => ['date' => SORT_ASC],
+                        'desc' => ['date' => SORT_DESC]
+                    ],
+                    ],
+                'defaultOrder' => ['day' => SORT_DESC]
             ]
         ]);
 

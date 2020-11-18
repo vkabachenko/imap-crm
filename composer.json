@@ -23,7 +23,9 @@
         "bupy7/xml-constructor": "dev-master",
         "2amigos/yii2-file-upload-widget": "~1.0",
         "yiisoft/yii2-httpclient": "2.0.3",
-        "kartik-v/yii2-export": "@dev"
+        "kartik-v/yii2-export": "@dev",
+        "kartik-v/yii2-widget-datepicker": "dev-master",
+        "kartik-v/yii2-field-range": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
