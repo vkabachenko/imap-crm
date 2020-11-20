@@ -19,7 +19,8 @@ class ClientService
     {
         /* @var $recentCall \app\models\RecentCalls */
         $recentCall = RecentCalls::getByPhoneFrom($this->phone);
-        return $recentCall ? $recentCall->client : $this->getClientFromPortal();
+        $client = $recentCall ? $recentCall->client : $this->getClientFromPortal();
+        return $client === null ? null : 1;
     }
 
     public function getClientFromPortal()
