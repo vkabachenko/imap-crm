@@ -46,6 +46,18 @@ $columns = [
         'attribute' => 'utm_term',
         'label' => 'UTM запрос',
     ],
+    [
+        'attribute' => 'ppc_ad_id',
+        'label' => 'ppc_ad_id',
+    ],
+    [
+        'attribute' => 'tag_id',
+        'label' => 'tag_id',
+    ],
+    [
+        'attribute' => 'tag_name',
+        'label' => 'tag_name',
+    ],
 ];
 
 ?>

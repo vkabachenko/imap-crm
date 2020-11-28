@@ -70,6 +70,27 @@ class Allf extends Model
         }
 
 		}
+
+		    if ($status === 'tag') {
+                \Yii::info('Status -tag', 'calls');
+                $refs = (new \yii\db\Query())
+                    ->select(['refs'])
+                    ->from('calls')
+                    ->where(['sid' => Yii::$app->request->get('call_session_id')])
+                    ->scalar();
+                \Yii::info('Old refs' . $refs, 'calls');
+                if ($refs !== false) {
+                    $refsService = new RefsService(Yii::$app->request->get());
+                    $refs = $refsService->updateRefs($refs, Yii::$app->request->get('tag_id'), Yii::$app->request->get('tag_name'));
+                    \Yii::info('Updated refs' . $refs, 'calls');
+
+                    $connection = Yii::$app->db;
+                    $connection->createCommand()->update('calls', [
+                        'refs' => $refs,
+                    ], 'sid=' . Yii::$app->request->get('call_session_id'))->execute();
+                }
+            }
+
 		    if ($status) {
 		        $sip = Yii::$app->request->get('sip');
 		        if (!empty($sip)) {

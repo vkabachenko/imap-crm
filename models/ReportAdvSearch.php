@@ -17,6 +17,9 @@ class ReportAdvSearch extends Model
     public $search_engine;
     public $search_query;
     public $utm_term;
+    public $ppc_ad_id;
+    public $tag_id;
+    public $tag_name;
 
 
     private function setDates()
@@ -48,6 +51,9 @@ class ReportAdvSearch extends Model
                 'search_engine',
                 'search_query',
                 'utm_term',
+                'ppc_ad_id',
+                'tag_id',
+                'tag_name',
             ],
                 'safe'],
         ];
@@ -79,6 +85,18 @@ class ReportAdvSearch extends Model
             $query->andWhere(['like', 'refs', $this->utm_term]);
         }
 
+        if ($this->ppc_ad_id) {
+            $query->andWhere(['like', 'refs', $this->ppc_ad_id]);
+        }
+
+        if ($this->tag_id) {
+            $query->andWhere(['like', 'refs', $this->tag_id]);
+        }
+
+        if ($this->tag_name) {
+            $query->andWhere(['like', 'refs', $this->tag_name]);
+        }
+
         $rows = $query->all();
 
         foreach ($rows as &$row) {
@@ -87,6 +105,9 @@ class ReportAdvSearch extends Model
             $row['search_engine'] = isset($ref['search_engine']) ? $ref['search_engine'] : '';
             $row['search_query'] = isset($ref['search_query']) ? $ref['search_query'] : '';
             $row['utm_term'] = isset($ref['utm_term']) ? $ref['utm_term'] : '';
+            $row['ppc_ad_id'] = isset($ref['ppc_ad_id']) ? $ref['ppc_ad_id'] : '';
+            $row['tag_id'] = isset($ref['tag_id']) ? $ref['tag_id'] : '';
+            $row['tag_name'] = isset($ref['tag_name']) ? $ref['tag_name'] : '';
             $row['day'] = date('d-m-Y', $row['date']);
             $row['time'] = date('H:i', $row['date']);
         }
@@ -95,7 +116,8 @@ class ReportAdvSearch extends Model
             'allModels' => $rows,
             'sort' => [
                 'attributes' => [
-                    'tel_from', 'tel_to',  'time', 'campaign', 'search_engine', 'search_query', 'utm_term',
+                    'tel_from', 'tel_to',  'time', 'campaign', 'search_engine',
+                    'search_query', 'utm_term', 'ppc_ad_id', 'tag_id', 'tag_name',
                     'day' => [
                         'asc' => ['date' => SORT_ASC],
                         'desc' => ['date' => SORT_DESC]
