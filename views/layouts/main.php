@@ -105,6 +105,9 @@ echo Html::dropDownList('order_employe_id',Yii::$app->user->id,$arr, ['class' =>
 ?>
 </div>
 
+<?php if (isset($edit)): ?>
+
+
 <div class="form-group">
 <?= Html::label('Название','order_name') ?>
 <?= Html::textInput('order_name',$edit['name'], ['class' => 'form-control']) ?>
@@ -121,8 +124,9 @@ echo Html::dropDownList('order_employe_id',Yii::$app->user->id,$arr, ['class' =>
 <?= Html::textarea('order_text',$edit['order_text'], ['class' => 'form-control', 'rows' => '5']) ?>
 </div>
 
+<?php endif; ?>
 
-<div class="form-group">
+    <div class="form-group">
 <?= Html::label('Статус:','order_status') ?> <br />
 <?php
 $rows = (new \yii\db\Query())->select(['*'])->from('order_status')->all();
@@ -169,7 +173,7 @@ echo Html::dropDownList('order_brand',0,$arr, ['class' => 'form-control']) ;
 						<span class="username username-hide-on-mobile">
 						<?php echo Yii::$app->user->identity->name; ?></span>
 						<!-- DOC: Do not remove below empty space(&nbsp;) as its purposely used -->
-						<?php if(file_exists(Yii::$app->homeUrl.'img/user'.$_SESSION["user"].'.jpg')){ ?>
+						<?php if(isset($_SESSION["user"]) && file_exists(Yii::$app->homeUrl.'img/user'.$_SESSION["user"].'.jpg')){ ?>
                         <img alt="" class="img-circle" src="<?php echo Yii::$app->homeUrl; ?>img/user<?php echo $_SESSION["user"]; ?>.jpg"/>
 						<?php }else { ?>
 						<img alt="" class="img-circle" src="<?php echo Yii::$app->homeUrl; ?>assets/admin/layout4/img/avatar9.jpg"/>
@@ -239,6 +243,8 @@ echo Html::dropDownList('order_brand',0,$arr, ['class' => 'form-control']) ;
 					</a>
 				</li>
 
+
+
 				<li class="<?php if(Url::to()==Url::toRoute(['site/sip']) or Url::to()==Url::toRoute(['site/source']) or Url::to()==Url::toRoute(['site/order_status']) or Url::to()==Url::toRoute(['site/users_status']) or Url::to()==Url::toRoute(['site/brand']) or Url::to()==Url::toRoute(['site/mails'])){echo 'active';} ?>">
 					<a href="<?php echo Url::toRoute(['site/order_status']); ?>">
 					<i class="icon-list"></i>
@@ -276,9 +282,32 @@ echo Html::dropDownList('order_brand',0,$arr, ['class' => 'form-control']) ;
 							<i class="icon-list"></i>
 							Сипы</a>
 						</li>
+                        <li<?php if(Url::to()==Url::toRoute(['catalog/employee-correspondence'])){echo ' class="active"';} ?>>
+                            <a href="<?php echo Url::toRoute(['catalog/employee-correspondence']); ?>">
+                                <i class="icon-list"></i>
+                                Соответствие пользователей с 1С</a>
+                        </li>
 					</ul>
 				</li>
+
 <?php } ?>
+
+    <li class="<?php if(Url::to()==Url::toRoute(['report/adv'])){echo 'active';} ?>">
+        <a href="<?php echo Url::toRoute(['report/adv']); ?>">
+            <i class="icon-list"></i>
+            <span class="title">Отчеты</span>
+            <span class="arrow "></span>
+        </a>
+        <ul class="sub-menu">
+            <li<?php if(Url::to()==Url::toRoute(['report/adv'])){echo ' class="active"';} ?>>
+                <a href="<?php echo Url::toRoute(['report/adv']); ?>">
+                    <i class="icon-list"></i>
+                    Рекламные кампании</a>
+            </li>
+        </ul>
+    </li>
+
+
 			</ul>
 			<!-- END SIDEBAR MENU -->
 		</div>
@@ -535,8 +564,8 @@ $('.tel').mask('+9 (999) 999-99-99');
 Layout.init();
 
 
-//chekcalls();
-//checksummary();
+chekcalls();
+checksummary();
 
             $('.black').click(function(){
             var hrefthis = $(this).attr('href');
