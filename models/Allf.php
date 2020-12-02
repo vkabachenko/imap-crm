@@ -81,7 +81,7 @@ class Allf extends Model
                 \Yii::info('Old refs' . $refs, 'calls');
                 if ($refs !== false) {
                     $refsService = new RefsService(Yii::$app->request->get());
-                    $refs = $refsService->updateRefs($refs, Yii::$app->request->get('tag_id'), Yii::$app->request->get('tag_name'));
+                    $refs = $refsService->updateRefs($refs, 'tag_id', 'tag_name');
                     \Yii::info('Updated refs' . $refs, 'calls');
 
                     $connection = Yii::$app->db;

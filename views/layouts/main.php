@@ -304,7 +304,13 @@ echo Html::dropDownList('order_brand',0,$arr, ['class' => 'form-control']) ;
                     <i class="icon-list"></i>
                     Рекламные кампании</a>
             </li>
+            <li<?php if(Url::to()==Url::toRoute(['report/stat'])){echo ' class="active"';} ?>>
+                <a href="<?php echo Url::toRoute(['report/stat']); ?>">
+                    <i class="icon-list"></i>
+                    Статистика менеджеров</a>
+            </li>
         </ul>
+
     </li>
 
 
