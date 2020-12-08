@@ -98,6 +98,7 @@ class ReportManagerActivitySearch extends Model
             ->innerJoin('sip_user', 'sip.id = sip_user.sip_id')
             ->innerJoin('employees', 'sip_user.user_id = employees.id')
             ->where(['between', 'calls.date', $this->dateBegin, $this->dateEnd])
+            ->andWhere(['<>', 'sip_user.user_id', 1])
             ->andWhere(['calls.type' => $type])
             ->andWhere(['>', 'calls.file', ''])
             ->groupBy(['day', 'employees.id'])
