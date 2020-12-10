@@ -51,6 +51,11 @@ $columns = [
         'label' => 'Статусы заявок',
         'filter' => false
     ],
+    [
+        'attribute' => 'bids_created',
+        'label' => 'Создано заявок',
+        'filter' => false
+    ],
 
 ];
 

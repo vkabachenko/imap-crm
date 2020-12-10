@@ -105,9 +105,6 @@ echo Html::dropDownList('order_employe_id',Yii::$app->user->id,$arr, ['class' =>
 ?>
 </div>
 
-<?php if (isset($edit)): ?>
-
-
 <div class="form-group">
 <?= Html::label('Название','order_name') ?>
 <?= Html::textInput('order_name',$edit['name'], ['class' => 'form-control']) ?>
@@ -123,8 +120,6 @@ echo Html::dropDownList('order_employe_id',Yii::$app->user->id,$arr, ['class' =>
 <?= Html::label('Описание заказа','order_text') ?>
 <?= Html::textarea('order_text',$edit['order_text'], ['class' => 'form-control', 'rows' => '5']) ?>
 </div>
-
-<?php endif; ?>
 
     <div class="form-group">
 <?= Html::label('Статус:','order_status') ?> <br />

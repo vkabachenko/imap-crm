@@ -55,14 +55,16 @@ class ReportManagerActivitySearch extends Model
         $outCalls = $this->getCalls(1);
         $inMails = $this->getInMails();
         $outMails = $this->getOutMails();
-        $bidStatuses = $this->getBidStatuses();
+        $bidStatuses = $this->getBidStatusesInfo('getBidStatuses');
+        $bidsCreated = $this->getBidStatusesInfo('getBidsCreated');
 
         $combined = [
             'calls_in' => $inCalls,
             'calls_out' => $outCalls,
             'mails_in' => $inMails,
             'mails_out' => $outMails,
-            'bid_statuses' => $bidStatuses
+            'bid_statuses' => $bidStatuses,
+            'bids_created' => $bidsCreated
         ];
 
         $rows = $this->gatherData($combined);
@@ -75,7 +77,7 @@ class ReportManagerActivitySearch extends Model
             'allModels' => $rows,
             'sort' => [
                 'attributes' => [
-                    'userId',  'calls_in', 'calls_out', 'mails_in', 'mails_out', 'bid_statuses',
+                    'userId',  'calls_in', 'calls_out', 'mails_in', 'mails_out', 'bid_statuses', 'bids_created',
                     'day' => [
                         'asc' => ['date' => SORT_ASC],
                         'desc' => ['date' => SORT_DESC]
@@ -134,10 +136,10 @@ class ReportManagerActivitySearch extends Model
         return $mails;
     }
 
-    private function getBidStatuses()
+    private function getBidStatusesInfo($action)
     {
         $httpClient = new Client();
-        $url = \Yii::$app->params['portalUrl'] . \Yii::$app->params['getBidStatuses'];
+        $url = \Yii::$app->params['portalUrl'] . \Yii::$app->params[$action];
 
         $response = $httpClient->createRequest()
             ->setMethod('GET')
