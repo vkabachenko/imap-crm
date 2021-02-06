@@ -166,5 +166,5 @@ echo LinkPager::widget([
 ?>
 
 			</div></div></div></div>
-<?= $this->render('modal/open-client') ?>
+
 

@@ -582,6 +582,9 @@ ComponentsPickers.init();
 
 });
 </script>
+
+    <?= $this->render('modal/open-client') ?>
+
 </body>
 </html>
 <?php $this->endPage() ?>
