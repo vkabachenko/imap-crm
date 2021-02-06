@@ -73,10 +73,11 @@ $thisRule = explode(",",Yii::$app->user->identity->rule);
 <th><small>Источник</small></th>
 <th style="width:80px;"><small>Длит.</small></th>
 <th style="width:100px;"><small>Сип</small></th>
-<th style="width:130px;"><small>Дата и время</small></th>
+<th style="width:115px;"><small>Дата и время</small></th>
 <th style="width:15px;"><small><i class="fa fa-male"></i></small></th>
 <th style="width:15px;"><small><i class="fa fa-check"></i></small></th>
 <th style="width:15px;"><small><i class="fa fa-plus"></i></small></th>
+<th style="width:15px;"><small><i class="fa fa-star"></i></small></th>
 <th style="width:15px;"><small><i class="fa fa-play"></i></small></th>
 </tr>
 </thead>
@@ -103,10 +104,10 @@ $sip = $model->Getsip($v['sip']);
 <?php }else { ?>
 <a href="#modal" tel="<?php  echo $v['tel_from'];  ?>" class="btn btn-xs default"> Исход</i></a>
 <?php } ?>
-(<?php echo $v['tel_from'] ?>) <br /><b>  <?php echo $user[0]['name']; ?></b></td>
-<td> (<?php echo $v['tel_to'] ?>) <br /> <b><small><?php echo $sorce[0]['name']; ?></small></b></td>
+(<?php echo $v['tel_from'] ?>) <br /><b>  <?= isset($user[0]) ? $user[0]['name'] : '' ?></b></td>
+<td> (<?php echo $v['tel_to'] ?>) <br /> <b><small><?= isset($sorce[0]) ? $sorce[0]['name'] : '' ?></small></b></td>
 <td><?php echo $v['time']; ?></td>
-<td><?php echo $v['sip']; ?><br /><b><small><?php echo $sip[0]['name']; ?></small></td>
+<td><?php echo $v['sip']; ?><br /><b><small><?= isset($sip[0]) ? $sip[0]['name'] : '' ?></small></td>
 
 <td><?php echo date("d.m.Y H:i",$v['date']); ?></td>
 
@@ -151,6 +152,15 @@ Your browser does not support the audio element.
 							</div>
 
  </td>
+
+<td>
+    <?= Html::a('<i class="fa fa-star-o"></i>',
+        ['site/star', 'id' => $v['id']],
+        ['class' => 'star-open']
+        )
+    ?>
+</td>
+
  <td><?php if($v['file']){  ?><a data-toggle="modal" href="#modal<?php  echo $v['id'];  ?>" v="<?php  echo $v['id'];  ?>" class="btn btn-xs yellow updateModal"> <i class="fa fa-play"></i></a><?php }?></td>
 
 </tr>
@@ -166,5 +176,6 @@ echo LinkPager::widget([
 ?>
 
 			</div></div></div></div>
+<?= $this->render('modal/star') ?>
 
 

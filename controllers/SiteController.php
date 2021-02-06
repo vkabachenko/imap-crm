@@ -530,4 +530,24 @@ SQL;
         return json_encode($row);
     }
 
+    public function actionStar($id)
+    {
+        $call = (new \yii\db\Query())
+            ->select(['star'])
+            ->from('calls')
+            ->where(['id' => $id])
+            ->one();
+
+        if (\Yii::$app->request->isPost) {
+            $star = \Yii::$app->request->post('star');
+            $connection = Yii::$app->db;
+            $connection->createCommand()->update('calls', [
+                'star' => $star,
+            ], 'id=' . $id)->execute();
+            return '';
+        }
+
+        return $this->renderPartial('star', ['star' => $call['star'], 'id' => $id]);
+    }
+
 }
